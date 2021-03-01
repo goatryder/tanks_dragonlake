@@ -4,6 +4,8 @@
 
 // Bonus for any found bugs in the framework!
 
+// not bug, just observation: sprite creation can't be done before Init()
+
 class Sprite;
 
 FRAMEWORK_API Sprite* createSprite(const char* path);

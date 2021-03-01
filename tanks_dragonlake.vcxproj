@@ -19,10 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Entities\SpriteEntity.cpp" />
     <ClCompile Include="Source\game.cpp" />
+    <ClCompile Include="Source\GameMode.cpp" />
+    <ClCompile Include="Source\Managers\SpriteManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Entities\SpriteEntity.h" />
     <ClInclude Include="Source\Framework.h" />
+    <ClInclude Include="Source\GameMode.h" />
+    <ClInclude Include="Source\GlobalConstants.h" />
+    <ClInclude Include="Source\Helpers\DebugPrint.h" />
+    <ClInclude Include="Source\Managers\SpriteManager.h" />
+    <ClInclude Include="Source\Structs\VecInt2D.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TASK.txt" />
