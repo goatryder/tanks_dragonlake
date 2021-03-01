@@ -15,13 +15,13 @@ public:
 
 	inline bool operator == (const VecInt2D& Other) const { return X == Other.X && Y == Other.Y; }
 	inline bool operator != (const VecInt2D& Other) const { return X != Other.X || Y != Other.Y; }
-	
+
 	inline VecInt2D operator + (const VecInt2D& Other) const { return VecInt2D(X + Other.X, Y + Other.Y); }
 	inline VecInt2D operator - (const VecInt2D& Other) const { return VecInt2D(X - Other.X, Y - Other.Y); }
 
 	inline VecInt2D operator * (int Scalar) const { return VecInt2D(X * Scalar, Y * Scalar); }
 	inline VecInt2D operator / (int Scalar) const { return VecInt2D(X / Scalar, Y / Scalar); }
-	
+
 	inline VecInt2D operator = (const VecInt2D& Other) { X = Other.X; Y = Other.Y; return *this; }
 
 	inline VecInt2D GetAbs() const { return VecInt2D(std::abs(X), std::abs(Y)); }

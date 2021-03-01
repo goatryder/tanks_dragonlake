@@ -6,6 +6,7 @@
 
 #include "Structs/VecInt2D.h"
 #include "Entities/SpriteEntity.h"
+#include "Entities/SpriteFlipFlop.h"
 #include "Managers/SpriteManager.h"
 
 #include "Helpers/DebugPrint.h"
@@ -24,15 +25,11 @@ public:
 
 	virtual bool Init() 
 	{
-		SpriteManager::CreateSprite(BG_IMAGE_PATH);
-		SpriteEntity* Tank = SpriteManager::CreateSprite(TANK_BIG_IMAGE_PATH);
-		SpriteEntity* Tank2 = SpriteManager::CreateSprite(TANK_IMAGE_PATH);
-		
-		Tank2->SetPosition(VecInt2D(GAME_AREA_W / 2, GAME_AREA_H / 2));
-		//Tank->SetEnable(false);
-		//Tank2->SetPosition(VecInt2D(47, 0));
-		//
-		//PRINTF(PrintColor::Red, "Tank1, Tank2 collision: %d", Tank->CheckCollision(Tank2));
+		SpriteManager::CreateSprite<SpriteEntity>(BG_IMAGE_PATH);
+
+		SpriteFlipFlop* Tank = SpriteManager::CreateSprite<SpriteFlipFlop>(TANK0_G_UP_1);
+		Tank->FlopSpriteInitLazy(TANK0_UP_0);
+
 		return true;
 	}
 

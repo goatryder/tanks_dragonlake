@@ -3,11 +3,11 @@
 
 
 // constructor
-SpriteEntity::SpriteEntity(const char* path)
+SpriteEntity::SpriteEntity(const char* ResourceImagePath)
 {
-	ResourceImagePath = path;
+	this->ResourceImagePath = ResourceImagePath;
 	
-	CreateSprite();
+	SpriteEntity::CreateSprite();  // call implementation of this class explicitly
 	InitSpriteSize();
 	
 	bEnabled = true;
@@ -16,7 +16,7 @@ SpriteEntity::SpriteEntity(const char* path)
 // destructor
 SpriteEntity::~SpriteEntity()
 {
-	DestroySprite();
+	SpriteEntity::DestroySprite(); // call implementation of this class explicitly
 }
 
 // draw controllers

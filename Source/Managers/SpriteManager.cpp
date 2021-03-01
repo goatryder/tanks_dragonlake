@@ -27,14 +27,6 @@ const std::vector<SpriteEntity*>& SpriteManager::GetSprites()
 	return SpriteEntities;
 }
 
-SpriteEntity* SpriteManager::CreateSprite(const char* path)
-{
-	SpriteEntity* Entity = new SpriteEntity(path);
-	SpriteManager::AddSprite(Entity);
-
-	return Entity;
-}
-
 void SpriteManager::DrawSprites()
 {
 	for (auto& Sprite : SpriteEntities)

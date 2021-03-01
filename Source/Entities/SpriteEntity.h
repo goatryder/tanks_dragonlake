@@ -9,7 +9,7 @@ class SpriteEntity
 {
 public:
 
-	SpriteEntity(const char* path);
+	SpriteEntity(const char* ResourceImagePath);
 	~SpriteEntity();
 
 	const VecInt2D GetPosition();
@@ -23,9 +23,10 @@ public:
 	bool CheckCollision(SpriteEntity* OtherEntity);
 
 	// @ToDo: to friend sprite render
-	void DrawSprite();
+	virtual void DrawSprite();
 
 protected:
+
 	const char* ResourceImagePath;
 	
 	Sprite* SpriteObj;
@@ -34,8 +35,8 @@ protected:
 	VecInt2D Size;
 	VecInt2D Position;
 
-	inline void CreateSprite();
-	inline void DestroySprite();
-	inline void InitSpriteSize();
+	inline virtual void CreateSprite();
+	inline virtual void DestroySprite();
 	
+	inline void InitSpriteSize();
 };

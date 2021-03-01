@@ -1,8 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <type_traits>
 
 class SpriteEntity;
+
 
 class SpriteManager
 {
@@ -23,7 +25,20 @@ public:
 	static const std::vector<SpriteEntity*>& GetSprites();
 
 	/** create new SpriteEntity instance and add it to vector queue */
-	static SpriteEntity* CreateSprite(const char* path);
+	template <class T>
+	static T* CreateSprite(const char* path) 
+	{
+		if (std::is_base_of<SpriteEntity, T>::value)
+		{
+			T* Entity = new T(path);
+			SpriteManager::AddSprite(Entity);
+			return Entity;
+		}
+		else 
+		{
+			return nullptr;
+		}
+	}
 
 	/** calls DrawSprite for each SpriteEntity in vector queue */
 	static void DrawSprites();

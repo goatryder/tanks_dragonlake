@@ -39,6 +39,9 @@
     <ClCompile Include="Source\GameMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Entities\SpriteFlipFlop.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Framework.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="Source\Helpers\DebugPrint.h">
       <Filter>Source Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entities\SpriteFlipFlop.h">
+      <Filter>Source Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,12 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Entities\SpriteEntity.cpp" />
+    <ClCompile Include="Source\Entities\SpriteFlipFlop.cpp" />
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\GameMode.cpp" />
     <ClCompile Include="Source\Managers\SpriteManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Entities\SpriteEntity.h" />
+    <ClInclude Include="Source\Entities\SpriteFlipFlop.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\GameMode.h" />
     <ClInclude Include="Source\GlobalConstants.h" />
