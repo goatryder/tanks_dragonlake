@@ -6,6 +6,8 @@
 
 // not bug, just observation: sprite creation can't be done before Init()
 
+// full screen min 640 480
+
 class Sprite;
 
 FRAMEWORK_API Sprite* createSprite(const char* path);

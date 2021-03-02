@@ -19,14 +19,14 @@
     <Filter Include="Source Files\Structs">
       <UniqueIdentifier>{bef3c787-a320-4799-a023-dd9e7f198c2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Managers">
-      <UniqueIdentifier>{be7fbd19-f22f-45e2-9b78-40ed370e2048}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{f8b1945a-0f50-4fde-b086-3e0072dd7249}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{a4dd35fb-61ec-49df-a0d0-c6bb659b8f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{48eee3a2-9b5a-4069-b49a-201bc0b66dab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,9 +36,6 @@
     <ClCompile Include="Source\Entities\SpriteEntity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Managers\SpriteManager.cpp">
-      <Filter>Source Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,6 +43,12 @@
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
     <ClCompile Include="source\Systems\SystemTick.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjects\Tank.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\SystemRender.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,9 +65,6 @@
     <ClInclude Include="Source\GlobalConstants.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Managers\SpriteManager.h">
-      <Filter>Source Files\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameMode.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -79,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="source\Entities\TickInterface.h">
       <Filter>Source Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjects\Tank.h">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entities\RenderInterface.h">
+      <Filter>Source Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\SystemRender.h">
+      <Filter>Source Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

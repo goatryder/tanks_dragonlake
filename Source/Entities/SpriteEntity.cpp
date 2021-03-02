@@ -6,11 +6,9 @@
 SpriteEntity::SpriteEntity(const char* ResourceImagePath)
 {
 	this->ResourceImagePath = ResourceImagePath;
-	
 	SpriteEntity::CreateSprite();  // call implementation of this class explicitly
-	InitSpriteSize();
 	
-	bEnabled = true;
+	InitSizeBySprite(SpriteObj);
 }
 
 // destructor
@@ -19,53 +17,8 @@ SpriteEntity::~SpriteEntity()
 	SpriteEntity::DestroySprite(); // call implementation of this class explicitly
 }
 
-// draw controllers
-bool SpriteEntity::GetEnable()
-{
-	return bEnabled;
-}
-
-void SpriteEntity::SetEnable(bool Val)
-{
-	bEnabled = Val;
-}
-
-const VecInt2D SpriteEntity::GetSize()
-{
-	return Size;
-}
-
-const VecInt2D SpriteEntity::GetPosition()
-{
-	return Position;
-}
-
-void SpriteEntity::SetPosition(VecInt2D Val)
-{
-	Position = Val;
-}
-
-// check collision
-bool SpriteEntity::CheckCollision(SpriteEntity* OtherEntity)
-{
-	if (OtherEntity == nullptr)
-	{
-		return false;
-	}
-
-	VecInt2D DeltaPos = (Position - OtherEntity->GetPosition()).GetAbs();
-	VecInt2D MaxSize = VecInt2D::GetMax(Size, OtherEntity->GetSize());
-
-	if (DeltaPos.X >= MaxSize.X || DeltaPos.Y >= MaxSize.Y)
-	{
-		return false;
-	}
-
-	return true;
-}
-
 // wrappers
-void SpriteEntity::DrawSprite()
+void SpriteEntity::onRender()
 {
 	if (SpriteObj == nullptr)
 	{
@@ -85,13 +38,8 @@ void SpriteEntity::CreateSprite()
 
 void SpriteEntity::DestroySprite()
 {
-	destroySprite(SpriteObj);
+	if (SpriteObj != nullptr)
+	{
+		destroySprite(SpriteObj);
+	}
 }
-
-void SpriteEntity::InitSpriteSize()
-{
-	int w, h;
-	getSpriteSize(SpriteObj, w, h);
-	Size = VecInt2D(w, h);
-}
-//

@@ -33,7 +33,7 @@ void SpriteFlipFlop::FlopSpriteInitLazy(const char* ResourceImagePathFlop, unsig
 	FlipFlopTime = FlipFlopTimeMs;
 }
 
-void SpriteFlipFlop::DrawSprite()
+void SpriteFlipFlop::onRender()
 {
 	if (!bEnabled)
 		return;

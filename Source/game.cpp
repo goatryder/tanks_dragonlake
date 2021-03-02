@@ -9,7 +9,7 @@
 #include "Entities/SpriteEntity.h"
 #include "Entities/SpriteFlipFlop.h"
 
-#include "Managers/SpriteManager.h"
+#include "Systems/SystemRender.h"
 #include "Systems/SystemTick.h"
 
 
@@ -28,8 +28,8 @@ public:
 
 	virtual void PreInit(int& width, int& height, bool& fullscreen)
 	{
-		width = 208; 
-		height = 208;
+		width = WINDOW_W;
+		height = WINDOW_H;
 		fullscreen = false;
 	}
 
@@ -37,10 +37,11 @@ public:
 
 	virtual bool Init() 
 	{
-		SpriteManager::CreateSprite<SpriteEntity>(BG_IMAGE_PATH);
+		SystemRender::CreateSprite<SpriteEntity>(BG_IMAGE_PATH);
 
-		Tank = SpriteManager::CreateSprite<SpriteFlipFlop>(TANK0_G_UP_1);
-		Tank->FlopSpriteInitLazy(TANK0_UP_0, 250U);
+		Tank = SystemRender::CreateSprite<SpriteFlipFlop>(TANK_UP_0);
+		Tank->FlopSpriteInitLazy(TANK_UP_1, 250U);
+		Tank->SetPosition(VecInt2D(GAME_AREA_W / 2, GAME_AREA_H / 2) - Tank->GetSize() / 2);
 
 		return true;
 	}
@@ -104,7 +105,7 @@ private:
 
 	inline void RenderTick()
 	{
-		SpriteManager::DrawSprites();
+		SystemRender::Render();
 	}
 
 public:
@@ -144,10 +145,42 @@ public:
 
 	virtual void onKeyPressed(FRKey k) 
 	{
+		if (k == FRKey::RIGHT)
+		{
+			PRINT(PrintColor::Yellow, "Pressed RIGHT");
+		}
+		else if (k == FRKey::LEFT)
+		{
+			PRINT(PrintColor::Yellow, "Pressed LEFT");
+		}
+		else if (k == FRKey::UP)
+		{
+			PRINT(PrintColor::Yellow, "Pressed UP");
+		}
+		else
+		{
+			PRINT(PrintColor::Yellow, "Pressed DOWN");
+		}
 	}
 
 	virtual void onKeyReleased(FRKey k) 
 	{
+		if (k == FRKey::RIGHT)
+		{
+			PRINT(PrintColor::Yellow, "Released RIGHT");
+		}
+		else if (k == FRKey::LEFT)
+		{
+			PRINT(PrintColor::Yellow, "Released LEFT");
+		}
+		else if (k == FRKey::UP)
+		{
+			PRINT(PrintColor::Yellow, "Released UP");
+		}
+		else
+		{
+			PRINT(PrintColor::Yellow, "Released DOWN");
+		}
 	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
