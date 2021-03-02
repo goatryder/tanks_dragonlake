@@ -1,18 +1,19 @@
 #pragma once
 
 #include "SpriteEntity.h"
+#include "TickInterface.h"
 
 /* SpriteFlipFlop, can be initialized as SpriteEntity and act accordingly
  * but also can have another sprite and act as FlipFlop
  * right now for proper work it's expect Flip Sprite and Flop Sprite has same size
  * @ToDo: handle Flip Flop change on time delay
  */
-class SpriteFlipFlop : public SpriteEntity
+class SpriteFlipFlop : public SpriteEntity, public TickInterface
 {
 public:
 
 	SpriteFlipFlop(const char* ResourceImagePathFlip);
-	SpriteFlipFlop(const char* ResourceImagePathFlip, const char* ResourceImagePathFlop);
+	SpriteFlipFlop(const char* ResourceImagePathFlip, const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs=0);
 	~SpriteFlipFlop();
 
 	/*
@@ -20,7 +21,7 @@ public:
 	 * it will behave as normal SpriteEntity
 	 * this method allow appling flip flop mechanic after initializtion
 	 */
-	void FlopSpriteInitLazy(const char* ResourceImagePathFlop);
+	void FlopSpriteInitLazy(const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs=0);
 
 	virtual void DrawSprite() override final;
 
@@ -33,6 +34,10 @@ protected:
 	/** if True DrawSprite will draw Inherited SpriteObj else SpriteObjSibling */
 	bool bFlipFlop = true;
 
+	/** on tick sprite change, in ms, if 0 - disable */
+	unsigned int FlipFlopTime = 0;
+	unsigned int FlipFlopTimeAccomulated = 0;
+
 	/*
 	 * in parent constructor will be called parent implementation explicitly
 	 * so this one will be creation for second Sprite (not best architecture, but ok for now)
@@ -44,4 +49,29 @@ protected:
      * so this one will be destruction for second Sprite (not best architecture, but ok for now)
      */
 	inline virtual void DestroySprite() override final;
+
+public:
+	
+	void SetFlipFlopTime(unsigned int TimeInMs)
+	{
+		FlipFlopTime = TimeInMs;
+	}
+
+	unsigned int GetFlipFlopTime() const
+	{
+		return FlipFlopTime;
+	}
+
+	/** manual controlled flip flop */
+	void SetFlipFlop(bool Val)
+	{
+		bFlipFlop = Val;
+	}
+
+	bool GetFlipFlop() const
+	{
+		return bFlipFlop;
+	}
+
+	virtual void onTick(unsigned int DeltaTime) override;
 };

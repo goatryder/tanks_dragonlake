@@ -15,3 +15,5 @@ constexpr auto TANK0_G_UP_1 =			"X:\\DragonLake\\Tanki\\Content\\tank0g\\tank0g_
 #define GAME_AREA_H						208
 #define GAME_CHUNK_W					16
 #define GAME_CHUNK_H					16
+
+#define GAME_LOGIC_TICK					1000 / 30

@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{f8b1945a-0f50-4fde-b086-3e0072dd7249}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{a4dd35fb-61ec-49df-a0d0-c6bb659b8f70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\game.cpp">
@@ -41,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="Source\Entities\SpriteFlipFlop.cpp">
       <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Systems\SystemTick.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +72,12 @@
       <Filter>Source Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Entities\SpriteFlipFlop.h">
+      <Filter>Source Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Systems\SystemTick.h">
+      <Filter>Source Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Entities\TickInterface.h">
       <Filter>Source Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>

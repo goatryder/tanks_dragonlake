@@ -6,12 +6,14 @@ SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImagePathFlip)
 {
 }
 
-SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImagePathFlip, const char* ResourceImagePathFlop)
+SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImagePathFlip, const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs)
 	: SpriteEntity(ResourceImagePathFlip)
 {
 	ResourceImagePathSibling = ResourceImagePathFlop;
 
 	SpriteFlipFlop::CreateSprite();  // call implementation of this class explicitly
+
+	FlipFlopTime = FlipFlopTimeMs;
 }
 
 SpriteFlipFlop::~SpriteFlipFlop()
@@ -19,7 +21,7 @@ SpriteFlipFlop::~SpriteFlipFlop()
 	SpriteFlipFlop::DestroySprite();  // call implementation of this class explicitly
 }
 
-void SpriteFlipFlop::FlopSpriteInitLazy(const char* ResourceImagePathFlop)
+void SpriteFlipFlop::FlopSpriteInitLazy(const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs)
 {
 	if (SpriteObjSibling != nullptr) // already initialized
 		return;
@@ -27,6 +29,8 @@ void SpriteFlipFlop::FlopSpriteInitLazy(const char* ResourceImagePathFlop)
 	ResourceImagePathSibling = ResourceImagePathFlop;
 
 	SpriteFlipFlop::CreateSprite();  // call implementation of this class explicitly
+
+	FlipFlopTime = FlipFlopTimeMs;
 }
 
 void SpriteFlipFlop::DrawSprite()
@@ -46,7 +50,6 @@ void SpriteFlipFlop::DrawSprite()
 	Sprite* CurrentSpriteObj = bFlipFlop ? SpriteObj : SpriteObjSibling;
 	{
 		drawSprite(CurrentSpriteObj, Position.X, Position.Y);
-		bFlipFlop = !bFlipFlop;
 	}
 }
 
@@ -60,5 +63,21 @@ inline void SpriteFlipFlop::DestroySprite()
 	if (SpriteObjSibling != nullptr)
 	{
 		destroySprite(SpriteObjSibling);
+	}
+}
+
+void SpriteFlipFlop::onTick(unsigned int DeltaTime)
+{
+	TickInterface::onTick(DeltaTime);
+
+	if (FlipFlopTime == 0)
+		return;
+	
+	FlipFlopTimeAccomulated += DeltaTime;
+
+	if (FlipFlopTimeAccomulated >= FlipFlopTime)
+	{
+		bFlipFlop = !bFlipFlop;
+		FlipFlopTimeAccomulated = 0;
 	}
 }

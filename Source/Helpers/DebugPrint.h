@@ -2,8 +2,10 @@
 
 #include <iostream>
 #include <stdio.h>
-
 #include <windows.h>
+#include <typeinfo>
+
+#include "../Framework.h"
 
 using namespace std;
 
@@ -69,16 +71,38 @@ inline OSteamChangeColorSig ChangeOutStreamColor(PrintColor Color)
     else return &white;
 }
 
+inline const char* GetTickTimestamp()
+{
+    unsigned int Time = getTickCount();
+    char buffer[24];
+    sprintf(buffer, "[%d] ", Time);
+    return buffer;
+}
+
+// print macro
+
 #define PRINT(PRINT_COLOR, STR) \
  ( \
-  (cout << ChangeOutStreamColor(PRINT_COLOR) << (STR) << endl << white), \
+  (cout << ChangeOutStreamColor(PRINT_COLOR) << GetTickTimestamp() << (STR) << endl << white), \
   (void)0 \
  )
 
+// printf formating macro
+
 #define PRINTF(PRINT_COLOR, STR, ...) \
  ( \
-  (cout << ChangeOutStreamColor(PRINT_COLOR)), \
+  (cout << ChangeOutStreamColor(PRINT_COLOR) << GetTickTimestamp()), \
   (printf (STR, __VA_ARGS__)), \
   (cout << endl << white), \
   (void)0 \
  )
+
+// @ToDo: check if ptr equal zero
+
+//#define PRINT_NULL(PTR) \
+// ( \
+//  (if (PTR == NULL) \
+//   cout << __FUNCTION__ << endl, \
+//  ), \
+// )
+   

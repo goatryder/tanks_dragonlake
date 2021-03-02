@@ -24,16 +24,19 @@
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\GameMode.cpp" />
     <ClCompile Include="Source\Managers\SpriteManager.cpp" />
+    <ClCompile Include="source\Systems\SystemTick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Entities\SpriteEntity.h" />
     <ClInclude Include="Source\Entities\SpriteFlipFlop.h" />
+    <ClInclude Include="source\Entities\TickInterface.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\GameMode.h" />
     <ClInclude Include="Source\GlobalConstants.h" />
     <ClInclude Include="Source\Helpers\DebugPrint.h" />
     <ClInclude Include="Source\Managers\SpriteManager.h" />
     <ClInclude Include="Source\Structs\VecInt2D.h" />
+    <ClInclude Include="source\Systems\SystemTick.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TASK.txt" />

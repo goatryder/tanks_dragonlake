@@ -22,7 +22,7 @@ public:
 
 	bool CheckCollision(SpriteEntity* OtherEntity);
 
-	// @ToDo: to friend sprite render
+	// @ToDo: to private, expose to friend SpriteManager
 	virtual void DrawSprite();
 
 protected:
