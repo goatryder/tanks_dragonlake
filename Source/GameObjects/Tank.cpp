@@ -5,6 +5,8 @@
 #include "../Helpers/DebugPrint.h"
 #include "../GlobalConstants.h"
 
+#include "Bullet.h"
+
 // @ToDo Tank Fabric, hehe)
 Tank::Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, SpriteFlipFlop* Down)
 	: Left(Left), Right(Right), Up(Up), Down(Down)
@@ -52,8 +54,6 @@ void Tank::StopMoveAnim()
 
 void Tank::MoveBegin(Direction DirectionTo)
 {
-	// PRINTF(PrintColor::Green, "Tank Start Moving To %s", DirectionToString(DirectionTo));
-
 	bCanMove = true;
 
 	ChangeCurrentDirectionSprite(DirectionTo);
@@ -83,17 +83,25 @@ void Tank::Move(unsigned int DeltaTime)
 		return;
 
 	// Position += DirectionToVec(CurrentDirection) * (Speed *  DeltaTime / 1000);
-	VecInt2D NewPosition = DirectionToVec(CurrentDirection) * (((Speed * DeltaTime) >> 10) + 1) + Position;
-	SetPosition(NewPosition, true);
+	VecInt2D PositionDelta = DirectionToVec(CurrentDirection) * (((Speed * DeltaTime) >> 10) + 1);
 	
-	// PRINT(PrintColor::Green, "Tank Move");
+	PRINTF(PrintColor::Green, "V: %d, \tdT: %d, \tV*dT: %d \tdP: X = %d Y = %d", Speed, DeltaTime, Speed * DeltaTime, PositionDelta.X, PositionDelta.Y);
+	
+	SetPosition(Position + PositionDelta, true);
 }
 
 void Tank::Fire()
 {
+	if (ActiveBullet != nullptr) // only one active bullet allowed for player
+	{
+		delete ActiveBullet;
+		ActiveBullet = nullptr;
+		// return;
+	}
+
 	PRINT(PrintColor::Green, "Tank shooted");
 
-	// @ToDo base bullet class, spawn it
+	ActiveBullet = Bullet::SpawnBulletSlow(CurrentDirection, GetSidePosition(CurrentDirection));
 }
 
 void Tank::onDamage(int Damage)
@@ -124,4 +132,6 @@ void Tank::onRender()
 {
 	CurrentActiveSprite->SetPosition(Position);
 	CurrentActiveSprite->onRender();
+
+	if (ActiveBullet != nullptr) ActiveBullet->onRender();
 }

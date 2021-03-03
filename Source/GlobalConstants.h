@@ -54,17 +54,18 @@ constexpr auto BULLET_LEFT =			"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_l
 
 // Game Logic consts
 
-#define GAME_LOGIC_TICK					1000 / 30  // in ms, update time 2 ms is minimal, 33 or 16 fit best
+#define GAME_LOGIC_TICK					1000 / 25  // in ms, update time 2 ms is minimal, 33 or 16 fit best
+#define GAME_SPEED_MIN					(1000 / (GAME_LOGIC_TICK))  // one pixel in one game tick
 
 
 // Game Paramters consts
+// Note: if GAME_LOGIC_TICK * Speed < 1000 speed will be equal zero, 
+// if GAME_LOGIC_TICK == 33, 31 is min speed value
 
-// Note: if GAME_LOGIC_TICK * Speed < 1000 speed will be equal zero, if GAME_LOGIC_TICK == 33, 31 is min speed value
-
-#define TANK_SPEED_SLOW					120 // pixels in one sec
+#define TANK_SPEED_SLOW					GAME_SPEED_MIN * 3 // pixels in one sec
 
 #define TANK_SPEED_SLOW_ANIM_TIME		200 // Time in ms to SpriteFlipFlop swap sprites
 
 #define TANK_HEALTH_BASIC				1
 
-#define BULLET_SPEED_SLOW				GAME_AREA_W / 1 // pixels in one sesc
+#define BULLET_SPEED_SLOW				GAME_SPEED_MIN * 12 // pixels in one sesc

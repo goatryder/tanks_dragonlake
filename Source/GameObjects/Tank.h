@@ -6,6 +6,7 @@
 
 class SpriteFlipFlop;
 
+class Bullet;
 
 class Tank : public RenderInterface, public TickInterface, public HealthInterface
 {
@@ -13,7 +14,7 @@ public:
 
 	Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, SpriteFlipFlop* Down);
 	~Tank();
-	
+
 	// params
 	int Speed;
 	// *bullet class ref*;
@@ -53,11 +54,14 @@ protected:
 	void PlayMoveAnim();
 	void StopMoveAnim();
 
+	// in task there only one active bullet for player tank allowed
+	Bullet* ActiveBullet = nullptr;
+
 public:
 
 	void MoveBegin(Direction DirectionTo);
 	void MoveEnd(Direction DirectionTo);
-	
+
 	void Fire();
 
 	Direction GetDirection() const { return CurrentDirection; }

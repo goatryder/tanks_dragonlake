@@ -90,14 +90,13 @@ inline Direction GetDirection(VecInt2D From, VecInt2D To)
 
 inline VecInt2D DirectionToVec(Direction Dir)
 {
-	if (Dir == Direction::UP)
-		return VecUp;
-	else if (Dir == Direction::DOWN)
-		return VecDown;
-	else if (Dir == Direction::LEFT)
-		return VecLeft;
-	else if (Dir == Direction::RIGHT)
-		return VecRight;
+	if (Dir == Direction::UP) return VecUp;
+	
+	else if (Dir == Direction::DOWN) return VecDown;
+	
+	else if (Dir == Direction::LEFT) return VecLeft;
+	
+	else return VecRight;
 }
 
 inline VecInt2D GetDirectionVector(VecInt2D DeltaVec)

@@ -83,6 +83,36 @@ public:
 		return true;
 	}
 
+	/** Get center position of Render instance, Center = Position + Size / 2 */
+	VecInt2D GetCenterPosition()
+	{
+		return Position + Size / 2;
+	}
+
+	/** Get center point of chosen bounding box line */
+	VecInt2D GetSidePosition(Direction Side)
+	{
+		VecInt2D SideOffset;
+
+		switch (Side)
+		{
+		case Direction::RIGHT:
+			SideOffset.X = Size.X / 2;
+			break;
+		case Direction::LEFT:
+			SideOffset.X = -Size.X / 2;
+			break;
+		case Direction::DOWN:
+			SideOffset.Y = Size.Y / 2;
+			break;
+		default:
+			SideOffset.Y = -Size.Y / 2;
+			break;
+		}
+
+		return GetCenterPosition() + SideOffset;
+	}
+
 protected:
 
 	bool bEnabled = true;
@@ -98,8 +128,6 @@ protected:
 		getSpriteSize(SpriteObj, w, h);
 		Size = VecInt2D(w, h);
 	}
-
-
 
 	void SetPositionBoundClamped(VecInt2D NewPosition)
 	{

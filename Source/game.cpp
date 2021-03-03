@@ -144,7 +144,10 @@ public:
 
 	virtual void onMouseButtonClick(FRMouseButton button, bool isReleased) 
 	{
-
+		if (TankTest != nullptr && !isReleased)
+		{
+			TankTest->Fire();
+		}
 	}
 
 	virtual void onKeyPressed(FRKey k) 
