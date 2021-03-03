@@ -44,7 +44,7 @@ protected:
 	bool bCanMove = false;
 
 	// movement
-	void Move();
+	void Move(unsigned int DeltaTime);
 
 	// movement anim
 

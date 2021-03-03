@@ -21,6 +21,9 @@ public:
 	inline bool operator == (const VecInt2D& Other) const { return X == Other.X && Y == Other.Y; }
 	inline bool operator != (const VecInt2D& Other) const { return X != Other.X || Y != Other.Y; }
 
+	inline VecInt2D operator += (const VecInt2D& Other) { X += Other.X; Y += Other.Y; return *this; }
+	inline VecInt2D operator -= (const VecInt2D& Other) { X -= Other.X; Y -= Other.Y; return *this; }
+	
 	inline VecInt2D operator + (const VecInt2D& Other) const { return VecInt2D(X + Other.X, Y + Other.Y); }
 	inline VecInt2D operator - (const VecInt2D& Other) const { return VecInt2D(X - Other.X, Y - Other.Y); }
 
@@ -51,8 +54,8 @@ static const VecInt2D VecZero(0, 0);
 static const VecInt2D VecOne(1, 1);
 static const VecInt2D VecLeft(-1, 0);
 static const VecInt2D VecRight(1, 0);
-static const VecInt2D VecUp(0, 1);
-static const VecInt2D VecDown(0, -1);
+static const VecInt2D VecUp(0, -1);
+static const VecInt2D VecDown(0, 1);
 
 inline Direction GetDirection(VecInt2D DeltaVec)
 {

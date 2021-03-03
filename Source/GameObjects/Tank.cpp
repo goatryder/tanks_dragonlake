@@ -77,11 +77,15 @@ void Tank::MoveEnd(Direction DirectionTo)
 	//PRINTF(PrintColor::Green, "Down %d",	Down->IsAutoFlipFlopEnabled());
 }
 
-void Tank::Move()
+void Tank::Move(unsigned int DeltaTime)
 {
 	if (!bCanMove)
 		return;
 
+	// Position += DirectionToVec(CurrentDirection) * (Speed *  DeltaTime / 1000);
+	VecInt2D NewPosition = DirectionToVec(CurrentDirection) * (((Speed * DeltaTime) >> 10) + 1) + Position;
+	SetPosition(NewPosition, true);
+	
 	// PRINT(PrintColor::Green, "Tank Move");
 }
 
@@ -90,7 +94,6 @@ void Tank::Fire()
 	PRINT(PrintColor::Green, "Tank shooted");
 
 	// @ToDo base bullet class, spawn it
-
 }
 
 void Tank::onDamage(int Damage)
@@ -113,7 +116,7 @@ void Tank::onTick(unsigned int DeltaTime)
 
 	if (!bIsDead)
 	{
-		Move();
+		Move(DeltaTime);
 	}
 }
 

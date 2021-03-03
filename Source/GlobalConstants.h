@@ -39,6 +39,12 @@ constexpr auto BULLET_LEFT =			"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_l
 #define GAME_AREA_W						208 * 2  // orig game 2x scaled 
 #define GAME_AREA_H						208 * 2
 
+#define GAME_AREA_W0					GAME_AREA_OFFSET_W
+#define GAME_AREA_W1					GAME_AREA_OFFSET_W + GAME_AREA_W
+
+#define GAME_AREA_H0					GAME_AREA_OFFSET_H
+#define GAME_AREA_H1					GAME_AREA_OFFSET_H + GAME_AREA_H
+
 #define GAME_AREA_MID_W					GAME_AREA_W / 2 + GAME_AREA_OFFSET_W				
 #define GAME_AREA_MID_H					GAME_AREA_H / 2 + GAME_AREA_OFFSET_H				
 
@@ -48,12 +54,14 @@ constexpr auto BULLET_LEFT =			"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_l
 
 // Game Logic consts
 
-#define GAME_LOGIC_TICK					1000 / 30  // in ms
+#define GAME_LOGIC_TICK					1000 / 30  // in ms, update time 2 ms is minimal, 33 or 16 fit best
 
 
 // Game Paramters consts
 
-#define TANK_SPEED_SLOW					GAME_AREA_W / 1 // pixels in one sec
+// Note: if GAME_LOGIC_TICK * Speed < 1000 speed will be equal zero, if GAME_LOGIC_TICK == 33, 31 is min speed value
+
+#define TANK_SPEED_SLOW					120 // pixels in one sec
 
 #define TANK_SPEED_SLOW_ANIM_TIME		200 // Time in ms to SpriteFlipFlop swap sprites
 

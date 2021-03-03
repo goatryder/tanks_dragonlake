@@ -2,6 +2,7 @@
 
 #include "Structs/VecInt2D.h"
 #include "Framework.h"
+#include "GlobalConstants.h"
 
 class RenderInterface
 {
@@ -11,14 +12,24 @@ public:
 	RenderInterface() {}
 	~RenderInterface() {}
 
+	virtual void onRender() = 0;
+
 	const VecInt2D GetPosition()
 	{
 		return Position;
 	}
 
-	void SetPosition(VecInt2D Position)
+	/** if Check bounds, then object will be forced to have position inside game bounds only */
+	void SetPosition(VecInt2D NewPosition, bool bCheckBounds = false)
 	{
-		this->Position = Position;
+		if (bCheckBounds)
+		{
+			SetPositionBoundClamped(NewPosition);
+		}
+		else 
+		{
+			this->Position = NewPosition;
+		}
 	}
 
 	bool IsEnabled()
@@ -59,7 +70,18 @@ public:
 		return true;
 	}
 
-	virtual void onRender() = 0;
+	bool IsPositionInGameBound(VecInt2D NewPosition)
+	{
+		if (NewPosition.X < GAME_AREA_W0) return false;
+
+		if (NewPosition.X + Size.X > GAME_AREA_W1) return false;
+
+		if (NewPosition.Y < GAME_AREA_H0) return false;
+
+		if (NewPosition.Y + Size.Y > GAME_AREA_H1) return false;
+
+		return true;
+	}
 
 protected:
 
@@ -75,5 +97,33 @@ protected:
 		int w, h;
 		getSpriteSize(SpriteObj, w, h);
 		Size = VecInt2D(w, h);
+	}
+
+
+
+	void SetPositionBoundClamped(VecInt2D NewPosition)
+	{
+		// clamp x
+		if (NewPosition.X < GAME_AREA_W0) 
+		{ 
+			NewPosition.X = GAME_AREA_W0;
+		}
+		else if (NewPosition.X + Size.X > GAME_AREA_W1) 
+		{
+			NewPosition.X = GAME_AREA_W1 - Size.X;
+		}
+
+		// clamp y
+		if (NewPosition.Y < GAME_AREA_H0) 
+		{ 
+			NewPosition.Y = GAME_AREA_H0;
+		}
+		else if (NewPosition.Y + Size.Y > GAME_AREA_H1) 
+		{
+			NewPosition.Y = GAME_AREA_H1 - Size.Y;
+		}
+
+		// set new position
+		Position = NewPosition;
 	}
 };
