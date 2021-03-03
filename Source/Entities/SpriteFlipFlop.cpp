@@ -35,9 +35,6 @@ void SpriteFlipFlop::FlopSpriteInitLazy(const char* ResourceImagePathFlop, unsig
 
 void SpriteFlipFlop::onRender()
 {
-	if (!bEnabled)
-		return;
-	
 	if (SpriteObj == nullptr)
 		return;
 
@@ -70,7 +67,7 @@ void SpriteFlipFlop::onTick(unsigned int DeltaTime)
 {
 	TickInterface::onTick(DeltaTime);
 
-	if (FlipFlopTime == 0)
+	if (FlipFlopTime == 0 || !bAutoFlipFlopEnabled)
 		return;
 	
 	FlipFlopTimeAccomulated += DeltaTime;

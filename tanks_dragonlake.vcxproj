@@ -24,6 +24,7 @@
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\GameMode.cpp" />
     <ClCompile Include="Source\GameObjects\Tank.cpp" />
+    <ClCompile Include="Source\Structs\VecInt2D.cpp" />
     <ClCompile Include="Source\Systems\SystemRender.cpp" />
     <ClCompile Include="source\Systems\SystemTick.cpp" />
   </ItemGroup>
@@ -34,6 +35,7 @@
     <ClInclude Include="source\Entities\TickInterface.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\GameMode.h" />
+    <ClInclude Include="Source\GameObjects\HealthInterface.h" />
     <ClInclude Include="Source\GameObjects\Tank.h" />
     <ClInclude Include="Source\GlobalConstants.h" />
     <ClInclude Include="Source\Helpers\DebugPrint.h" />

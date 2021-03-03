@@ -1,5 +1,7 @@
 #pragma once
 
+// Resource Location consts
+
 // BG
 constexpr auto BG_IMAGE_PATH =			"X:\\DragonLake\\Tanki\\Content\\BG.png";
 
@@ -26,14 +28,35 @@ constexpr auto BULLET_RIGHT =			"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_
 constexpr auto BULLET_LEFT =			"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_l.png";
 
 
-// Game Consts
+// Game Sizes conts
 
 #define WINDOW_W						640
 #define WINDOW_H						480
 
-#define GAME_AREA_W						208 * 2
-#define GAME_AREA_H						208 * 2
-#define GAME_CHUNK_W					16 * 2
-#define GAME_CHUNK_H					16 * 2
+#define GAME_AREA_OFFSET_W				64
+#define GAME_AREA_OFFSET_H				32
 
-#define GAME_LOGIC_TICK					1000 / 30
+#define GAME_AREA_W						208 * 2  // orig game 2x scaled 
+#define GAME_AREA_H						208 * 2
+
+#define GAME_AREA_MID_W					GAME_AREA_W / 2 + GAME_AREA_OFFSET_W				
+#define GAME_AREA_MID_H					GAME_AREA_H / 2 + GAME_AREA_OFFSET_H				
+
+#define GAME_CHUNK_W					16 * 2  // orig game 2x scaled
+#define GAME_CHUNK_H					16 * 2  // orig game 2x scaled
+
+
+// Game Logic consts
+
+#define GAME_LOGIC_TICK					1000 / 30  // in ms
+
+
+// Game Paramters consts
+
+#define TANK_SPEED_SLOW					GAME_AREA_W / 1 // pixels in one sec
+
+#define TANK_SPEED_SLOW_ANIM_TIME		200 // Time in ms to SpriteFlipFlop swap sprites
+
+#define TANK_HEALTH_BASIC				1
+
+#define BULLET_SPEED_SLOW				GAME_AREA_W / 1 // pixels in one sesc

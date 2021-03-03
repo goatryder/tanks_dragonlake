@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef DEBUG_PRINT_H
+#define DEBUG_PRINT_H
+
 #include <iostream>
 #include <stdio.h>
 #include <windows.h>
@@ -71,10 +74,11 @@ inline OSteamChangeColorSig ChangeOutStreamColor(PrintColor Color)
     else return &white;
 }
 
+// warning C4172: returning address of local variable or temporary: buffer
 inline const char* GetTickTimestamp()
 {
-    unsigned int Time = getTickCount();
     char buffer[24];
+    unsigned int Time = getTickCount();
     sprintf(buffer, "[%d] ", Time);
     return buffer;
 }
@@ -105,4 +109,5 @@ inline const char* GetTickTimestamp()
 //   cout << __FUNCTION__ << endl, \
 //  ), \
 // )
-   
+
+#endif

@@ -6,7 +6,6 @@
 
 #include "../Entities/RenderInterface.h"
 #include "../Entities/SpriteEntity.h"
-#include "../Helpers/DebugPrint.h"
 
 /*
  * This static class handles instances inherited from RenderInterface
@@ -78,7 +77,7 @@ public:
 	static void Render()
 	{
 		for (auto& RenderInstance : RenderQueue)
-			RenderInstance->onRender();
+			if (RenderInstance->IsEnabled()) RenderInstance->onRender();
 	}
 
 private:

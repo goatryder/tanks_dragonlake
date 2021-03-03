@@ -32,6 +32,9 @@ protected:
 	/** if True DrawSprite will draw Inherited SpriteObj else SpriteObjSibling */
 	bool bFlipFlop = true;
 
+	/** Control auto flipFlop on tick */
+	bool bAutoFlipFlopEnabled = true;
+
 	/** on tick sprite change, in ms, if 0 - disable */
 	unsigned int FlipFlopTime = 0;
 	unsigned int FlipFlopTimeAccomulated = 0;
@@ -50,26 +53,18 @@ protected:
 
 public:
 	
-	void SetFlipFlopTime(unsigned int TimeInMs)
-	{
-		FlipFlopTime = TimeInMs;
-	}
+	void SetFlipFlopTime(unsigned int TimeInMs)	{ FlipFlopTime = TimeInMs; }
 
-	unsigned int GetFlipFlopTime() const
-	{
-		return FlipFlopTime;
-	}
+	unsigned int GetFlipFlopTime() const { return FlipFlopTime; }
 
 	/** manual controlled flip flop */
-	void SetFlipFlop(bool Val)
-	{
-		bFlipFlop = Val;
-	}
+	void SetFlipFlop(bool bFlipFlop) { this->bFlipFlop = bFlipFlop; }
 
-	bool GetFlipFlop() const
-	{
-		return bFlipFlop;
-	}
+	bool GetFlipFlop() const { return bFlipFlop; }
+
+	void SetAutoFlipFlopEnable(bool bEnable) { bAutoFlipFlopEnabled = bEnable; }
+
+	bool IsAutoFlipFlopEnabled() const { return bAutoFlipFlopEnabled; }
 
 	virtual void onTick(unsigned int DeltaTime) override;
 };

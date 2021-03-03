@@ -21,7 +21,7 @@ public:
 		this->Position = Position;
 	}
 
-	bool GetEnable()
+	bool IsEnabled()
 	{
 		return bEnabled;
 	}

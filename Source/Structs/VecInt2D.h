@@ -1,5 +1,10 @@
 #pragma once
+
 #include <cstdlib>
+
+
+#ifndef VEC_INT_2D_H
+#define VEC_INT_2D_H
 
 struct VecInt2D
 {
@@ -102,3 +107,6 @@ inline VecInt2D GetDirectionVector(VecInt2D From, VecInt2D To)
 	return DirectionToVec(GetDirection(From - To));
 }
 
+const char* DirectionToString(Direction Dir);
+
+#endif

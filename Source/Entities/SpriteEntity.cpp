@@ -1,5 +1,4 @@
 #include "SpriteEntity.h"
-#include "../Framework.h"
 
 
 // constructor
@@ -25,10 +24,7 @@ void SpriteEntity::onRender()
 		return;
 	}
 
-	if (bEnabled)
-	{
-		drawSprite(SpriteObj, Position.X, Position.Y);
-	}
+	drawSprite(SpriteObj, Position.X, Position.Y);
 }
 
 void SpriteEntity::CreateSprite()
