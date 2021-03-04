@@ -8,6 +8,7 @@ Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec
 	: SpriteObj(SpriteObj), DirectionVec(DirectionVec), Speed(Speed)
 {
 	this->Position = Position;
+	SpriteObj->SetPosition(Position);
 	
 	Size = SpriteObj->GetSize();
 }
@@ -29,11 +30,11 @@ void Bullet::onTick(unsigned int DeltaTime)
 {
 	VecInt2D NewPosition = DirectionVec * (((Speed * DeltaTime) >> 10) + 1) + Position;
 	SetPosition(NewPosition, true);
+	SpriteObj->SetPosition(Position);
 }
 
 void Bullet::onRender()
 {
-	SpriteObj->SetPosition(Position);
 	SpriteObj->onRender();
 }
 
