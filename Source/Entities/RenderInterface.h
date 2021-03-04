@@ -4,6 +4,19 @@
 #include "Framework.h"
 #include "GlobalConstants.h"
 
+
+enum class Anchor
+{
+	TOP_LEFT,
+	TOP_RIGHT,
+	BOTTOM_LEFT,
+	BOTTOM_DOWN,
+	CENTER
+};
+
+VecInt2D GetAnchorOffset(VecInt2D Size, Anchor Anchor);
+
+
 class RenderInterface
 {
 
@@ -83,14 +96,20 @@ public:
 		return true;
 	}
 
-	/** Get center position of Render instance, Center = Position + Size / 2 */
-	VecInt2D GetCenterPosition()
+	/** Get center offset, Offset = Size / 2 */
+	VecInt2D GetCenterOffset()
 	{
-		return Position + Size / 2;
+		return Size / 2;
 	}
 
-	/** Get center point of chosen bounding box line */
-	VecInt2D GetSidePosition(Direction Side)
+	/** Get center position of Render instance, CenterPos = Position + CenterOffset */
+	VecInt2D GetCenterPosition()
+	{
+		return Position + GetCenterOffset();
+	}
+
+	/** Get offset of Side */
+	VecInt2D GetSideOffset(Direction Side)
 	{
 		VecInt2D SideOffset;
 
@@ -110,7 +129,19 @@ public:
 			break;
 		}
 
-		return GetCenterPosition() + SideOffset;
+		return SideOffset;
+	}
+
+	/** Get center point of chosen bounding box line, SidePos = CenterPos + SideOffset */
+	VecInt2D GetSidePosition(Direction Side)
+	{
+		return GetCenterPosition() + GetSideOffset(Side);
+	}
+
+	/** Get center point of opposite chosen bounding box line, OppositeSidePos = CenterPos - SideOffset */
+	VecInt2D GetOppositeSidePosition(Direction Side)
+	{
+		return  GetCenterPosition() - GetSideOffset(Side);
 	}
 
 protected:

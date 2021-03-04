@@ -37,7 +37,7 @@ void Bullet::onRender()
 	SpriteObj->onRender();
 }
 
-Bullet* Bullet::SpawnBulletSlow(Direction Direction, VecInt2D Position)
+Bullet* Bullet::SpawnBulletSlow(VecInt2D Position, Direction Direction)
 {
 	const char* ResourcePath;
 
@@ -58,9 +58,10 @@ Bullet* Bullet::SpawnBulletSlow(Direction Direction, VecInt2D Position)
 	}
 
 	SpriteEntity* SpriteObj = new SpriteEntity(ResourcePath);
+	
+	VecInt2D SpawnLocation = Position - SpriteObj->GetOppositeSidePosition(Direction);
 
-	Bullet* SpawnedBullet = new Bullet(
-		SpriteObj, Position - SpriteObj->GetCenterPosition(), DirectionToVec(Direction), BULLET_SPEED_SLOW);
+	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, DirectionToVec(Direction), BULLET_SPEED_SLOW);
 
 	return SpawnedBullet;
 }

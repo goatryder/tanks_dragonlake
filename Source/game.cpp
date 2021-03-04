@@ -5,8 +5,8 @@
 #include "Systems/SystemRender.h"
 #include "Systems/SystemTick.h"
 
-#include "Entities/SpriteFlipFlop.h"
 #include "GameObjects/Tank.h"
+#include "GameObjects/BrickBase.h"
 
 #include "Helpers/DebugPrint.h"
 
@@ -37,14 +37,14 @@ public:
 		// BG
 		SystemRender::CreateSprite<SpriteEntity>(BG_IMAGE_PATH);
 
-		// Tank
-		SpriteFlipFlop* Left = new SpriteFlipFlop(TANK_LEFT_0, TANK_LEFT_1);
-		SpriteFlipFlop* Right = new SpriteFlipFlop(TANK_RIGHT_0, TANK_RIGHT_1);
-		SpriteFlipFlop* Up = new SpriteFlipFlop(TANK_UP_0, TANK_UP_1);
-		SpriteFlipFlop* Down = new SpriteFlipFlop(TANK_DOWN_0, TANK_DOWN_1);
+		// Brick
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0 + 32));
 
-		TankTest = new Tank(Left, Right, Up, Down);
-		TankTest->SetPosition(VecInt2D(GAME_AREA_MID_W, GAME_AREA_MID_H) - TankTest->GetSize() / 2);
+		// Tank
+		TankTest = Tank::SpawnTankBasic(VecInt2D(0, 0), Direction::UP, Anchor::CENTER);
+		
+		// Enemy tank
+		Tank::SpawnEnemyTankBasic(VecInt2D(GAME_AREA_MID_W, GAME_AREA_MID_H), Direction::UP, Anchor::CENTER);
 
 		return true;
 	}
@@ -88,28 +88,15 @@ private:
 		}
 	}
 
-	unsigned int TestActionTimeAccomulation = 0;
-
 	// tick functions
 	inline void GameLogicTick() // execution limited to GlobalConstants.h -> MAX_GAME_TICK_RATE
 	{
 		SystemTick::Tick(GAME_LOGIC_TICK);
-
-		// debug, remove
-		TestActionTimeAccomulation += GAME_LOGIC_TICK;
-		if (TestActionTimeAccomulation >= 1000U)
-		{
-			TestActionTimeAccomulation = 0U;
-
-			// enter test code here on game logic tick:
-		}
-		//
 	}
 
 	inline void RenderTick()
 	{
 		SystemRender::Render();
-		TankTest->onRender();
 	}
 
 public:

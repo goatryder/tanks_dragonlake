@@ -26,6 +26,8 @@ public:
 	
 	inline VecInt2D operator + (const VecInt2D& Other) const { return VecInt2D(X + Other.X, Y + Other.Y); }
 	inline VecInt2D operator - (const VecInt2D& Other) const { return VecInt2D(X - Other.X, Y - Other.Y); }
+	
+	inline VecInt2D operator - () const { return VecInt2D(-X, -Y); }
 
 	inline VecInt2D operator * (int Scalar) const { return VecInt2D(X * Scalar, Y * Scalar); }
 	inline VecInt2D operator / (int Scalar) const { return VecInt2D(X / Scalar, Y / Scalar); }
@@ -90,13 +92,25 @@ inline Direction GetDirection(VecInt2D From, VecInt2D To)
 
 inline VecInt2D DirectionToVec(Direction Dir)
 {
-	if (Dir == Direction::UP) return VecUp;
-	
-	else if (Dir == Direction::DOWN) return VecDown;
-	
-	else if (Dir == Direction::LEFT) return VecLeft;
-	
-	else return VecRight;
+	VecInt2D DirectionVector;
+
+	switch (Dir)
+	{
+	case Direction::UP:
+		DirectionVector = VecUp;
+		break;
+	case Direction::DOWN:
+		DirectionVector = VecDown;
+		break;
+	case Direction::LEFT:
+		DirectionVector = VecLeft;
+		break;
+	default:
+		DirectionVector = VecRight;
+		break;
+	}
+
+	return DirectionVector;
 }
 
 inline VecInt2D GetDirectionVector(VecInt2D DeltaVec)

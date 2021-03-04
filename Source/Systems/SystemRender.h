@@ -32,16 +32,17 @@ public:
 	}
 
 	/* remove derrived from RenderInterface instance from vector queue and destroy */
-	static void RemoveRenderObj(RenderInterface*& RenderObj, bool bDestroy=true)
+	static void RemoveRenderObj(RenderInterface* RenderObj, bool bDestroy=true)
 	{
 		if (RenderObj == RenderQueue.back())
 		{
 			RenderQueue.pop_back();
+			
 			if (bDestroy)
 			{
 				delete RenderObj;
-				RenderObj = nullptr;
 			}
+			
 			return;
 		}
 
@@ -51,10 +52,10 @@ public:
 		if (Iter != RenderQueue.end())
 		{
 			RenderQueue.erase(Iter);
+			
 			if (bDestroy)
 			{
 				delete RenderObj;
-				RenderObj = nullptr;
 			}
 		}
 	}

@@ -12,7 +12,8 @@ class Tank : public RenderInterface, public TickInterface, public HealthInterfac
 {
 public:
 
-	Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, SpriteFlipFlop* Down);
+	Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, SpriteFlipFlop* Down,
+		VecInt2D Position, Direction Direction, int Health, int Speed, int MoveAnimSpeed);
 	~Tank();
 
 	// params
@@ -30,17 +31,7 @@ protected:
 	Direction CurrentDirection;
 	SpriteFlipFlop* CurrentActiveSprite;
 
-	void ChangeCurrentDirectionSprite(Direction DirectionTo)
-	{
-		if (DirectionTo == CurrentDirection) return;
-
-		if (DirectionTo == Direction::UP) CurrentActiveSprite = Up;
-		else if (DirectionTo == Direction::DOWN) CurrentActiveSprite = Down;
-		else if (DirectionTo == Direction::LEFT) CurrentActiveSprite = Left;
-		else CurrentActiveSprite = Right;
-
-		CurrentDirection = DirectionTo;
-	}
+	void ChangeCurrentDirectionSprite(Direction DirectionTo);
 
 	bool bCanMove = false;
 
@@ -72,4 +63,8 @@ public:
 	virtual void onTick(unsigned int DeltaTime) override;
 
 	virtual void onRender() override;
+
+	// @ToDo Tank Fabric, hehe)
+	static Tank* SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bAddToSystemRender = true);
+	static Tank* SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bAddToSystemRender = true);
 };

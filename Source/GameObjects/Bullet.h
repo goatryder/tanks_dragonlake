@@ -31,5 +31,5 @@ public:
 	virtual void onRender() override;
 
 	// @ToDo: hmmm... Fabric??
-	static Bullet* SpawnBulletSlow(Direction Direction, VecInt2D Position);
+	static Bullet* SpawnBulletSlow(VecInt2D Position, Direction Direction);
 };

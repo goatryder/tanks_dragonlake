@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Entities\RenderInterface.cpp" />
     <ClCompile Include="Source\Entities\SpriteEntity.cpp" />
     <ClCompile Include="Source\Entities\SpriteFlipFlop.cpp" />
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\GameMode.cpp" />
+    <ClCompile Include="Source\GameObjects\BrickBase.cpp" />
     <ClCompile Include="Source\GameObjects\Bullet.cpp" />
     <ClCompile Include="Source\GameObjects\Tank.cpp" />
     <ClCompile Include="Source\Structs\VecInt2D.cpp" />
@@ -36,6 +38,7 @@
     <ClInclude Include="source\Entities\TickInterface.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\GameMode.h" />
+    <ClInclude Include="Source\GameObjects\BrickBase.h" />
     <ClInclude Include="Source\GameObjects\Bullet.h" />
     <ClInclude Include="Source\GameObjects\HealthInterface.h" />
     <ClInclude Include="Source\GameObjects\Tank.h" />
