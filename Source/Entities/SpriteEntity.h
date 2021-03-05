@@ -1,11 +1,11 @@
 #pragma once
 
-#include "RenderInterface.h"
+#include "RenderBase.h"
 
 class Sprite;
 class Framework;
 
-class SpriteEntity : public RenderInterface
+class SpriteEntity : public RenderBase
 {
 public:
 
@@ -21,4 +21,8 @@ protected:
 
 	inline virtual void CreateSprite();
 	inline virtual void DestroySprite();
+
+public:
+
+	static SpriteEntity* SpawnBasicSprite(const char* ResourceImagePath, VecInt2D Position, bool bSetRenderEnable = true);
 };

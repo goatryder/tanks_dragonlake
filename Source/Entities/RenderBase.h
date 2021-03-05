@@ -1,9 +1,11 @@
 #pragma once
 
+#include "GlobalConstants.h"
 #include "Structs/VecInt2D.h"
 #include "Framework.h"
-#include "GlobalConstants.h"
 
+#include "../Systems/SystemCollision.h"
+#include "../Systems/SystemRender.h"
 
 enum class Anchor
 {
@@ -17,15 +19,21 @@ enum class Anchor
 VecInt2D GetAnchorOffset(VecInt2D Size, Anchor Anchor);
 
 
-class RenderInterface
+class RenderBase
 {
 
 public:
 
-	RenderInterface() {}
-	~RenderInterface() {}
+	RenderBase() {}
+	
+	~RenderBase() 
+	{
+		if (bCollisionEnabled) SystemCollision::RemoveRenderObj(this);
+		if (bRenderEnabled) SystemRender::RemoveRenderObj(this);
+	}
 
 	virtual void onRender() = 0;
+	virtual void onCollide(RenderBase* Other) {}
 
 	const VecInt2D GetPosition()
 	{
@@ -65,7 +73,7 @@ public:
 		this->Size = Size;
 	}
 
-	bool CheckCollision(RenderInterface* Other)
+	bool CheckCollision(RenderBase* Other)
 	{
 		if (Other == nullptr)
 		{
@@ -144,11 +152,46 @@ public:
 		return  GetCenterPosition() - GetSideOffset(Side);
 	}
 
+	void EnableCollsion()
+	{
+		SystemCollision::AddRenderObj(this);
+		bCollisionEnabled = true;
+	}
+
+	void DisableCollision()
+	{
+		SystemCollision::RemoveRenderObj(this);
+		bCollisionEnabled = false;
+	}
+
+	bool IsCollisionEnabled() 
+	{ 
+		return bCollisionEnabled; 
+	}
+	
+	void EnableRender() 
+	{
+		SystemRender::AddRenderObj(this);
+	}
+
+	void DisableRender()
+	{
+		SystemRender::RemoveRenderObj(this);
+	}
+
+	bool IsRenderEnabled() 
+	{ 
+		return bRenderEnabled; 
+	}
+
 protected:
 
 	bool bEnabled = true;
 	VecInt2D Size;
 	VecInt2D Position;
+
+	bool bCollisionEnabled = false;
+	bool bRenderEnabled = false;
 
 	void InitSizeBySprite(Sprite* SpriteObj)
 	{

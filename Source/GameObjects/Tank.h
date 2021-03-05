@@ -1,14 +1,14 @@
 #pragma once
 
 #include "../Entities/TickInterface.h"
-#include "../Entities/RenderInterface.h"
+#include "../Entities/RenderBase.h"
 #include "HealthInterface.h"
 
 class SpriteFlipFlop;
 
 class Bullet;
 
-class Tank : public RenderInterface, public TickInterface, public HealthInterface
+class Tank : public RenderBase, public TickInterface, public HealthInterface
 {
 public:
 
@@ -16,9 +16,7 @@ public:
 		VecInt2D Position, Direction Direction, int Health, int Speed, int MoveAnimSpeed);
 	~Tank();
 
-	// params
 	int Speed;
-	// *bullet class ref*;
 
 protected:
 
@@ -39,13 +37,12 @@ protected:
 	void Move(unsigned int DeltaTime);
 
 	// movement anim
-
 	int MoveAnimSpeed;
 
 	void PlayMoveAnim();
 	void StopMoveAnim();
 
-	// in task there only one active bullet for player tank allowed
+	// only one active bullet for player tank allowed
 	Bullet* ActiveBullet = nullptr;
 
 public:
@@ -63,8 +60,10 @@ public:
 	virtual void onTick(unsigned int DeltaTime) override;
 
 	virtual void onRender() override;
+	virtual void onCollide(RenderBase* Other) override;
 
-	// @ToDo Tank Fabric, hehe)
-	static Tank* SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bAddToSystemRender = true);
-	static Tank* SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bAddToSystemRender = true);
+public:
+
+	static Tank* SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bSetRenderEnable = true);
+	static Tank* SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bSetRenderEnable = true);
 };

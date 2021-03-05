@@ -1,95 +1,48 @@
 #pragma once
 
 #include <vector>
-#include <type_traits>
 #include <algorithm>
 
-#include "../Entities/RenderInterface.h"
-#include "../Entities/SpriteEntity.h"
+class RenderBase;
 
 /*
- * This static class handles instances inherited from RenderInterface
- * main method Render() calls Render() (which call framework method drawSprite) for each in RenderQueue, so order is matter
+ * This static class handles render for instances inherited from RenderBase
+ * main method Render() calls onRender() (which call framework method drawSprite()) for each in RenderQueue, so order is matter
  */
 class SystemRender
 {
 protected:
 
-	static std::vector<RenderInterface*> RenderQueue;
+	static std::vector<RenderBase*> RenderQueue;
 
 public:
 
-	static SystemRender& Instance()
-	{
-		static SystemRender* Instance = new SystemRender();
-		return *Instance;
-	}
-
-	/** add derrived from RenderInterface instance to vector queue */
-	static void AddRenderObj(RenderInterface* RenderObj)
+	/** add RenderBase instance to RenderQueue */
+	static void AddRenderObj(RenderBase* RenderObj)
 	{
 		RenderQueue.push_back(RenderObj);
 	}
 
-	/* remove derrived from RenderInterface instance from vector queue and destroy */
-	static void RemoveRenderObj(RenderInterface* RenderObj, bool bDestroy=true)
+	/* remove RenderBase instance from RenderQueue */
+	static void RemoveRenderObj(RenderBase* RenderObj)
 	{
-		if (RenderObj == RenderQueue.back())
-		{
-			RenderQueue.pop_back();
-			
-			if (bDestroy)
-			{
-				delete RenderObj;
-			}
-			
-			return;
-		}
-
-		std::vector<RenderInterface*>::iterator Iter;
+		std::vector<RenderBase*>::iterator Iter;
 		Iter = std::find(RenderQueue.begin(), RenderQueue.end(), RenderObj);
 		
 		if (Iter != RenderQueue.end())
 		{
 			RenderQueue.erase(Iter);
-			
-			if (bDestroy)
-			{
-				delete RenderObj;
-			}
 		}
 	}
 
-	/* get derrived from RenderInterface instance vector queue */
-	static const std::vector<RenderInterface*>& GetRenderQueue()
+	/* get RenderQueue */
+	static const std::vector<RenderBase*>& GetRenderQueue()
 	{
 		return RenderQueue;
 	}
 
-	/** create derrived from SpriteEntity instance and add it to vector queue */
-	template <class T>
-	static T* CreateSprite(const char* path, bool bAddToQueue=true) 
-	{
-		if (std::is_base_of<SpriteEntity, T>::value)
-		{
-			T* Entity = new T(path);
-			if (bAddToQueue) SystemRender::AddRenderObj(Entity);
-			return Entity;
-		}
-		else 
-		{
-			return nullptr;
-		}
-	}
-
-	/** calls onRender() for each RenderInterface in vector queue */
-	static void Render()
-	{
-		for (auto& RenderInstance : RenderQueue)
-			if (RenderInstance->IsEnabled()) RenderInstance->onRender();
-	}
-
-private:
-
-	SystemRender() {}
+	/** calls onRender() for each RenderBase in RenderQueue */
+	static void Render();
 };
+
+

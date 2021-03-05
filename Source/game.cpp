@@ -4,13 +4,13 @@
 
 #include "Systems/SystemRender.h"
 #include "Systems/SystemTick.h"
+#include "Systems/SystemCollision.h"
 
+#include "Entities/SpriteEntity.h"
 #include "GameObjects/Tank.h"
 #include "GameObjects/BrickBase.h"
 
 #include "Helpers/DebugPrint.h"
-
-// @ToDo: Test remove obj from systemTick, spriteManager
 
 /* Test Framework realization */
 class MyFramework : public Framework {
@@ -35,16 +35,16 @@ public:
 	virtual bool Init() 
 	{
 		// BG
-		SystemRender::CreateSprite<SpriteEntity>(BG_IMAGE_PATH);
+		SpriteEntity::SpawnBasicSprite(BG_IMAGE_PATH, VecInt2D(0, 0));
 
 		// Brick
 		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0 + 32));
-
-		// Tank
-		TankTest = Tank::SpawnTankBasic(VecInt2D(0, 0), Direction::UP, Anchor::CENTER);
 		
 		// Enemy tank
 		Tank::SpawnEnemyTankBasic(VecInt2D(GAME_AREA_MID_W, GAME_AREA_MID_H), Direction::UP, Anchor::CENTER);
+
+		// Tank
+		TankTest = Tank::SpawnTankBasic(VecInt2D(0, 0), Direction::UP, Anchor::CENTER);
 
 		return true;
 	}
@@ -91,6 +91,7 @@ private:
 	// tick functions
 	inline void GameLogicTick() // execution limited to GlobalConstants.h -> MAX_GAME_TICK_RATE
 	{
+		SystemCollision::CheckCollisions();
 		SystemTick::Tick(GAME_LOGIC_TICK);
 	}
 
@@ -131,7 +132,7 @@ public:
 
 	virtual void onMouseButtonClick(FRMouseButton button, bool isReleased) 
 	{
-		if (TankTest != nullptr && !isReleased)
+		if (button == FRMouseButton::LEFT && !isReleased && TankTest != nullptr)
 		{
 			TankTest->Fire();
 		}

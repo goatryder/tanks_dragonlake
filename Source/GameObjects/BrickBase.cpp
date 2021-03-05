@@ -4,8 +4,6 @@
 
 #include "../Helpers/DebugPrint.h"
 
-#include "../Systems/SystemRender.h"
-
 
 BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position)
 	: SpriteObj(SpriteObj)
@@ -17,6 +15,8 @@ BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position)
 	SetSize(SpriteObj->GetSize());
 	
 	SetHealth(1);
+
+	EnableCollsion();
 }
 
 BrickBase::~BrickBase()
@@ -33,8 +33,6 @@ void BrickBase::onDamage(int Damage)
 void BrickBase::onDead()
 {
 	PRINT(PrintColor::Green, "BRICK died");
-	
-	SystemRender::RemoveRenderObj(this);
 }
 
 void BrickBase::onRender()
@@ -42,15 +40,20 @@ void BrickBase::onRender()
 	SpriteObj->onRender();
 }
 
-BrickBase* BrickBase::SpawnBaseBrick(VecInt2D Position, bool bAddToSystemRender)
+void BrickBase::onCollide(RenderBase* Other)
+{
+	PRINT(PrintColor::Green, "BRICK collided");
+}
+
+BrickBase* BrickBase::SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable)
 {
 	SpriteEntity* BrickSprite = new SpriteEntity(BRICK_BASE);
 
 	BrickBase* SpawnedBrick = new BrickBase(BrickSprite, Position);
 
-	if (bAddToSystemRender)
+	if (bSetRenderEnable)
 	{
-		SystemRender::AddRenderObj(SpawnedBrick);
+		SpawnedBrick->EnableRender();
 	}
 
 	return SpawnedBrick;

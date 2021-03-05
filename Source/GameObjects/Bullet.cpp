@@ -1,16 +1,21 @@
 #include "Bullet.h"
 
-#include "../Entities/SpriteEntity.h"
 #include "GlobalConstants.h"
+#include "../Entities/SpriteEntity.h"
+#include "../Helpers/DebugPrint.h"
+
+#include "Tank.h"
 
 
-Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed)
-	: SpriteObj(SpriteObj), DirectionVec(DirectionVec), Speed(Speed)
+Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, Tank* Owner)
+	: SpriteObj(SpriteObj), DirectionVec(DirectionVec), Speed(Speed), Owner(Owner)
 {
 	this->Position = Position;
 	SpriteObj->SetPosition(Position);
 	
 	Size = SpriteObj->GetSize();
+
+	EnableCollsion();
 }
 
 Bullet::~Bullet()
@@ -38,7 +43,12 @@ void Bullet::onRender()
 	SpriteObj->onRender();
 }
 
-Bullet* Bullet::SpawnBulletSlow(VecInt2D Position, Direction Direction)
+void Bullet::onCollide(RenderBase* Other)
+{
+	PRINT(PrintColor::Green, "BULLET COLLIDED");
+}
+
+Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bSetRenderEnable)
 {
 	const char* ResourcePath;
 
@@ -62,7 +72,12 @@ Bullet* Bullet::SpawnBulletSlow(VecInt2D Position, Direction Direction)
 	
 	VecInt2D SpawnLocation = Position - SpriteObj->GetOppositeSidePosition(Direction);
 
-	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, DirectionToVec(Direction), BULLET_SPEED_SLOW);
+	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, DirectionToVec(Direction), BULLET_SPEED_SLOW, Owner);
+
+	if (bSetRenderEnable)
+	{
+		SpawnedBullet->EnableRender();
+	}
 
 	return SpawnedBullet;
 }

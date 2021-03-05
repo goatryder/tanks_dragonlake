@@ -1,12 +1,12 @@
 #pragma once
 
 #include "../Entities/TickInterface.h"
-#include "../Entities/RenderInterface.h"
+#include "../Entities/RenderBase.h"
 #include "HealthInterface.h"
 
 class SpriteEntity;
 
-class BrickBase : public RenderInterface, public HealthInterface
+class BrickBase : public RenderBase, public HealthInterface
 {
 public:
 
@@ -23,7 +23,9 @@ public:
 	virtual void onDead() override;
 
 	virtual void onRender() override;
+	virtual void onCollide(RenderBase* Other) override;
 
-	// @ToDo: hmmm... Fabric??
-	static BrickBase* SpawnBaseBrick(VecInt2D Position, bool bAddToSystemRender = true);
+public:
+
+	static BrickBase* SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable = true);
 };

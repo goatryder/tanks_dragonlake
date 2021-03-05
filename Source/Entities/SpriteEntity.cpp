@@ -3,8 +3,8 @@
 
 // constructor
 SpriteEntity::SpriteEntity(const char* ResourceImagePath)
+	: ResourceImagePath(ResourceImagePath)
 {
-	this->ResourceImagePath = ResourceImagePath;
 	SpriteEntity::CreateSprite();  // call implementation of this class explicitly
 	
 	InitSizeBySprite(SpriteObj);
@@ -38,4 +38,17 @@ void SpriteEntity::DestroySprite()
 	{
 		destroySprite(SpriteObj);
 	}
+}
+
+SpriteEntity* SpriteEntity::SpawnBasicSprite(const char* ResourceImagePath, VecInt2D Position, bool bSetRenderEnable)
+{
+	SpriteEntity* SpawnedSprite = new SpriteEntity(ResourceImagePath);
+	SpawnedSprite->SetPosition(Position);
+
+	if (bSetRenderEnable)
+	{
+		SpawnedSprite->EnableRender();
+	}
+
+	return SpawnedSprite;
 }

@@ -1,7 +1,5 @@
 #include "Tank.h"
 
-#include "../Systems/SystemRender.h"
-
 #include "../Entities/SpriteFlipFlop.h"
 
 #include "../Helpers/DebugPrint.h"
@@ -31,12 +29,12 @@ Tank::Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, Spri
 	
 	Down->SetFlipFlopTime(MoveAnimSpeed);
 	Down->SetAutoFlipFlopEnable(false);
+
+	EnableCollsion();
 }
 
 Tank::~Tank()
 {
-	SystemRender::RemoveRenderObj(this);
-
 	delete Left;
 	delete Right;
 	delete Up;
@@ -110,16 +108,17 @@ void Tank::Move(unsigned int DeltaTime)
 
 void Tank::Fire()
 {
-	if (ActiveBullet != nullptr) // only one active bullet allowed for player
-	{
-		delete ActiveBullet;
-		ActiveBullet = nullptr;
-		// return;
-	}
+	// ToDo: Fix bug
+	//if (ActiveBullet != nullptr) // only one active bullet allowed for player
+	//{
+	//	delete ActiveBullet;
+	//	ActiveBullet = nullptr;
+	//	// return;
+	//}
 
 	PRINT(PrintColor::Green, "Tank shooted");
 
-	ActiveBullet = Bullet::SpawnBulletSlow(GetSidePosition(CurrentDirection), CurrentDirection);
+	ActiveBullet = Bullet::SpawnBulletSlow(this, GetSidePosition(CurrentDirection), CurrentDirection);
 }
 
 void Tank::onDamage(int Damage)
@@ -149,11 +148,14 @@ void Tank::onTick(unsigned int DeltaTime)
 void Tank::onRender()
 {
 	CurrentActiveSprite->onRender();
-
-	if (ActiveBullet != nullptr) ActiveBullet->onRender();
 }
 
-Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bAddToSystemRender)
+void Tank::onCollide(RenderBase* Other)
+{
+	PRINT(PrintColor::Green, "TANK COLLIDED");
+}
+
+Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bSetRenderEnable)
 {
 	SpriteFlipFlop* Left = new SpriteFlipFlop(TANK_LEFT_0, TANK_LEFT_1);
 	SpriteFlipFlop* Right = new SpriteFlipFlop(TANK_RIGHT_0, TANK_RIGHT_1);
@@ -165,15 +167,15 @@ Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor
 	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction, 
 		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
 
-	if (bAddToSystemRender)
+	if (bSetRenderEnable)
 	{
-		SystemRender::AddRenderObj(SpawnedTank);
+		SpawnedTank->EnableRender();
 	}
 
 	return SpawnedTank;
 }
 
-Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bAddToSystemRender)
+Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bSetRenderEnable)
 {
 	SpriteFlipFlop* Left = new SpriteFlipFlop(TANK_EB_LEFT_0, TANK_EB_LEFT_1);
 	SpriteFlipFlop* Right = new SpriteFlipFlop(TANK_EB_RIGHT_0, TANK_EB_RIGHT_1);
@@ -185,9 +187,9 @@ Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor A
 	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction,
 		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
 
-	if (bAddToSystemRender)
+	if (bSetRenderEnable)
 	{
-		SystemRender::AddRenderObj(SpawnedTank);
+		SpawnedTank->EnableRender();
 	}
 
 	return SpawnedTank;
