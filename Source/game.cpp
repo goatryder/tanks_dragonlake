@@ -38,13 +38,16 @@ public:
 		SpriteEntity::SpawnBasicSprite(BG_IMAGE_PATH, VecInt2D(0, 0));
 
 		// Brick
-		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0 + 32));
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0));
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0 + 64));
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W1 - 32, GAME_AREA_H0));
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H0));
 		
 		// Enemy tank
 		Tank::SpawnEnemyTankBasic(VecInt2D(GAME_AREA_MID_W, GAME_AREA_MID_H), Direction::UP, Anchor::CENTER);
 
 		// Tank
-		TankTest = Tank::SpawnTankBasic(VecInt2D(0, 0), Direction::UP, Anchor::CENTER);
+		TankTest = Tank::SpawnTankBasic(VecInt2D(GAME_AREA_MID_W + 64, GAME_AREA_MID_H + 64), Direction::UP);
 
 		return true;
 	}
@@ -89,9 +92,9 @@ private:
 	}
 
 	// tick functions
-	inline void GameLogicTick() // execution limited to GlobalConstants.h -> MAX_GAME_TICK_RATE
+	inline void GameLogicTick()
 	{
-		SystemCollision::CheckCollisions();
+		// SystemCollision::CheckCollisionsAllOverlap();
 		SystemTick::Tick(GAME_LOGIC_TICK);
 	}
 

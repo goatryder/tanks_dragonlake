@@ -60,7 +60,7 @@ public:
 	virtual void onTick(unsigned int DeltaTime) override;
 
 	virtual void onRender() override;
-	virtual void onCollide(RenderBase* Other) override;
+	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override;
 
 public:
 

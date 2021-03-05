@@ -42,9 +42,9 @@ void BrickBase::onRender()
 	SpriteObj->onRender();
 }
 
-void BrickBase::onCollide(RenderBase* Other)
+void BrickBase::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
-	PRINT(PrintColor::Green, "BRICK collided");
+	PRINTF(PrintColor::Green, "BRICK %s collided with %s", GetName(), Other->GetName());
 }
 
 BrickBase* BrickBase::SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable)

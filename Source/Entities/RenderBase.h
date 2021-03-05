@@ -17,8 +17,15 @@ enum class Anchor
 	CENTER
 };
 
-VecInt2D GetAnchorOffset(VecInt2D Size, Anchor Anchor);
+// simplest collision filter, used in setPosition()
+enum class CollisionFilter
+{
+	CF_IGNORE,  // no collision check, set newPosition
+	CF_OVERLAP, // set newPosition, calls onCollide(this Filter=Overlap) for overlapped instance
+	CF_BLOCK,  // don't set newPosition, calls onCollide(this, Filter=Block) if collided with other instance (can collide with wall).
+};
 
+VecInt2D GetAnchorOffset(VecInt2D Size, Anchor Anchor);
 
 class RenderBase
 {
@@ -34,24 +41,40 @@ public:
 	}
 
 	virtual void onRender() = 0;
-	virtual void onCollide(RenderBase* Other) {}
+	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) {}
 
 	const VecInt2D GetPosition()
 	{
 		return Position;
 	}
 
-	/** if Check bounds, then object will be forced to have position inside game bounds only */
-	void SetPosition(VecInt2D NewPosition, bool bCheckBounds = false)
+	/** Set Position with Collision */
+	void SetPosition(VecInt2D NewPosition, CollisionFilter Filter = CollisionFilter::CF_IGNORE)
 	{
-		if (bCheckBounds)
+		if (Filter == CollisionFilter::CF_BLOCK)
 		{
-			SetPositionBoundClamped(NewPosition);
+			CollisionCheckResult CollisionResultIn;
+			SystemCollision::CheckCollision(this, NewPosition, CollisionFilter::CF_BLOCK, CollisionResultIn);
+
+			if (CollisionResultIn.bCollided)
+			{
+				SetPositionBlockClamped(NewPosition, CollisionResultIn.LastCollided);
+				return;
+			}
+
+			if (!IsPositionInGameBound(NewPosition))
+			{
+				SetPositionBoundClamped(NewPosition);
+				return;
+			}
+
 		}
-		else 
+		else if (Filter == CollisionFilter::CF_OVERLAP)
 		{
-			this->Position = NewPosition;
+			SystemCollision::CheckCollision(this, NewPosition, CollisionFilter::CF_OVERLAP);
 		}
+		
+		Position = NewPosition;
 	}
 
 	bool IsEnabled()
@@ -74,22 +97,25 @@ public:
 		this->Size = Size;
 	}
 
-	bool IsCollidingWith(RenderBase* Other)
+	bool IsCollidingWith(VecInt2D Position, RenderBase* Other)
 	{
 		if (Other == nullptr)
 		{
 			return false;
 		}
 
-		VecInt2D DeltaPos = (Position - Other->GetPosition()).GetAbs();
-		VecInt2D MaxSize = VecInt2D::GetMax(Size, Other->GetSize());
+		VecInt2D OtherPos = Other->GetPosition();
+		VecInt2D OtherSize = Other->GetSize();
 
-		if (DeltaPos.X >= MaxSize.X || DeltaPos.Y >= MaxSize.Y)
+		if (Position.X < OtherPos.X + OtherSize.X && Position.X + Size.X > OtherPos.X &&
+			Position.Y < OtherPos.Y + OtherSize.Y && Position.Y + Size.Y > OtherPos.Y)
+		{
+			return true;
+		}
+		else
 		{
 			return false;
 		}
-
-		return true;
 	}
 
 	bool IsPositionInGameBound(VecInt2D NewPosition)
@@ -214,6 +240,39 @@ protected:
 		int w, h;
 		getSpriteSize(SpriteObj, w, h);
 		Size = VecInt2D(w, h);
+	}
+
+	void SetPositionBlockClamped(VecInt2D NewPosition, RenderBase* Blocker)
+	{
+		VecInt2D Delta_Pos = NewPosition - Position;
+		
+		VecInt2D BlockerSize = Blocker->Size;
+		
+		VecInt2D BlockerPos = Blocker->Position;
+
+		if (Delta_Pos.X > 0) // NewPosition is on the right side from old Position and on left from blocker
+		{
+			NewPosition.X = BlockerPos.X - Size.X; // Set to Blocker Left Side X
+		}
+		else if (Delta_Pos.X < 0)
+		{
+			NewPosition.X = BlockerPos.X + BlockerSize.X; // Set to Blocker Right Side X
+		}
+		else if (Delta_Pos.Y > 0) // NewPosition is on the buttom from old Position and on top of blocker
+		{
+			NewPosition.Y = BlockerPos.Y - Size.Y;  // Set to Blocker Top Y
+		}
+		else if (Delta_Pos.Y < 0)
+		{
+			NewPosition.Y = BlockerPos.Y + BlockerSize.Y;  // Set to Blocker Bottom Y
+		}
+		else
+		{
+			return;
+		}
+
+		// set new position
+		Position = NewPosition;
 	}
 
 	void SetPositionBoundClamped(VecInt2D NewPosition)

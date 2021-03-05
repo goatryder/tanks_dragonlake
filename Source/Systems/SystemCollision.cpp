@@ -5,7 +5,10 @@
 // Initialize CollidableSet
 std::set<RenderBase*> SystemCollision::CollidableSet = {};
 
-void SystemCollision::CheckCollisions()
+// Initilize Default CollisionCheckResult Out
+CollisionCheckResult CollisionCheckResult::DefaultResultOut;
+
+void SystemCollision::CheckCollisionsAllOverlap()
 {
 	std::set<RenderBase*>::iterator Iter;
 	std::set<RenderBase*>::iterator Jiter;
@@ -22,11 +25,47 @@ void SystemCollision::CheckCollisions()
 		{
 			RenderBase* CollidableSecond = *(Jiter);
 
-			if (CollidableFirst->IsCollidingWith(CollidableSecond))
+			if (CollidableFirst->IsCollidingWith(CollidableFirst->GetPosition(), CollidableSecond))
 			{
-				CollidableFirst->onCollide(CollidableSecond);
-				CollidableSecond->onCollide(CollidableFirst);
+				CollidableFirst->onCollide(CollidableSecond, CollisionFilter::CF_OVERLAP);
+				CollidableSecond->onCollide(CollidableFirst, CollisionFilter::CF_OVERLAP);
 			}
 		}
+	}
+}
+
+void SystemCollision::CheckCollision(RenderBase* Collidable, VecInt2D CollidablePositon, 
+	CollisionFilter Filter, CollisionCheckResult &ResultOut)
+{
+	std::set<RenderBase*>::iterator Iter;
+
+	RenderBase* PossiblyCollided = nullptr;
+	RenderBase* LastCollided = nullptr;
+	
+	bool bCollided = false;
+
+	for (Iter = CollidableSet.begin(); Iter != CollidableSet.end(); Iter++)
+	{
+		PossiblyCollided = *(Iter);
+
+		if (PossiblyCollided == Collidable) // self reject
+		{
+			continue;
+		}
+
+		if (Collidable->IsCollidingWith(CollidablePositon, PossiblyCollided))
+		{
+			Collidable->onCollide(PossiblyCollided, Filter);
+			PossiblyCollided->onCollide(Collidable, Filter);
+			
+			LastCollided = PossiblyCollided;
+		}
+	}
+
+	// result
+	if (LastCollided != nullptr)
+	{
+		ResultOut.bCollided = true;
+		ResultOut.LastCollided = LastCollided;
 	}
 }

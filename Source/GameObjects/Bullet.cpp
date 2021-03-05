@@ -35,7 +35,7 @@ void Bullet::onDead()
 void Bullet::onTick(unsigned int DeltaTime)
 {
 	VecInt2D NewPosition = DirectionVec * (((Speed * DeltaTime) >> 10) + 1) + Position;
-	SetPosition(NewPosition, true);
+	SetPosition(NewPosition, CollisionFilter::CF_BLOCK);
 	SpriteObj->SetPosition(Position);
 }
 
@@ -44,9 +44,9 @@ void Bullet::onRender()
 	SpriteObj->onRender();
 }
 
-void Bullet::onCollide(RenderBase* Other)
+void Bullet::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
-	PRINT(PrintColor::Green, "BULLET COLLIDED");
+	PRINTF(PrintColor::Green, "BULLET %s Collided With %s", GetName(), Other->GetName());
 }
 
 Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bSetRenderEnable)

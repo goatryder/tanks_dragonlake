@@ -23,7 +23,7 @@ public:
 	virtual void onDead() override;
 
 	virtual void onRender() override;
-	virtual void onCollide(RenderBase* Other) override;
+	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override;
 
 public:
 

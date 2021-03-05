@@ -5,10 +5,21 @@
 
 
 class RenderBase;
+enum class CollisionFilter;
+struct VecInt2D;
+
+struct CollisionCheckResult
+{
+	bool bCollided = false;
+	RenderBase* LastCollided = nullptr;
+
+	static CollisionCheckResult DefaultResultOut;
+};
 
 /*
  * This static class handles collision for instances inherited from RenderBase
- * in main method CheckCollisions() there loop which check if unique pair of Objects Collides and call onCollide() for each;
+ * in main method CheckCollisionsAllOverlap() there loop which check if unique pair of Objects Collides and call onCollide() for each;
+ * Can check collision for separate instances in CheckCollision(Filter);
  */
 class SystemCollision
 {
@@ -42,6 +53,10 @@ public:
 		return CollidableSet;
 	}
 
-	/** calls onCollide() for each unique pair of objects that collides. */
-	static void CheckCollisions();
+	/** calls onCollide() for each unique pair of objects that collides with overlap filter. */
+	static void CheckCollisionsAllOverlap();
+
+	/** calls onCollide() for each collided object */
+	static void CheckCollision(RenderBase* Collidable, VecInt2D CollidablePosition, CollisionFilter Filter, 
+		CollisionCheckResult &ResultOut = CollisionCheckResult::DefaultResultOut);
 };

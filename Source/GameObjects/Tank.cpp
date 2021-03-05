@@ -16,7 +16,7 @@ Tank::Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, Spri
 	SetHealth(Health);
 
 	SetSize(Left->GetSize());
-	SetPosition(Position, true);
+	SetPosition(Position);
 
 	ChangeCurrentDirectionSprite(Direction);
 
@@ -104,7 +104,7 @@ void Tank::Move(unsigned int DeltaTime)
 
 	VecInt2D PositionDelta = DirectionToVec(CurrentDirection) * (((Speed * DeltaTime) >> 10) + 1);
 	
-	SetPosition(Position + PositionDelta, true);
+	SetPosition(Position + PositionDelta, CollisionFilter::CF_BLOCK);
 	CurrentActiveSprite->SetPosition(Position);
 }
 
@@ -118,7 +118,7 @@ void Tank::Fire()
 	//	// return;
 	//}
 
-	PRINTF(PrintColor::Green, "%s shooted", Name);
+	PRINTF(PrintColor::Green, "%s shooted", GetName());
 
 	ActiveBullet = Bullet::SpawnBulletSlow(this, GetSidePosition(CurrentDirection), CurrentDirection);
 }
@@ -152,9 +152,9 @@ void Tank::onRender()
 	CurrentActiveSprite->onRender();
 }
 
-void Tank::onCollide(RenderBase* Other)
+void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
-	PRINT(PrintColor::Green, "TANK COLLIDED");
+	// PRINTF(PrintColor::Green, "TANK %s Collided With: %s", GetName(), Other->GetName());
 }
 
 Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bSetRenderEnable)
