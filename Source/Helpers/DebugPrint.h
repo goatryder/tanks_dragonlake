@@ -101,13 +101,4 @@ inline const char* GetTickTimestamp()
   (void)0 \
  )
 
-// @ToDo: check if ptr equal zero
-
-//#define PRINT_NULL(PTR) \
-// ( \
-//  (if (PTR == NULL) \
-//   cout << __FUNCTION__ << endl, \
-//  ), \
-// )
-
 #endif

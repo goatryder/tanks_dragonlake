@@ -6,6 +6,7 @@
 
 #include "Tank.h"
 
+int Bullet::BulletIndex = 0;
 
 Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, Tank* Owner)
 	: SpriteObj(SpriteObj), DirectionVec(DirectionVec), Speed(Speed), Owner(Owner)
@@ -74,10 +75,17 @@ Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direct
 
 	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, DirectionToVec(Direction), BULLET_SPEED_SLOW, Owner);
 
+	std::string Name = Owner->GetName();
+	Name += "_bullet_" + std::to_string(BulletIndex);
+
+	SpawnedBullet->SetName(Name);
+
 	if (bSetRenderEnable)
 	{
 		SpawnedBullet->EnableRender();
 	}
+
+	BulletIndex++;
 
 	return SpawnedBullet;
 }

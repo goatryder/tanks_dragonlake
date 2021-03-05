@@ -5,6 +5,8 @@
 #include "../Helpers/DebugPrint.h"
 
 
+int BrickBase::BrickIndex = 0;
+
 BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position)
 	: SpriteObj(SpriteObj)
 {
@@ -51,10 +53,15 @@ BrickBase* BrickBase::SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable)
 
 	BrickBase* SpawnedBrick = new BrickBase(BrickSprite, Position);
 
+	std::string Name = "brick_" + std::to_string(BrickIndex);
+	SpawnedBrick->SetName(Name);
+
 	if (bSetRenderEnable)
 	{
 		SpawnedBrick->EnableRender();
 	}
+
+	BrickIndex++;
 
 	return SpawnedBrick;
 }

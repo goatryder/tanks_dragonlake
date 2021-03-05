@@ -37,5 +37,6 @@ public:
 
 public:
 
+	static int BulletIndex;
 	static Bullet* SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bSetRenderEnable = true);
 };

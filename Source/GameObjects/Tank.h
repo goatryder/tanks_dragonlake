@@ -64,6 +64,7 @@ public:
 
 public:
 
+	static int TankIndex;
 	static Tank* SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bSetRenderEnable = true);
 	static Tank* SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bSetRenderEnable = true);
 };

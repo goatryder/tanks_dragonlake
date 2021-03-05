@@ -27,5 +27,6 @@ public:
 
 public:
 
+	static int BrickIndex;
 	static BrickBase* SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable = true);
 };

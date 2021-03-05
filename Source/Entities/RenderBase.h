@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 #include "GlobalConstants.h"
 #include "Structs/VecInt2D.h"
@@ -73,7 +74,7 @@ public:
 		this->Size = Size;
 	}
 
-	bool CheckCollision(RenderBase* Other)
+	bool IsCollidingWith(RenderBase* Other)
 	{
 		if (Other == nullptr)
 		{
@@ -184,11 +185,23 @@ public:
 		return bRenderEnabled; 
 	}
 
+	const char* GetName()
+	{
+		return Name.c_str();
+	}
+
+	void SetName(std::string NewName)
+	{
+		Name = NewName;
+	}
+
 protected:
 
 	bool bEnabled = true;
 	VecInt2D Size;
 	VecInt2D Position;
+
+	std::string Name;
 
 	bool bCollisionEnabled = false;
 	bool bRenderEnabled = false;
