@@ -8,6 +8,7 @@ std::set<RenderBase*> SystemCollision::CollidableSet = {};
 // Initilize Default CollisionCheckResult Out
 CollisionCheckResult CollisionCheckResult::DefaultResultOut;
 
+// has nice perfomance, ToDo: figure out how to make it global
 void SystemCollision::CheckCollisionsAllOverlap()
 {
 	std::set<RenderBase*>::iterator Iter;
@@ -48,7 +49,7 @@ void SystemCollision::CheckCollision(RenderBase* Collidable, VecInt2D Collidable
 	{
 		PossiblyCollided = *(Iter);
 
-		if (PossiblyCollided == Collidable) // self reject
+		if (PossiblyCollided == Collidable || Collidable->IsInCollisionIgnore(PossiblyCollided))  // process ignore list
 		{
 			continue;
 		}

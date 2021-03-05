@@ -155,6 +155,7 @@ void Tank::onRender()
 void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
 	// PRINTF(PrintColor::Green, "TANK %s Collided With: %s", GetName(), Other->GetName());
+
 }
 
 Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bSetRenderEnable)

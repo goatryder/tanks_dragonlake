@@ -11,6 +11,8 @@ int Bullet::BulletIndex = 0;
 Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, Tank* Owner)
 	: SpriteObj(SpriteObj), DirectionVec(DirectionVec), Speed(Speed), Owner(Owner)
 {
+	Owner->AddCollidableToIgnore(this);
+
 	this->Position = Position;
 	SpriteObj->SetPosition(Position);
 	
@@ -46,7 +48,12 @@ void Bullet::onRender()
 
 void Bullet::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
-	PRINTF(PrintColor::Green, "BULLET %s Collided With %s", GetName(), Other->GetName());
+	// PRINTF(PrintColor::Green, "BULLET %s Collided With %s", GetName(), Other->GetName());
+
+	if (Filter == CollisionFilter::CF_BLOCK && Other == Owner)
+	{
+		PRINT(PrintColor::Red, "Bullet Collided With Owner");
+	}
 }
 
 Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bSetRenderEnable)

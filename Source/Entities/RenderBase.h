@@ -221,6 +221,40 @@ public:
 		Name = NewName;
 	}
 
+	/** Check if Collidable in CollisionIgnored list */
+	bool IsInCollisionIgnore(RenderBase* Collidable, bool bCheckOtherIgonreList = false)
+	{
+		std::vector<RenderBase*>::iterator Iter;
+		Iter = std::find(CollisionIgnored.begin(), CollisionIgnored.end(), Collidable);
+		
+		bool bCollidableIgnored = Iter != CollisionIgnored.end();
+
+		if (bCheckOtherIgonreList)
+		{
+			bCollidableIgnored = bCollidableIgnored || Collidable->IsInCollisionIgnore(this, false);
+		}
+		
+		return bCollidableIgnored;
+	}
+
+	void AddCollidableToIgnore(RenderBase* Collidable)
+	{
+		CollisionIgnored.push_back(Collidable);
+	}
+
+	void RemoveCollidableFromIgnore(RenderBase* Collidable)
+	{
+		std::vector<RenderBase*>::iterator Iter;
+		Iter = std::find(CollisionIgnored.begin(), CollisionIgnored.end(), Collidable);
+
+		if (Iter != CollisionIgnored.end())
+		{
+			CollisionIgnored.erase(Iter);
+		}
+	}
+
+	std::vector<RenderBase*> CollisionIgnored;
+
 protected:
 
 	bool bEnabled = true;
