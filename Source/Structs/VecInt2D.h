@@ -59,6 +59,7 @@ static const VecInt2D VecRight(1, 0);
 static const VecInt2D VecUp(0, -1);
 static const VecInt2D VecDown(0, 1);
 
+// fix this
 inline Direction GetDirection(VecInt2D DeltaVec)
 {
 	if (DeltaVec.X - DeltaVec.Y > 0)
@@ -87,7 +88,30 @@ inline Direction GetDirection(VecInt2D DeltaVec)
 
 inline Direction GetDirection(VecInt2D From, VecInt2D To)
 {
-	GetDirection(From - To);
+	return GetDirection(From - To);
+}
+
+inline Direction GetDirectionOposite(Direction Dir)
+{
+	Direction Oposite;
+
+	switch (Dir)
+	{
+	case Direction::UP:
+		Oposite = Direction::DOWN;
+		break;
+	case Direction::DOWN:
+		Oposite = Direction::UP;
+		break;
+	case Direction::LEFT:
+		Oposite = Direction::RIGHT;
+		break;
+	default:
+		Oposite = Direction::LEFT;
+		break;
+	}
+
+	return Oposite;
 }
 
 inline VecInt2D DirectionToVec(Direction Dir)

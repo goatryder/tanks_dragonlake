@@ -10,7 +10,7 @@ class Bullet : public RenderBase, public TickInterface
 {
 public:
 
-	Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, int Damage, Tank* Owner);
+	Bullet(SpriteEntity* SpriteObj, VecInt2D Position, Direction Dir, int Speed, int Damage, Tank* Owner);
 	~Bullet();
 
 	int Speed;
@@ -20,6 +20,7 @@ protected:
 
 	SpriteEntity* SpriteObj;
 	VecInt2D DirectionVec;
+	Direction Dir;
 
 	Tank* Owner;
 

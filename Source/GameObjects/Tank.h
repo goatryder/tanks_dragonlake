@@ -54,7 +54,7 @@ public:
 
 	Direction GetDirection() const { return CurrentDirection; }
 
-	virtual void onDamage(int Damage) override;
+	virtual void onDamage(int Damage, Direction From) override;
 	virtual void onDead() override;
 
 	virtual void onTick(unsigned int DeltaTime) override;

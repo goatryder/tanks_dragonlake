@@ -5,6 +5,7 @@
 #include "HealthInterface.h"
 
 class SpriteEntity;
+class BrickBlock;
 
 class BrickBase : public RenderBase, public HealthInterface
 {
@@ -19,7 +20,10 @@ protected:
 
 public:
 
-	virtual void onDamage(int Damage) override;
+	BrickBlock* Owner = nullptr;
+	int OwnerIndex = -1;
+
+	virtual void onDamage(int Damage, Direction From) override;
 	virtual void onDead() override;
 
 	virtual void onRender() override;

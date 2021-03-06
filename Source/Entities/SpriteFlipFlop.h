@@ -23,6 +23,7 @@ public:
 	void FlopSpriteInitLazy(const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs=0);
 
 	virtual void onRender() override final;
+	virtual void onDestroy() override final;
 
 protected:
 

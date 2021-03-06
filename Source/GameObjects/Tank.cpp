@@ -22,26 +22,26 @@ Tank::Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, Spri
 
 	Left->SetFlipFlopTime(MoveAnimSpeed);
 	Left->SetAutoFlipFlopEnable(false);
+	Left->EnableTick();
 	
 	Right->SetFlipFlopTime(MoveAnimSpeed);
 	Right->SetAutoFlipFlopEnable(false);
+	Right->EnableTick();
 	
 	Up->SetFlipFlopTime(MoveAnimSpeed);
 	Up->SetAutoFlipFlopEnable(false);
+	Up->EnableTick();
 	
 	Down->SetFlipFlopTime(MoveAnimSpeed);
 	Down->SetAutoFlipFlopEnable(false);
-
+	Down->EnableTick();
+	
 	EnableCollsion();
 	EnableTick();
 }
 
 Tank::~Tank()
 {
-	delete Left;
-	delete Right;
-	delete Up;
-	delete Down;
 }
 
 void Tank::ChangeCurrentDirectionSprite(Direction DirectionTo)
@@ -121,9 +121,9 @@ void Tank::Fire()
 	ActiveBullet = Bullet::SpawnBulletSlow(this, GetSidePosition(CurrentDirection), CurrentDirection);
 }
 
-void Tank::onDamage(int Damage)
+void Tank::onDamage(int Damage, Direction From)
 {
-	HealthInterface::onDamage(Damage);
+	HealthInterface::onDamage(Damage, From);
 
 	PRINTF(PrintColor::Green, "%s recieved %d damage", GetName(), Damage);
 }
@@ -160,6 +160,11 @@ void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
 
 void Tank::onDestroy()
 {
+	Left->onDestroy();
+	Right->onDestroy();
+	Up->onDestroy();
+	Down->onDestroy();
+
 	DisableTick();
 
 	RenderBase::onDestroy();

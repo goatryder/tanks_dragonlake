@@ -9,9 +9,11 @@
 
 int Bullet::BulletIndex = 0;
 
-Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, int Damage, Tank* Owner)
-	: SpriteObj(SpriteObj), DirectionVec(DirectionVec), Speed(Speed), Damage(Damage), Owner(Owner)
+Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, Direction Dir, int Speed, int Damage, Tank* Owner)
+	: SpriteObj(SpriteObj), Dir(Dir), Speed(Speed), Damage(Damage), Owner(Owner)
 {
+	DirectionVec = DirectionToVec(Dir);
+	
 	Owner->AddCollidableToIgnore(this);
 
 	this->Position = Position;
@@ -48,7 +50,7 @@ void Bullet::onCollide(RenderBase* Other, CollisionFilter Filter)
 
 		if (Damagable != nullptr)
 		{
-			Damagable->onDamage(Damage);
+			Damagable->onDamage(Damage, GetDirectionOposite(Dir));
 		}
 
 		onDestroy();
@@ -94,7 +96,7 @@ Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direct
 	
 	VecInt2D SpawnLocation = Position - SpriteObj->GetOppositeSidePosition(Direction);
 
-	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, DirectionToVec(Direction), BULLET_SPEED_SLOW, BULLET_DAMAGE_LOW, Owner);
+	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, Direction, BULLET_SPEED_SLOW, BULLET_DAMAGE_LOW, Owner);
 
 	std::string Name = Owner->GetName();
 	Name += "_bullet_" + std::to_string(BulletIndex);

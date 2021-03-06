@@ -2,6 +2,8 @@
 
 #include "../Entities/SpriteEntity.h"
 
+#include "BrickBlock.h"
+
 #include "../Helpers/DebugPrint.h"
 
 
@@ -26,9 +28,18 @@ BrickBase::~BrickBase()
 	delete SpriteObj;
 }
 
-void BrickBase::onDamage(int Damage)
+void BrickBase::onDamage(int Damage, Direction From)
 {
-	HealthInterface::onDamage(Damage);
+	PRINTF(PrintColor::Yellow, "%s damaged from %s", GetName(), DirectionToString(From));
+
+	if (Owner != nullptr)
+	{
+		Owner->OwnedBrickDamaged(OwnerIndex, Damage, From);
+	}
+	else
+	{
+		HealthInterface::onDamage(Damage, From);
+	}
 }
 
 void BrickBase::onDead()
@@ -47,6 +58,11 @@ void BrickBase::onCollide(RenderBase* Other, CollisionFilter Filter)
 
 void BrickBase::onDestroy()
 {
+	if (Owner != nullptr)
+	{
+		Owner->OwnedBrickDestroyed(OwnerIndex);
+	}
+
 	RenderBase::onDestroy();
 
 	PRINTF(PrintColor::Red, "delete %s", GetName());

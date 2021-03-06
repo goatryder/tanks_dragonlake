@@ -1,5 +1,6 @@
 #pragma once
 
+enum class Direction;
 
 class HealthInterface
 {
@@ -35,7 +36,7 @@ public:
 		bIsDead = true;
 	}
 
-	virtual void onDamage(int Damage)
+	virtual void onDamage(int Damage, Direction From)
 	{
 		SetHealth(Health - Damage);
 	}

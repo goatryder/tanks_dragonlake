@@ -42,6 +42,10 @@ public:
 		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0 + 64));
 		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W1 - 32, GAME_AREA_H0));
 		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H0));
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H1 - 64));
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H1 - 96));
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_MID_W, GAME_AREA_H1 - 96));
+		BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_MID_W - 32, GAME_AREA_H1 - 96));
 		
 		// Enemy tank
 		Tank::SpawnEnemyTankBasic(VecInt2D(GAME_AREA_MID_W, GAME_AREA_MID_H), Direction::UP, Anchor::CENTER);

@@ -50,6 +50,14 @@ void SpriteFlipFlop::onRender()
 	}
 }
 
+void SpriteFlipFlop::onDestroy()
+{
+	DisableTick();
+	SpriteEntity::onDestroy();
+
+	delete this;
+}
+
 inline void SpriteFlipFlop::CreateSprite()
 {
 	SpriteObjSibling = createSprite(ResourceImagePathSibling);

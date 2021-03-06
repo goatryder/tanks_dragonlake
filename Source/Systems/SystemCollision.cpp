@@ -45,6 +45,7 @@ void SystemCollision::CheckCollisionsAllBlock()
 					CollidableFirst->LastCollisionResult.bCollided = true;
 					CollidableFirst->LastCollisionResult.LastCollided = CollidableSecond;
 
+					// todo fix exception
 					CollidableSecond->onCollide(CollidableFirst, CollisionFilter::CF_BLOCK);
 					CollidableSecond->LastCollisionResult.bCollided = true;
 					CollidableSecond->LastCollisionResult.LastCollided = CollidableFirst;
