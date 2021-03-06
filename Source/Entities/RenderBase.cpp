@@ -1,5 +1,7 @@
 #include "RenderBase.h"
 
+Wall* WallInstance = new Wall();
+RenderBase* RenderBase::Wall = WallInstance;
 
 VecInt2D GetAnchorOffset(VecInt2D Size, Anchor Anchor)
 {
@@ -24,4 +26,8 @@ VecInt2D GetAnchorOffset(VecInt2D Size, Anchor Anchor)
 	}
 
 	return Offset;
+}
+
+void Wall::onRender()
+{
 }

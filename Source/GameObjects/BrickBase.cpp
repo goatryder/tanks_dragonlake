@@ -7,7 +7,7 @@
 
 int BrickBase::BrickIndex = 0;
 
-BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position)
+BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position, int Health)
 	: SpriteObj(SpriteObj)
 {
 	this->Position = Position;
@@ -16,7 +16,7 @@ BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position)
 	
 	SetSize(SpriteObj->GetSize());
 	
-	SetHealth(1);
+	SetHealth(Health);
 
 	EnableCollsion();
 }
@@ -24,17 +24,16 @@ BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position)
 BrickBase::~BrickBase()
 {
 	delete SpriteObj;
-	SpriteObj = nullptr;
 }
 
 void BrickBase::onDamage(int Damage)
 {
-	PRINTF(PrintColor::Green, "BRICK %d damage recieved", Damage);
+	HealthInterface::onDamage(Damage);
 }
 
 void BrickBase::onDead()
 {
-	PRINT(PrintColor::Green, "BRICK died");
+	onDestroy();
 }
 
 void BrickBase::onRender()
@@ -44,14 +43,22 @@ void BrickBase::onRender()
 
 void BrickBase::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
-	PRINTF(PrintColor::Green, "BRICK %s collided with %s", GetName(), Other->GetName());
+}
+
+void BrickBase::onDestroy()
+{
+	RenderBase::onDestroy();
+
+	PRINTF(PrintColor::Red, "delete %s", GetName());
+
+	delete this;
 }
 
 BrickBase* BrickBase::SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable)
 {
 	SpriteEntity* BrickSprite = new SpriteEntity(BRICK_BASE);
 
-	BrickBase* SpawnedBrick = new BrickBase(BrickSprite, Position);
+	BrickBase* SpawnedBrick = new BrickBase(BrickSprite, Position, BRICK_BASE_HEALTH);
 
 	std::string Name = "brick_" + std::to_string(BrickIndex);
 	SpawnedBrick->SetName(Name);

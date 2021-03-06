@@ -5,11 +5,12 @@
 #include "../Helpers/DebugPrint.h"
 
 #include "Tank.h"
+#include "HealthInterface.h"
 
 int Bullet::BulletIndex = 0;
 
-Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, Tank* Owner)
-	: SpriteObj(SpriteObj), DirectionVec(DirectionVec), Speed(Speed), Owner(Owner)
+Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, int Damage, Tank* Owner)
+	: SpriteObj(SpriteObj), DirectionVec(DirectionVec), Speed(Speed), Damage(Damage), Owner(Owner)
 {
 	Owner->AddCollidableToIgnore(this);
 
@@ -19,6 +20,7 @@ Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec
 	Size = SpriteObj->GetSize();
 
 	EnableCollsion();
+	EnableTick();
 }
 
 Bullet::~Bullet()
@@ -26,18 +28,10 @@ Bullet::~Bullet()
 	delete SpriteObj;
 }
 
-void Bullet::onDamage(int Damage)
-{
-}
-
-void Bullet::onDead()
-{
-}
-
 void Bullet::onTick(unsigned int DeltaTime)
 {
 	VecInt2D NewPosition = DirectionVec * (((Speed * DeltaTime) >> 10) + 1) + Position;
-	SetPosition(NewPosition, CollisionFilter::CF_BLOCK);
+	SetPosition(NewPosition, true);
 	SpriteObj->SetPosition(Position);
 }
 
@@ -48,12 +42,32 @@ void Bullet::onRender()
 
 void Bullet::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
-	// PRINTF(PrintColor::Green, "BULLET %s Collided With %s", GetName(), Other->GetName());
-
-	if (Filter == CollisionFilter::CF_BLOCK && Other == Owner)
+	if (Filter == CollisionFilter::CF_BLOCK)
 	{
-		PRINT(PrintColor::Red, "Bullet Collided With Owner");
+		HealthInterface* Damagable = dynamic_cast<HealthInterface*>(Other);
+
+		if (Damagable != nullptr)
+		{
+			Damagable->onDamage(Damage);
+		}
+
+		onDestroy();
 	}
+}
+
+void Bullet::onDestroy()
+{
+	if (Owner != nullptr)
+	{
+		Owner->ActiveBullet = nullptr;
+	}
+
+	DisableTick();
+	RenderBase::onDestroy();
+	
+	PRINTF(PrintColor::Red, "delete %s", GetName());
+
+	delete this;
 }
 
 Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bSetRenderEnable)
@@ -80,7 +94,7 @@ Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direct
 	
 	VecInt2D SpawnLocation = Position - SpriteObj->GetOppositeSidePosition(Direction);
 
-	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, DirectionToVec(Direction), BULLET_SPEED_SLOW, Owner);
+	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, DirectionToVec(Direction), BULLET_SPEED_SLOW, BULLET_DAMAGE_LOW, Owner);
 
 	std::string Name = Owner->GetName();
 	Name += "_bullet_" + std::to_string(BulletIndex);

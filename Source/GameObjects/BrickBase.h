@@ -10,7 +10,7 @@ class BrickBase : public RenderBase, public HealthInterface
 {
 public:
 
-	BrickBase(SpriteEntity* SpriteObj, VecInt2D Position);
+	BrickBase(SpriteEntity* SpriteObj, VecInt2D Position, int Health);
 	~BrickBase();
 
 protected:
@@ -24,6 +24,7 @@ public:
 
 	virtual void onRender() override;
 	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override;
+	virtual void onDestroy() override;
 
 public:
 

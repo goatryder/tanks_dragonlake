@@ -18,6 +18,9 @@ public:
 
 	int Speed;
 
+	// only one active bullet for player tank allowed
+	Bullet* ActiveBullet = nullptr;
+
 protected:
 
 	// direction
@@ -42,9 +45,6 @@ protected:
 	void PlayMoveAnim();
 	void StopMoveAnim();
 
-	// only one active bullet for player tank allowed
-	Bullet* ActiveBullet = nullptr;
-
 public:
 
 	void MoveBegin(Direction DirectionTo);
@@ -61,6 +61,7 @@ public:
 
 	virtual void onRender() override;
 	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override;
+	virtual void onDestroy() override;
 
 public:
 

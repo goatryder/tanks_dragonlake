@@ -94,7 +94,7 @@ private:
 	// tick functions
 	inline void GameLogicTick()
 	{
-		// SystemCollision::CheckCollisionsAllOverlap();
+		SystemCollision::CheckCollisionsAllBlock();
 		SystemTick::Tick(GAME_LOGIC_TICK);
 	}
 

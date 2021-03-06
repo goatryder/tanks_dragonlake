@@ -33,6 +33,7 @@ Tank::Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, Spri
 	Down->SetAutoFlipFlopEnable(false);
 
 	EnableCollsion();
+	EnableTick();
 }
 
 Tank::~Tank()
@@ -104,19 +105,16 @@ void Tank::Move(unsigned int DeltaTime)
 
 	VecInt2D PositionDelta = DirectionToVec(CurrentDirection) * (((Speed * DeltaTime) >> 10) + 1);
 	
-	SetPosition(Position + PositionDelta, CollisionFilter::CF_BLOCK);
+	SetPosition(Position + PositionDelta, true);
 	CurrentActiveSprite->SetPosition(Position);
 }
 
 void Tank::Fire()
 {
-	// ToDo: Fix bug
-	//if (ActiveBullet != nullptr) // only one active bullet allowed for player
-	//{
-	//	delete ActiveBullet;
-	//	ActiveBullet = nullptr;
-	//	// return;
-	//}
+	if (ActiveBullet != nullptr) // only one active bullet allowed for player
+	{
+		return;
+	}
 
 	PRINTF(PrintColor::Green, "%s shooted", GetName());
 
@@ -127,14 +125,16 @@ void Tank::onDamage(int Damage)
 {
 	HealthInterface::onDamage(Damage);
 
-	PRINTF(PrintColor::Green, "Tank %d damage recieved", Damage);
+	PRINTF(PrintColor::Green, "%s recieved %d damage", GetName(), Damage);
 }
 
 void Tank::onDead()
 {
 	HealthInterface::onDead();
 
-	PRINT(PrintColor::Green, "Tank died");
+	PRINTF(PrintColor::Green, "%s died", GetName());
+
+	onDestroy();
 }
 
 void Tank::onTick(unsigned int DeltaTime)
@@ -156,6 +156,17 @@ void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
 	// PRINTF(PrintColor::Green, "TANK %s Collided With: %s", GetName(), Other->GetName());
 
+}
+
+void Tank::onDestroy()
+{
+	DisableTick();
+
+	RenderBase::onDestroy();
+
+	PRINTF(PrintColor::Red, "delete %s", GetName());
+
+	delete this;
 }
 
 Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bSetRenderEnable)

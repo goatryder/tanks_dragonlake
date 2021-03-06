@@ -33,12 +33,6 @@ public:
 		}
 	}
 
-	/* get TickQueue */
-	static const std::vector<TickInterface*>& GetTickQueue()
-	{
-		return TickQueue;
-	}
-
 	/** calls onTick for each tick object in TickQueue */
 	static void Tick(unsigned int DeltaTime);
 };

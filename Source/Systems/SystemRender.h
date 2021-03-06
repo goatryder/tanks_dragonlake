@@ -35,12 +35,6 @@ public:
 		}
 	}
 
-	/* get RenderQueue */
-	static const std::vector<RenderBase*>& GetRenderQueue()
-	{
-		return RenderQueue;
-	}
-
 	/** calls onRender() for each RenderBase in RenderQueue */
 	static void Render();
 };

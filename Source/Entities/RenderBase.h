@@ -8,6 +8,9 @@
 #include "../Systems/SystemCollision.h"
 #include "../Systems/SystemRender.h"
 
+// #include "../Helpers/DebugPrint.h"
+
+// using in GameObjects spawn position adjusting
 enum class Anchor
 {
 	TOP_LEFT,
@@ -34,59 +37,39 @@ public:
 
 	RenderBase() {}
 	
-	~RenderBase() 
+	~RenderBase() {}
+
+	virtual void onDestroy()
 	{
-		if (bCollisionEnabled) SystemCollision::RemoveRenderObj(this);
-		if (bRenderEnabled) SystemRender::RemoveRenderObj(this);
+		if (bCollisionEnabled) DisableCollision();
+		if (bRenderEnabled) DisableRender();
 	}
 
 	virtual void onRender() = 0;
 	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) {}
 
-	const VecInt2D GetPosition()
+	/** Get Position, if bNextRelevent, get position from next tick */
+	const VecInt2D GetPosition(bool bNextRelevent = false)
 	{
+		if (bNextRelevent && bNextPositionRelevent) return NextPosition;
+
 		return Position;
 	}
 
-	/** Set Position with Collision */
-	void SetPosition(VecInt2D NewPosition, CollisionFilter Filter = CollisionFilter::CF_IGNORE)
+	/** Set Position, instance should has Enabled Collision to process Sweep */
+	void SetPosition(VecInt2D NewPosition, bool bSweep = false)
 	{
-		if (Filter == CollisionFilter::CF_BLOCK)
+		if (bCollisionEnabled && bSweep)
 		{
-			CollisionCheckResult CollisionResultIn;
-			SystemCollision::CheckCollision(this, NewPosition, CollisionFilter::CF_BLOCK, CollisionResultIn);
-
-			if (CollisionResultIn.bCollided)
-			{
-				SetPositionBlockClamped(NewPosition, CollisionResultIn.LastCollided);
-				return;
-			}
-
-			if (!IsPositionInGameBound(NewPosition))
-			{
-				SetPositionBoundClamped(NewPosition);
-				return;
-			}
-
-		}
-		else if (Filter == CollisionFilter::CF_OVERLAP)
-		{
-			SystemCollision::CheckCollision(this, NewPosition, CollisionFilter::CF_OVERLAP);
+			// Handle Position on next collision check
+			NextPosition = NewPosition;
+			bNextPositionRelevent = true;
+			return;
 		}
 		
 		Position = NewPosition;
 	}
-
-	bool IsEnabled()
-	{
-		return bEnabled;
-	}
-
-	void SetEnable(bool bEnable)
-	{
-		bEnabled = bEnable;
-	}
-
+	
 	const VecInt2D GetSize()
 	{
 		return Size;
@@ -97,18 +80,17 @@ public:
 		this->Size = Size;
 	}
 
-	bool IsCollidingWith(VecInt2D Position, RenderBase* Other)
+	bool IsCollidingWith(VecInt2D Position, RenderBase* Other, VecInt2D OtherPosition)
 	{
 		if (Other == nullptr)
 		{
 			return false;
 		}
 
-		VecInt2D OtherPos = Other->GetPosition();
 		VecInt2D OtherSize = Other->GetSize();
 
-		if (Position.X < OtherPos.X + OtherSize.X && Position.X + Size.X > OtherPos.X &&
-			Position.Y < OtherPos.Y + OtherSize.Y && Position.Y + Size.Y > OtherPos.Y)
+		if (Position.X < OtherPosition.X + OtherSize.X && Position.X + Size.X > OtherPosition.X &&
+			Position.Y < OtherPosition.Y + OtherSize.Y && Position.Y + Size.Y > OtherPosition.Y)
 		{
 			return true;
 		}
@@ -116,6 +98,28 @@ public:
 		{
 			return false;
 		}
+	}
+
+	void HandleSweepPosition(VecInt2D NewPosition, CollisionCheckResult CollisionResult)
+	{
+		//const char* CollidedName = LastCollisionResult.bCollided ? LastCollisionResult.LastCollided->GetName() : "None";
+		//PRINTF(PrintColor::Red, "HandleSweepPosition old x=%d y=%d new x=%d, y=%d collided %d with %s",
+		//	Position.X, Position.Y, NewPosition.X, NewPosition.Y, CollisionResult.bCollided, CollidedName);
+
+		if (CollisionResult.bCollided)
+		{
+			SetPositionBlockClamped(NewPosition, CollisionResult.LastCollided);
+			return;
+		}
+
+		if (!IsPositionInGameBound(NewPosition))
+		{
+			SetPositionBoundClamped(NewPosition);
+			onCollide(Wall, CollisionFilter::CF_BLOCK);
+			return;
+		}
+
+		Position = NewPosition;
 	}
 
 	bool IsPositionInGameBound(VecInt2D NewPosition)
@@ -181,14 +185,14 @@ public:
 
 	void EnableCollsion()
 	{
-		SystemCollision::AddRenderObj(this);
 		bCollisionEnabled = true;
+		SystemCollision::AddRenderObj(this);
 	}
 
 	void DisableCollision()
 	{
-		SystemCollision::RemoveRenderObj(this);
 		bCollisionEnabled = false;
+		SystemCollision::RemoveRenderObj(this);
 	}
 
 	bool IsCollisionEnabled() 
@@ -198,12 +202,14 @@ public:
 	
 	void EnableRender() 
 	{
+		bRenderEnabled = true;
 		SystemRender::AddRenderObj(this);
 	}
 
 	void DisableRender()
 	{
 		SystemRender::RemoveRenderObj(this);
+		bRenderEnabled = false;
 	}
 
 	bool IsRenderEnabled() 
@@ -254,10 +260,12 @@ public:
 	}
 
 	std::vector<RenderBase*> CollisionIgnored;
+	CollisionCheckResult LastCollisionResult;
+	VecInt2D NextPosition;
+	bool bNextPositionRelevent = false;
 
 protected:
 
-	bool bEnabled = true;
 	VecInt2D Size;
 	VecInt2D Position;
 
@@ -265,6 +273,8 @@ protected:
 
 	bool bCollisionEnabled = false;
 	bool bRenderEnabled = false;
+
+	static RenderBase* Wall;  // hack to check game bound walls collision
 
 	void InitSizeBySprite(Sprite* SpriteObj)
 	{
@@ -305,6 +315,9 @@ protected:
 			return;
 		}
 
+		//PRINTF(PrintColor::Red, "SetPositionBlockClamped old x=%d y=%d new x=%d, y=%d",
+		//	Position.X, Position.Y, NewPosition.X, NewPosition.Y);
+
 		// set new position
 		Position = NewPosition;
 	}
@@ -334,4 +347,10 @@ protected:
 		// set new position
 		Position = NewPosition;
 	}
+};
+
+
+class Wall : public RenderBase
+{
+	virtual void onRender() override final;
 };

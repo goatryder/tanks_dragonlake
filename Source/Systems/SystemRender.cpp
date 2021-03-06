@@ -10,5 +10,5 @@ std::vector<RenderBase*> SystemRender::RenderQueue = {};
 void SystemRender::Render()
 {
 	for (auto& RenderInstance : RenderQueue)
-		if (RenderInstance->IsEnabled()) RenderInstance->onRender();
+		RenderInstance->onRender();
 }

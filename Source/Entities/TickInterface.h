@@ -7,19 +7,29 @@ class TickInterface
 {
 public:
 
-	bool bTickEnabled = true;
+	TickInterface() {}
+	~TickInterface() {}
+
+	void EnableTick()
+	{
+		bTickEnabled = true;
+		SystemTick::AddTickObj(this);
+	}
+
+	void DisableTick()
+	{
+		bTickEnabled = false;
+		SystemTick::RemoveTickObj(this);
+	}
+
+	bool bIsTickEnabled()
+	{
+		return bTickEnabled;
+	}
 
 	virtual void onTick(unsigned int DeltaTime) {}
 
 protected:
 
-	TickInterface()
-	{
-		SystemTick::AddTickObj(this);
-	}
-
-	~TickInterface()
-	{
-		SystemTick::RemoveTickObj(this);
-	}
+	bool bTickEnabled = false;
 };

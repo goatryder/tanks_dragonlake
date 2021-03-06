@@ -47,16 +47,10 @@ public:
 		}
 	}
 
-	/* get collidable set */
-	static const std::set<RenderBase*>& GetCollidableSet()
-	{
-		return CollidableSet;
-	}
-
 	/** calls onCollide() for each unique pair of objects that collides with overlap filter. */
-	static void CheckCollisionsAllOverlap();
+	static void CheckCollisionsAllBlock();
 
-	/** calls onCollide() for each collided object */
+	/** DEPRECATED calls onCollide() for each collided object */
 	static void CheckCollision(RenderBase* Collidable, VecInt2D CollidablePosition, CollisionFilter Filter, 
-		CollisionCheckResult &ResultOut = CollisionCheckResult::DefaultResultOut);
+		CollisionCheckResult &ResultOut = CollisionCheckResult::DefaultResultOut, bool bCheckNextReleventPos = false);
 };

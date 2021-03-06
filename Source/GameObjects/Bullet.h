@@ -2,19 +2,19 @@
 
 #include "../Entities/TickInterface.h"
 #include "../Entities/RenderBase.h"
-#include "HealthInterface.h"
 
 class SpriteEntity;
 class Tank;
 
-class Bullet : public RenderBase, public TickInterface, public HealthInterface
+class Bullet : public RenderBase, public TickInterface
 {
 public:
 
-	Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, Tank* Owner);
+	Bullet(SpriteEntity* SpriteObj, VecInt2D Position, VecInt2D DirectionVec, int Speed, int Damage, Tank* Owner);
 	~Bullet();
 
 	int Speed;
+	int Damage;
 
 protected:
 
@@ -27,13 +27,11 @@ public:
 
 	Tank* GetOwner() const { return Owner; }
 
-	virtual void onDamage(int Damage) override;
-	virtual void onDead() override;
-
 	virtual void onTick(unsigned int DeltaTime) override;
 
 	virtual void onRender() override;
 	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override;
+	virtual void onDestroy() override;
 
 public:
 

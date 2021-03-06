@@ -9,6 +9,6 @@ void SystemTick::Tick(unsigned int DeltaTime)
 {
 	for (auto& TickInterfaceInstance : TickQueue)
 	{
-		if (TickInterfaceInstance->bTickEnabled) TickInterfaceInstance->onTick(DeltaTime);
+		TickInterfaceInstance->onTick(DeltaTime);
 	}
 }
