@@ -4,17 +4,25 @@
 
 #include "../Helpers/DebugPrint.h"
 
-BrickBlock::BrickBlock(BrickBase* BrickArray[4][4], VecInt2D Position)
+int BrickBlock::BlockCount = 0;
+
+
+BrickBlock::BrickBlock(brickArr BrickArr, VecInt2D Position)
+	: BrickArray(BrickArr)
 {
 	this->Position = Position;
-	this->Size = (**BrickArray)->GetSize() * 4;
+	this->Size = BrickArr.at(0)->GetSize() * BrickArrRowSize;
 
-	for (int i = 0; i < 16; i++)
+	BricksToDestroyNum = 0;
+
+	for (int i = 0; i < BrickArrSize; i++)
 	{
-		BrickBase* Brick = BrickArray[i >> 2][i % 4];
+		BrickBase* Brick = BrickArray.at(i);
 
 		if (Brick != nullptr)
 		{
+			BricksToDestroyNum++; // if cell not empty, increment Brick number to destroy
+
 			Brick->Owner = this;
 			Brick->OwnerIndex = i;
 		}
@@ -23,9 +31,9 @@ BrickBlock::BrickBlock(BrickBase* BrickArray[4][4], VecInt2D Position)
 
 void BrickBlock::onRender()
 {
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < BrickArrSize; i++)
 	{
-		BrickBase* Brick = BrickArray[i >> 2][i % 4];
+		BrickBase* Brick = BrickArray.at(i);
 
 		if (Brick != nullptr)
 		{
@@ -36,35 +44,40 @@ void BrickBlock::onRender()
 
 void BrickBlock::onDestroy()
 {
-	for (int i = 0; i < 16; i++)
-	{
-		BrickBase* Brick = BrickArray[i >> 2][i % 4];
-			
-		if (Brick != nullptr)
-		{
-			Brick->onDestroy();
-		}
-	}
+	RenderBase::onDestroy();
 
-	delete[] BrickArray;
+	PRINTF(PrintColor::Green, "[block] delete %s", GetName());
+
+	delete this;
 }
 
 void BrickBlock::OwnedBrickDestroyed(int Index)
 {
-	BrickBase*& Brick = BrickArray[Index >> 2][Index % 4];
+	BrickBase*& Brick = BrickArray.at(Index);
 	Brick = nullptr;
+	
+	BricksToDestroyNum--;
+
+	if (BricksToDestroyNum == 0)  // last brick in array destroyed
+	{
+		onDestroy();
+	}
 }
+
 
 void BrickBlock::OwnedBrickDamaged(int Index, int Damage, Direction Side)
 {
-	int i = Index >> 2;
-	int j = Index % 4;
+	int DamagedRow = Index / BrickArrRowSize;
+	int DamagedColumn = Index % BrickArrRowSize;
 
-	if (Side == Direction::DOWN || Side == Direction::LEFT)
+	if (Side == Direction::RIGHT || Side == Direction::LEFT)
 	{
-		for (i = 0; i < 4; i++)
+		int IndexVertical;
+
+		for (int i = 0; i < BrickArrRowSize; i++)
 		{
-			BrickBase* Brick = BrickArray[i][j];
+			IndexVertical = i * BrickArrRowSize + DamagedColumn;
+			BrickBase* Brick = BrickArray.at(IndexVertical);
 
 			if (Brick != nullptr)
 			{
@@ -74,9 +87,12 @@ void BrickBlock::OwnedBrickDamaged(int Index, int Damage, Direction Side)
 	}
 	else
 	{
-		for (j = 0; j < 4; i++)
+		int IndexHorizontal;
+
+		for (int i = 0; i < BrickArrRowSize; i++)
 		{
-			BrickBase* Brick = BrickArray[i][j];
+			IndexHorizontal = DamagedRow * BrickArrRowSize + i;
+			BrickBase* Brick = BrickArray.at(IndexHorizontal);
 
 			if (Brick != nullptr)
 			{
@@ -86,41 +102,48 @@ void BrickBlock::OwnedBrickDamaged(int Index, int Damage, Direction Side)
 	}
 }
 
-//BrickBlock* BrickBlock::SpawnBrickBlockSolid(VecInt2D Position, bool bSetRenderEnable)
-//{
-//	BrickBase* Bricks[4][4];
-//
-//	int i, j = 0;
-//
-//	// todo: handle correct sprites
-//	for (i; i < 4; i++)
-//	{
-//		for (j)
-//		Bricks[i >> 2][i % 4] = BrickBase::SpawnBaseBrick()
-//	}
-//
-//
-//	SpriteFlipFlop* Left = new SpriteFlipFlop(TANK_EB_LEFT_0, TANK_EB_LEFT_1);
-//	SpriteFlipFlop* Right = new SpriteFlipFlop(TANK_EB_RIGHT_0, TANK_EB_RIGHT_1);
-//	SpriteFlipFlop* Up = new SpriteFlipFlop(TANK_EB_UP_0, TANK_EB_UP_1);
-//	SpriteFlipFlop* Down = new SpriteFlipFlop(TANK_EB_DOWN_0, TANK_EB_DOWN_1);
-//
-//	Position -= GetAnchorOffset(Left->GetSize(), Anchor);
-//
-//	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction,
-//		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
-//
-//	std::string Name = "tank_enemy_basic_" + std::to_string(TankIndex);
-//	SpawnedTank->SetName(Name);
-//
-//	if (bSetRenderEnable)
-//	{
-//		SpawnedTank->EnableRender();
-//	}
-//
-//	TankIndex++;
-//
-//	return SpawnedTank;
-//
-//
-//}
+BrickBlock* BrickBlock::SpawnBrickBlockSolid(VecInt2D Position, bool bSetRenderEnable)
+{
+	std::array<BrickBase*, BrickArrSize>Bricks;
+
+	bool bResourceSwapChessOrder;
+	int Even;
+
+	BrickBase* SpawnedBrick;
+	VecInt2D BrickPosition = Position;
+	
+	// BrickBase array initialize // todo: handle correct sprites
+	for (int i = 0; i < BrickArrRowSize; i++)
+	{
+		BrickPosition.X = Position.X;
+		
+		Even = i % 2;
+
+		for (int j = 0; j < BrickArrRowSize; j++)
+		{
+			int Index = i * BrickArrRowSize + j;
+
+			bResourceSwapChessOrder = (Index + Even) % 2 == 0;
+
+			SpawnedBrick = BrickBase::SpawnBaseBrick(BrickPosition, bResourceSwapChessOrder ? BRICK_0 : BRICK_1, BRICK_BASE_HEALTH, false);
+
+			Bricks.at(Index) = SpawnedBrick;
+
+			BrickPosition.X = Position.X + SpawnedBrick->GetSize().X * (j + 1);
+		}
+
+		BrickPosition.Y = Position.Y + SpawnedBrick->GetSize().Y * (i + 1);
+	}
+
+	BrickBlock* SpawnedBlock = new BrickBlock(Bricks, Position);
+
+	std::string Name = "block_" + std::to_string(BlockCount);
+	SpawnedBlock->SetName(Name);
+
+	if (bSetRenderEnable)
+	{
+		SpawnedBlock->EnableRender();
+	}
+
+	return SpawnedBlock;
+}

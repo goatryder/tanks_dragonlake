@@ -7,7 +7,7 @@
 #include "../Helpers/DebugPrint.h"
 
 
-int BrickBase::BrickIndex = 0;
+int BrickBase::BrickCount = 0;
 
 BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position, int Health)
 	: SpriteObj(SpriteObj)
@@ -30,8 +30,6 @@ BrickBase::~BrickBase()
 
 void BrickBase::onDamage(int Damage, Direction From)
 {
-	PRINTF(PrintColor::Yellow, "%s damaged from %s", GetName(), DirectionToString(From));
-
 	if (Owner != nullptr)
 	{
 		Owner->OwnedBrickDamaged(OwnerIndex, Damage, From);
@@ -70,13 +68,13 @@ void BrickBase::onDestroy()
 	delete this;
 }
 
-BrickBase* BrickBase::SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable)
+BrickBase* BrickBase::SpawnBaseBrick(VecInt2D Position, const char* ResourcePath, int Health, bool bSetRenderEnable)
 {
-	SpriteEntity* BrickSprite = new SpriteEntity(BRICK_BASE);
+	SpriteEntity* BrickSprite = new SpriteEntity(ResourcePath);
 
-	BrickBase* SpawnedBrick = new BrickBase(BrickSprite, Position, BRICK_BASE_HEALTH);
+	BrickBase* SpawnedBrick = new BrickBase(BrickSprite, Position, Health);
 
-	std::string Name = "brick_" + std::to_string(BrickIndex);
+	std::string Name = "brick_" + std::to_string(BrickCount);
 	SpawnedBrick->SetName(Name);
 
 	if (bSetRenderEnable)
@@ -84,7 +82,7 @@ BrickBase* BrickBase::SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable)
 		SpawnedBrick->EnableRender();
 	}
 
-	BrickIndex++;
+	BrickCount++;
 
 	return SpawnedBrick;
 }

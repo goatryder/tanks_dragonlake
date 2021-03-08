@@ -7,7 +7,7 @@
 #include "Bullet.h"
 
 
-int Tank::TankIndex = 0;
+int Tank::TankCount = 0;
 
 Tank::Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, SpriteFlipFlop* Down,
 	VecInt2D Position, Direction Direction, int Health, int Speed, int MoveAnimSpeed)
@@ -186,7 +186,7 @@ Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor
 	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction, 
 		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
 
-	std::string Name = "tank_basic_" + std::to_string(TankIndex);
+	std::string Name = "tank_basic_" + std::to_string(TankCount);
 	SpawnedTank->SetName(Name);
 
 	if (bSetRenderEnable)
@@ -194,7 +194,7 @@ Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor
 		SpawnedTank->EnableRender();
 	}
 
-	TankIndex++;
+	TankCount++;
 
 	return SpawnedTank;
 }
@@ -211,7 +211,7 @@ Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor A
 	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction,
 		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
 	
-	std::string Name = "tank_enemy_basic_" + std::to_string(TankIndex);
+	std::string Name = "tank_enemy_basic_" + std::to_string(TankCount);
 	SpawnedTank->SetName(Name);
 
 	if (bSetRenderEnable)
@@ -219,7 +219,7 @@ Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor A
 		SpawnedTank->EnableRender();
 	}
 
-	TankIndex++;
+	TankCount++;
 
 	return SpawnedTank;
 }

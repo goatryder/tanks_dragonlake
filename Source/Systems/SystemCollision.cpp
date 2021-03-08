@@ -10,7 +10,7 @@ std::set<RenderBase*> SystemCollision::CollidableSet = {};
 // Initilize Default CollisionCheckResult Out
 CollisionCheckResult CollisionCheckResult::DefaultResultOut;
 
-// has nice perfomance, ToDo: figure out how to make it global
+// has nice perfomance, need fix: CollisionCheckResult: collision last to collision closest;
 void SystemCollision::CheckCollisionsAllBlock()
 {
 	std::set<RenderBase*>::iterator Iter;

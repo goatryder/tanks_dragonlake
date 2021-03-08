@@ -32,6 +32,6 @@ public:
 
 public:
 
-	static int BrickIndex;
-	static BrickBase* SpawnBaseBrick(VecInt2D Position, bool bSetRenderEnable = true);
+	static int BrickCount;
+	static BrickBase* SpawnBaseBrick(VecInt2D Position, const char* ResourcePath = BRICK_BASE, int Health = BRICK_BASE_HEALTH, bool bSetRenderEnable = true);
 };
