@@ -16,7 +16,7 @@ enum class Anchor
 	TOP_LEFT,
 	TOP_RIGHT,
 	BOTTOM_LEFT,
-	BOTTOM_DOWN,
+	BOTTOM_RIGHT,
 	CENTER
 };
 

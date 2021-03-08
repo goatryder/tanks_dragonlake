@@ -8,8 +8,8 @@
 
 #include "Entities/SpriteEntity.h"
 #include "GameObjects/Tank.h"
-#include "GameObjects/BrickBase.h"
 #include "GameObjects/BrickBlock.h"
+#include "GameObjects/TankSpawner.h"
 
 #include "Helpers/DebugPrint.h"
 
@@ -40,9 +40,9 @@ public:
 		SpriteEntity::SpawnBasicSprite(BG_IMAGE_PATH, VecInt2D(0, 0));
 
 		// Brick
-		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0));
+		//BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0 + 64));
-		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 32, GAME_AREA_H0));
+		//BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 32, GAME_AREA_H0));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H0));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H1 - 64));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H1 - 96));
@@ -52,8 +52,8 @@ public:
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 64, GAME_AREA_H1 - 128));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 128, GAME_AREA_H1 - 128));
 		
-		// Enemy tank
-		Tank::SpawnEnemyTankBasic(VecInt2D(GAME_AREA_MID_W, GAME_AREA_MID_H), Direction::UP, Anchor::CENTER);
+		// Enemy tank spawner
+		TankSpawner::CreateBasicTankSpawnerCorners(true);
 
 		// Tank
 		TankTest = Tank::SpawnTankBasic(VecInt2D(GAME_AREA_MID_W + 64, GAME_AREA_MID_H + 64), Direction::UP);

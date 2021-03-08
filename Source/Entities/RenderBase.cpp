@@ -18,7 +18,7 @@ VecInt2D GetAnchorOffset(VecInt2D Size, Anchor Anchor)
 	case Anchor::BOTTOM_LEFT:
 		Offset = VecInt2D(0, Size.Y);
 		break;
-	case Anchor::BOTTOM_DOWN:
+	case Anchor::BOTTOM_RIGHT:
 		Offset = Size;
 		break;
 	default:
