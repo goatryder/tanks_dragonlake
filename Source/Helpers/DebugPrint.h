@@ -74,7 +74,7 @@ inline OSteamChangeColorSig ChangeOutStreamColor(PrintColor Color)
     else return &white;
 }
 
-// warning C4172: returning address of local variable or temporary: buffer
+// @Todo: fix warning C4172: returning address of local variable or temporary: buffer
 inline const char* GetTickTimestamp()
 {
     char buffer[24];

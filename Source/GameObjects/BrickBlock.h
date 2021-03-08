@@ -25,8 +25,9 @@ private:
 
 public:
 
-	virtual void onRender() override;
-	virtual void onDestroy() override;
+	virtual void onRender() override final;
+	virtual void Initialize() override final;
+	virtual void Destroy() override final;
 
 	/* set to null in array */
 	void OwnedBrickDestroyed(int Index);
@@ -35,6 +36,6 @@ public:
 	void OwnedBrickDamaged(int Index, int Damage, Direction Side);
 
 	/** spawn brick block with all 16 pieces */
-	static BrickBlock* SpawnBrickBlockSolid(VecInt2D Position, bool bSetRenderEnable = true);
+	static BrickBlock* SpawnBrickBlockSolid(VecInt2D Position, bool bInitialize = false);
 	static int BlockCount;
 };

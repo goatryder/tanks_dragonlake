@@ -54,18 +54,21 @@ public:
 
 	Direction GetDirection() const { return CurrentDirection; }
 
-	virtual void onDamage(int Damage, Direction From) override;
-	virtual void onDead() override;
+	virtual void onDamage(int Damage, Direction From) override final;
+	virtual void onDead() override final;
 
-	virtual void onTick(unsigned int DeltaTime) override;
+	virtual void onTick(unsigned int DeltaTime) override final;
 
-	virtual void onRender() override;
-	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override;
-	virtual void onDestroy() override;
+	virtual void onRender() override final;
+	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override final;
+	virtual void Initialize() override final;
+	virtual void Destroy() override final;
+
+	void InitSprite();
 
 public:
 
 	static int TankCount;
-	static Tank* SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bSetRenderEnable = true);
-	static Tank* SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bSetRenderEnable = true);
+	static Tank* SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bInitialize = false);
+	static Tank* SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bInitialize = false);
 };

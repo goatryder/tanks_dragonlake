@@ -33,6 +33,12 @@ public:
 		}
 	}
 
+	/** clear collision detection set, can be used on level change */
+	static void ClearTickQueue()
+	{
+		TickQueue.clear();
+	}
+
 	/** calls onTick for each tick object in TickQueue */
 	static void Tick(unsigned int DeltaTime);
 };

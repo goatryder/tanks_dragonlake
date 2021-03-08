@@ -17,12 +17,7 @@ Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, Direction Dir, int Sp
 	Owner->AddCollidableToIgnore(this);
 
 	this->Position = Position;
-	SpriteObj->SetPosition(Position);
-	
-	Size = SpriteObj->GetSize();
-
-	EnableCollsion();
-	EnableTick();
+	// SpriteObj->SetPosition(Position);	
 }
 
 Bullet::~Bullet()
@@ -53,11 +48,19 @@ void Bullet::onCollide(RenderBase* Other, CollisionFilter Filter)
 			Damagable->onDamage(Damage, GetDirectionOposite(Dir));
 		}
 
-		onDestroy();
+		Destroy();
 	}
 }
 
-void Bullet::onDestroy()
+void Bullet::Initialize()
+{
+	SpriteInit();
+	EnableCollsion();
+	EnableRender();
+	EnableTick();
+}
+
+void Bullet::Destroy()
 {
 	if (Owner != nullptr)
 	{
@@ -65,14 +68,25 @@ void Bullet::onDestroy()
 	}
 
 	DisableTick();
-	RenderBase::onDestroy();
+	RenderBase::Destroy();
 	
 	PRINTF(PrintColor::Red, "delete %s", GetName());
 
 	delete this;
 }
 
-Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bSetRenderEnable)
+void Bullet::SpriteInit()
+{
+	SpriteObj->CreateSprite();
+	SetSize(SpriteObj->GetSize());
+
+	VecInt2D SpawnPositionAdjusted = Position - SpriteObj->GetOppositeSidePosition(Dir);
+	this->Position = SpawnPositionAdjusted;
+	SpriteObj->SetPosition(SpawnPositionAdjusted);
+
+}
+
+Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bInitialize)
 {
 	const char* ResourcePath;
 
@@ -94,18 +108,18 @@ Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direct
 
 	SpriteEntity* SpriteObj = new SpriteEntity(ResourcePath);
 	
-	VecInt2D SpawnLocation = Position - SpriteObj->GetOppositeSidePosition(Direction);
+	// VecInt2D SpawnLocation = Position - SpriteObj->GetOppositeSidePosition(Direction);
 
-	Bullet* SpawnedBullet = new Bullet(SpriteObj, SpawnLocation, Direction, BULLET_SPEED_SLOW, BULLET_DAMAGE_LOW, Owner);
+	Bullet* SpawnedBullet = new Bullet(SpriteObj, Position, Direction, BULLET_SPEED_SLOW, BULLET_DAMAGE_LOW, Owner);
 
 	std::string Name = Owner->GetName();
 	Name += "_bullet_" + std::to_string(BulletIndex);
 
 	SpawnedBullet->SetName(Name);
 
-	if (bSetRenderEnable)
+	if (bInitialize)
 	{
-		SpawnedBullet->EnableRender();
+		SpawnedBullet->Initialize();
 	}
 
 	BulletIndex++;

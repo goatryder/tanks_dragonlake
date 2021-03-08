@@ -1,36 +1,49 @@
 #include "SpriteFlipFlop.h"
 #include "Framework.h"
 
-SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImagePathFlip)
-	: SpriteEntity(ResourceImagePathFlip)
-{
-}
-
 SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImagePathFlip, const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs)
 	: SpriteEntity(ResourceImagePathFlip)
 {
 	ResourceImagePathSibling = ResourceImagePathFlop;
-
-	SpriteFlipFlop::CreateSprite();  // call implementation of this class explicitly
-
 	FlipFlopTime = FlipFlopTimeMs;
 }
 
 SpriteFlipFlop::~SpriteFlipFlop()
 {
-	SpriteFlipFlop::DestroySprite();  // call implementation of this class explicitly
+	DestroySprite();
 }
 
-void SpriteFlipFlop::FlopSpriteInitLazy(const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs)
+
+void SpriteFlipFlop::Initialize()
 {
-	if (SpriteObjSibling != nullptr) // already initialized
-		return;
+	SpriteEntity::Initialize();
 
-	ResourceImagePathSibling = ResourceImagePathFlop;
+	EnableTick();
+}
 
-	SpriteFlipFlop::CreateSprite();  // call implementation of this class explicitly
+void SpriteFlipFlop::Destroy()
+{
+	DisableTick();
+	SpriteEntity::Destroy();
 
-	FlipFlopTime = FlipFlopTimeMs;
+	delete this;
+}
+
+inline void SpriteFlipFlop::CreateSprite()
+{
+	SpriteEntity::CreateSprite();
+
+	SpriteObjSibling = createSprite(ResourceImagePathSibling);
+}
+
+inline void SpriteFlipFlop::DestroySprite()
+{
+	SpriteEntity::DestroySprite();
+
+	if (SpriteObjSibling != nullptr)
+	{
+		destroySprite(SpriteObjSibling);
+	}
 }
 
 void SpriteFlipFlop::onRender()
@@ -38,7 +51,7 @@ void SpriteFlipFlop::onRender()
 	if (SpriteObj == nullptr)
 		return;
 
-	if (SpriteObjSibling == nullptr) // probably initialized as SprityEntity, act accordingly
+	if (SpriteObjSibling == nullptr)
 	{
 		drawSprite(SpriteObj, Position.X, Position.Y);
 		return;
@@ -47,27 +60,6 @@ void SpriteFlipFlop::onRender()
 	Sprite* CurrentSpriteObj = bFlipFlop ? SpriteObj : SpriteObjSibling;
 	{
 		drawSprite(CurrentSpriteObj, Position.X, Position.Y);
-	}
-}
-
-void SpriteFlipFlop::onDestroy()
-{
-	DisableTick();
-	SpriteEntity::onDestroy();
-
-	delete this;
-}
-
-inline void SpriteFlipFlop::CreateSprite()
-{
-	SpriteObjSibling = createSprite(ResourceImagePathSibling);
-}
-
-inline void SpriteFlipFlop::DestroySprite()
-{
-	if (SpriteObjSibling != nullptr)
-	{
-		destroySprite(SpriteObjSibling);
 	}
 }
 

@@ -6,16 +6,10 @@ Phoenix::Phoenix(SpriteEntity* SpriteObj, VecInt2D Position)
 	: SpriteObj(SpriteObj)
 {
 	this->Position = Position;
-
 	SpriteObj->SetPosition(Position);
 
-	SetSize(SpriteObj->GetSize());
-
 	SetHealth(1);
-
 	SetName("Phoenix");
-
-	EnableCollsion();
 }
 
 Phoenix::~Phoenix()
@@ -24,7 +18,7 @@ Phoenix::~Phoenix()
 
 void Phoenix::onDead()
 {
-	onDestroy();
+	Destroy();
 }
 
 void Phoenix::onRender()
@@ -32,26 +26,42 @@ void Phoenix::onRender()
 	SpriteObj->onRender();
 }
 
-void Phoenix::onDestroy()
+void Phoenix::Destroy()
 {
-	RenderBase::onDestroy();
+	RenderBase::Destroy();
 
 	PRINTF(PrintColor::Red, "delete %s", GetName());
 	
 	delete this;
 }
 
-Phoenix* Phoenix::SpawnPhoenix(VecInt2D Position, Anchor Anchor, const char* ResourcePath, bool bSetRenderEnable)
+void Phoenix::Initialize()
 {
+	SpriteInit();
+	EnableRender();
+	EnableCollsion();
+}
+
+void Phoenix::SpriteInit()
+{
+	SpriteObj->CreateSprite();
+	SetSize(SpriteObj->GetSize());
+}
+
+Phoenix* Phoenix::SpawnPhoenix(VecInt2D Position, Anchor Anchor, const char* ResourcePath, bool bInitialize)
+{
+	// hack to get anchor offset
+	VecInt2D PhoenixSpriteSize(GAME_CHUNK_W, GAME_CHUNK_H);
+
 	SpriteEntity* PhoenixSprite = new SpriteEntity(ResourcePath);
-	Position -= GetAnchorOffset(PhoenixSprite->GetSize(), Anchor);
+	Position -= GetAnchorOffset(PhoenixSpriteSize, Anchor);
 
 	Phoenix* SpawnedPhoenix = new Phoenix(PhoenixSprite, Position);
 
 
-	if (bSetRenderEnable)
+	if (bInitialize)
 	{
-		SpawnedPhoenix->EnableRender();
+		SpawnedPhoenix->Initialize();
 	}
 
 	return SpawnedPhoenix;

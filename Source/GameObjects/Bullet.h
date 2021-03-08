@@ -28,14 +28,17 @@ public:
 
 	Tank* GetOwner() const { return Owner; }
 
-	virtual void onTick(unsigned int DeltaTime) override;
+	virtual void onTick(unsigned int DeltaTime) override final;
 
-	virtual void onRender() override;
-	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override;
-	virtual void onDestroy() override;
+	virtual void onRender() override final;
+	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override final;
+	virtual void Initialize() override final;
+	virtual void Destroy() override final;
+
+	void SpriteInit();
 
 public:
 
 	static int BulletIndex;
-	static Bullet* SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bSetRenderEnable = true);
+	static Bullet* SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bInitialize = true);
 };

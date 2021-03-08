@@ -47,6 +47,12 @@ public:
 		}
 	}
 
+	/** clear collision detection set, can be used on level change */
+	static void ClearCheckCollisionSet()
+	{
+		CollidableSet.clear();
+	}
+
 	/** calls onCollide() for each unique pair of objects that collides with overlap filter. */
 	static void CheckCollisionsAllBlock();
 

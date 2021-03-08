@@ -12,17 +12,18 @@ public:
 	SpriteEntity(const char* ResourceImagePath);
 	~SpriteEntity();
 
+	virtual void Initialize() override;
 	virtual void onRender() override;
-
-protected:
-
-	const char* ResourceImagePath;
-	Sprite* SpriteObj;
 
 	inline virtual void CreateSprite();
 	inline virtual void DestroySprite();
 
+protected:
+
+	const char* ResourceImagePath;
+	Sprite* SpriteObj = nullptr;
+
 public:
 
-	static SpriteEntity* SpawnBasicSprite(const char* ResourceImagePath, VecInt2D Position, bool bSetRenderEnable = true);
+	static SpriteEntity* SpawnBasicSprite(const char* ResourceImagePath, VecInt2D Position, bool bInitialize = false);
 };

@@ -16,20 +16,18 @@ TankSpawner::TankSpawner(std::vector<TankSpawnPoint> SpawnPoints, int TankSpawnN
 {
 	SpawnRateAccomulated = 0;
 	TankSpawnNum = 0;
-
-	EnableTick();
 }
 
 TankSpawner::~TankSpawner()
 {
 }
 
-void TankSpawner::onDestroy()
+void TankSpawner::Destroy()
 {
 	DisableTick();
 
-	RenderBase::onDestroy();
-
+	RenderBase::Destroy();
+	 
 	PRINTF(PrintColor::Red, "delete %s", GetName());
 
 	delete this;
@@ -52,6 +50,11 @@ void TankSpawner::onRender()
 {
 }
 
+void TankSpawner::Initialize()
+{
+	EnableTick();
+}
+
 TankSpawnPoint& TankSpawner::ChooseSpawnPoint()
 {
 	int RandomIndex = rand() % SpawnPoints.size();
@@ -67,11 +70,11 @@ void TankSpawner::SpawnTank(TankSpawnPoint& SpawnPoint)
 
 	if (TankSpawnNum >= TankSpawnNumMax)
 	{
-		onDestroy();
+		Destroy();
 	}
 }
 
-TankSpawner* TankSpawner::CreateBasicTankSpawnerCorners(bool bSetRenderEnable)
+TankSpawner* TankSpawner::CreateBasicTankSpawnerCorners(bool bInitialize)
 {
 	std::vector<TankSpawnPoint> CornerSpawnPoints = {
 		TankSpawnPoint::TopLeftSpawnPoint,
@@ -85,9 +88,9 @@ TankSpawner* TankSpawner::CreateBasicTankSpawnerCorners(bool bSetRenderEnable)
 	std::string Name = "tank_spawner_" + std::to_string(SpawnerCount);
 	Spawner->SetName(Name);
 
-	if (bSetRenderEnable)
+	if (bInitialize)
 	{
-		Spawner->EnableRender();
+		Spawner->Initialize();
 	}
 
 	return Spawner;

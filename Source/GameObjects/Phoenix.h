@@ -16,12 +16,17 @@ public:
 protected:
 
 	SpriteEntity* SpriteObj;
-	
+
+public:
+
 	virtual void onDead() override;
 
 	virtual void onRender() override;
-	virtual void onDestroy() override;
+	virtual void Destroy() override;
+	virtual void Initialize() override;
+
+	void SpriteInit();
 
 public:
-	static Phoenix* SpawnPhoenix(VecInt2D Position, Anchor Anchor = Anchor::TOP_LEFT, const char* ResourcePath = PHOENIX_PNG, bool bSetRenderEnable = true);
+	static Phoenix* SpawnPhoenix(VecInt2D Position, Anchor Anchor = Anchor::TOP_LEFT, const char* ResourcePath = PHOENIX_PNG, bool bInitialize = false);
 };

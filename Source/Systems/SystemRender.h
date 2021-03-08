@@ -35,6 +35,12 @@ public:
 		}
 	}
 
+	/** Clear objects from render queue, can be used on level change */
+	static void ClearRenderQueue()
+	{
+		RenderQueue.clear();
+	}
+
 	/** calls onRender() for each RenderBase in RenderQueue */
 	static void Render();
 };

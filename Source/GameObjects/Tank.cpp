@@ -14,30 +14,21 @@ Tank::Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, Spri
 	: Left(Left), Right(Right), Up(Up), Down(Down), Speed(Speed), MoveAnimSpeed(MoveAnimSpeed)
 {
 	SetHealth(Health);
-
-	SetSize(Left->GetSize());
 	SetPosition(Position);
 
 	ChangeCurrentDirectionSprite(Direction);
 
 	Left->SetFlipFlopTime(MoveAnimSpeed);
 	Left->SetAutoFlipFlopEnable(false);
-	Left->EnableTick();
 	
 	Right->SetFlipFlopTime(MoveAnimSpeed);
 	Right->SetAutoFlipFlopEnable(false);
-	Right->EnableTick();
 	
 	Up->SetFlipFlopTime(MoveAnimSpeed);
 	Up->SetAutoFlipFlopEnable(false);
-	Up->EnableTick();
 	
 	Down->SetFlipFlopTime(MoveAnimSpeed);
 	Down->SetAutoFlipFlopEnable(false);
-	Down->EnableTick();
-	
-	EnableCollsion();
-	EnableTick();
 }
 
 Tank::~Tank()
@@ -98,6 +89,7 @@ void Tank::MoveEnd(Direction DirectionTo)
 	StopMoveAnim();
 }
 
+// @ToDo: when chane direction, position offseted a little bit (can be because sweep)
 void Tank::Move(unsigned int DeltaTime)
 {
 	if (!bCanMove)
@@ -134,7 +126,7 @@ void Tank::onDead()
 
 	PRINTF(PrintColor::Green, "%s died", GetName());
 
-	onDestroy();
+	Destroy();
 }
 
 void Tank::onTick(unsigned int DeltaTime)
@@ -158,30 +150,58 @@ void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
 
 }
 
-void Tank::onDestroy()
+void Tank::Initialize()
 {
-	Left->onDestroy();
-	Right->onDestroy();
-	Up->onDestroy();
-	Down->onDestroy();
+	InitSprite();
+	EnableCollsion();
+	EnableTick();
+	EnableRender();
+}
+
+void Tank::Destroy()
+{
+	Left->Destroy();
+	Right->Destroy();
+	Up->Destroy();
+	Down->Destroy();
 
 	DisableTick();
 
-	RenderBase::onDestroy();
+	RenderBase::Destroy();
 
 	PRINTF(PrintColor::Red, "delete %s", GetName());
 
 	delete this;
 }
 
-Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bSetRenderEnable)
+void Tank::InitSprite()
+{
+	Up->CreateSprite();
+	Up->EnableTick();
+
+	Down->CreateSprite();
+	Down->EnableTick();
+
+	Right->CreateSprite();
+	Right->EnableTick();
+
+	Left->CreateSprite();
+	Left->EnableTick();
+
+	SetSize(Left->GetSize());
+}
+
+Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bInitialize)
 {
 	SpriteFlipFlop* Left = new SpriteFlipFlop(TANK_LEFT_0, TANK_LEFT_1);
 	SpriteFlipFlop* Right = new SpriteFlipFlop(TANK_RIGHT_0, TANK_RIGHT_1);
 	SpriteFlipFlop* Up = new SpriteFlipFlop(TANK_UP_0, TANK_UP_1);
 	SpriteFlipFlop* Down = new SpriteFlipFlop(TANK_DOWN_0, TANK_DOWN_1);
 
-	Position -= GetAnchorOffset(Left->GetSize(), Anchor);
+	// hack to get tank to set anchor before Initialization
+	VecInt2D TankSize(TANK_W, TANK_H);
+
+	Position -= GetAnchorOffset(TankSize, Anchor);
 
 	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction, 
 		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
@@ -189,9 +209,9 @@ Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor
 	std::string Name = "tank_basic_" + std::to_string(TankCount);
 	SpawnedTank->SetName(Name);
 
-	if (bSetRenderEnable)
+	if (bInitialize)
 	{
-		SpawnedTank->EnableRender();
+		SpawnedTank->Initialize();
 	}
 
 	TankCount++;
@@ -199,14 +219,17 @@ Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor
 	return SpawnedTank;
 }
 
-Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bSetRenderEnable)
+Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bInitialize)
 {
 	SpriteFlipFlop* Left = new SpriteFlipFlop(TANK_EB_LEFT_0, TANK_EB_LEFT_1);
 	SpriteFlipFlop* Right = new SpriteFlipFlop(TANK_EB_RIGHT_0, TANK_EB_RIGHT_1);
 	SpriteFlipFlop* Up = new SpriteFlipFlop(TANK_EB_UP_0, TANK_EB_UP_1);
 	SpriteFlipFlop* Down = new SpriteFlipFlop(TANK_EB_DOWN_0, TANK_EB_DOWN_1);
 
-	Position -= GetAnchorOffset(Left->GetSize(), Anchor);
+	// hack to get tank to set anchor before Initialization
+	VecInt2D TankSize(TANK_W, TANK_H);
+
+	Position -= GetAnchorOffset(TankSize, Anchor);
 
 	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction,
 		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
@@ -214,9 +237,9 @@ Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor A
 	std::string Name = "tank_enemy_basic_" + std::to_string(TankCount);
 	SpawnedTank->SetName(Name);
 
-	if (bSetRenderEnable)
+	if (bInitialize)
 	{
-		SpawnedTank->EnableRender();
+		SpawnedTank->Initialize();
 	}
 
 	TankCount++;

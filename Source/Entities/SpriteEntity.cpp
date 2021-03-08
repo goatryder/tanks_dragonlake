@@ -5,15 +5,18 @@
 SpriteEntity::SpriteEntity(const char* ResourceImagePath)
 	: ResourceImagePath(ResourceImagePath)
 {
-	SpriteEntity::CreateSprite();  // call implementation of this class explicitly
-	
-	InitSizeBySprite(SpriteObj);
 }
 
 // destructor
 SpriteEntity::~SpriteEntity()
 {
-	SpriteEntity::DestroySprite(); // call implementation of this class explicitly
+	DestroySprite();
+}
+
+void SpriteEntity::Initialize()
+{
+	CreateSprite();
+	EnableRender();
 }
 
 // wrappers
@@ -30,6 +33,7 @@ void SpriteEntity::onRender()
 void SpriteEntity::CreateSprite()
 {
 	SpriteObj = createSprite(ResourceImagePath);
+	InitSizeBySprite(SpriteObj);
 }
 
 void SpriteEntity::DestroySprite()
@@ -40,14 +44,14 @@ void SpriteEntity::DestroySprite()
 	}
 }
 
-SpriteEntity* SpriteEntity::SpawnBasicSprite(const char* ResourceImagePath, VecInt2D Position, bool bSetRenderEnable)
+SpriteEntity* SpriteEntity::SpawnBasicSprite(const char* ResourceImagePath, VecInt2D Position, bool bInitialize)
 {
 	SpriteEntity* SpawnedSprite = new SpriteEntity(ResourceImagePath);
 	SpawnedSprite->SetPosition(Position);
 
-	if (bSetRenderEnable)
+	if (bInitialize)
 	{
-		SpawnedSprite->EnableRender();
+		SpawnedSprite->Initialize();
 	}
 
 	return SpawnedSprite;

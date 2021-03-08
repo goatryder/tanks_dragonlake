@@ -65,6 +65,9 @@ constexpr auto PHOENIX_PNG =			"E:\\DragonLake\\tanks_dragonlake\\Content\\phoen
 #define GAME_CHUNK_W					16 * 2  // orig game 2x scaled
 #define GAME_CHUNK_H					16 * 2  // orig game 2x scaled
 
+#define TANK_W							13 * 2  // orig game 2x scaled
+#define TANK_H							13 * 2  // orig game 2x scaled
+
 
 // Game Logic consts
 

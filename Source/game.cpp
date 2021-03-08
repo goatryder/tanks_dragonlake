@@ -7,10 +7,13 @@
 #include "Systems/SystemCollision.h"
 
 #include "Entities/SpriteEntity.h"
-#include "GameObjects/Tank.h"
-#include "GameObjects/BrickBlock.h"
+//#include "GameObjects/Tank.h"
+//#include "GameObjects/BrickBlock.h"
 #include "GameObjects/TankSpawner.h"
 #include "GameObjects/Phoenix.h"
+#include "GameObjects/BrickBase.h"
+
+#include "GameObjects/LevelStruct.h"
 
 #include "Helpers/DebugPrint.h"
 
@@ -33,41 +36,49 @@ public:
 		fullscreen = false;
 	}
 
-	Tank* TankTest = nullptr;
+	LevelStruct Level;
 
 	virtual bool Init() 
 	{
+		Level = LevelStruct::BasicLevel;
+		// Level.InitializeLevel();
+		
+		// ---- test
 		// BG
-		SpriteEntity::SpawnBasicSprite(BG_IMAGE_PATH, VecInt2D(0, 0));
+		SpriteEntity::SpawnBasicSprite(BG_IMAGE_PATH, VecInt2D(), true);
+
+		// TankSpawner
+		// TankSpawner::CreateBasicTankSpawnerCorners(true);
 
 		// Brick
 		//BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0));
-		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0 + 64));
+		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 32, GAME_AREA_H0 + 64), true);
 		//BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 32, GAME_AREA_H0));
-		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H0));
+		/*BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H0));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H1 - 64));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W1 - 64, GAME_AREA_H1 - 96));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_MID_W, GAME_AREA_H1 - 96));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_MID_W - 32, GAME_AREA_H1 - 96));
 
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 64, GAME_AREA_H1 - 128));
-		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 128, GAME_AREA_H1 - 128));
-		
-		// base
-		Phoenix::SpawnPhoenix(VecInt2D(GAME_AREA_MID_W, GAME_AREA_H1), Anchor::BOTTOM);
+		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 128, GAME_AREA_H1 - 128));*/
 
-		// Enemy tank spawner
-		TankSpawner::CreateBasicTankSpawnerCorners(true);
+		// BrickBase::SpawnBaseBrick(VecInt2D(GAME_AREA_W1 - 32, GAME_AREA_H0), BRICK_BASE, 1, true);
 
-		// Tank
-		TankTest = Tank::SpawnTankBasic(VecInt2D(GAME_AREA_MID_W + 64, GAME_AREA_MID_H + 64), Direction::UP);
+		// Phoenix
+		VecInt2D BasePosition(GAME_AREA_MID_W, GAME_AREA_H1);
+		Phoenix::SpawnPhoenix(BasePosition, Anchor::BOTTOM, PHOENIX_PNG, true);
+
+		// TANK
+		Level.PlayerTank->Initialize();
+		// ----
 
 		return true;
 	}
 
 	virtual void Close() 
 	{
-
+		// Level.DestroyLevel();
 	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,9 +159,9 @@ public:
 
 	virtual void onMouseButtonClick(FRMouseButton button, bool isReleased) 
 	{
-		if (button == FRMouseButton::LEFT && !isReleased && TankTest != nullptr)
+		if (button == FRMouseButton::LEFT && !isReleased && Level.PlayerTank != nullptr)
 		{
-			TankTest->Fire();
+			Level.PlayerTank->Fire();
 		}
 	}
 
@@ -160,36 +171,36 @@ public:
 		{
 			// PRINT(PrintColor::Yellow, "Pressed RIGHT");
 			
-			if (TankTest != nullptr)
+			if (Level.PlayerTank != nullptr)
 			{
-				TankTest->MoveBegin(Direction::RIGHT);
+				Level.PlayerTank->MoveBegin(Direction::RIGHT);
 			}
 		}
 		else if (k == FRKey::LEFT)
 		{
 			// PRINT(PrintColor::Yellow, "Pressed LEFT");
 
-			if (TankTest != nullptr)
+			if (Level.PlayerTank != nullptr)
 			{
-				TankTest->MoveBegin(Direction::LEFT);
+				Level.PlayerTank->MoveBegin(Direction::LEFT);
 			}
 		}
 		else if (k == FRKey::UP)
 		{
 			// PRINT(PrintColor::Yellow, "Pressed UP");
 
-			if (TankTest != nullptr)
+			if (Level.PlayerTank != nullptr)
 			{
-				TankTest->MoveBegin(Direction::UP);
+				Level.PlayerTank->MoveBegin(Direction::UP);
 			}
 		}
 		else
 		{
 			// PRINT(PrintColor::Yellow, "Pressed DOWN");
 
-			if (TankTest != nullptr)
+			if (Level.PlayerTank != nullptr)
 			{
-				TankTest->MoveBegin(Direction::DOWN);
+				Level.PlayerTank->MoveBegin(Direction::DOWN);
 			}
 		}
 	}
@@ -200,36 +211,36 @@ public:
 		{
 			// PRINT(PrintColor::Yellow, "Released RIGHT");
 
-			if (TankTest != nullptr)
+			if (Level.PlayerTank != nullptr)
 			{
-				TankTest->MoveEnd(Direction::RIGHT);
+				Level.PlayerTank->MoveEnd(Direction::RIGHT);
 			}
 		}
 		else if (k == FRKey::LEFT)
 		{
 			// PRINT(PrintColor::Yellow, "Released LEFT");
 
-			if (TankTest != nullptr)
+			if (Level.PlayerTank != nullptr)
 			{
-				TankTest->MoveEnd(Direction::LEFT);
+				Level.PlayerTank->MoveEnd(Direction::LEFT);
 			}
 		}
 		else if (k == FRKey::UP)
 		{
 			// PRINT(PrintColor::Yellow, "Released UP");
 
-			if (TankTest != nullptr)
+			if (Level.PlayerTank != nullptr)
 			{
-				TankTest->MoveEnd(Direction::UP);
+				Level.PlayerTank->MoveEnd(Direction::UP);
 			}
 		}
 		else
 		{
 			// PRINT(PrintColor::Yellow, "Released DOWN");
 
-			if (TankTest != nullptr)
+			if (Level.PlayerTank != nullptr)
 			{
-				TankTest->MoveEnd(Direction::DOWN);
+				Level.PlayerTank->MoveEnd(Direction::DOWN);
 			}
 
 		}

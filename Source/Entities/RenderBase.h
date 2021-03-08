@@ -43,7 +43,9 @@ public:
 	
 	~RenderBase() {}
 
-	virtual void onDestroy()
+	/** Initialize object, can be used for EnableTick(), EnableCollision() */
+	virtual void Initialize() {}
+	virtual void Destroy()
 	{
 		if (bCollisionEnabled) DisableCollision();
 		if (bRenderEnabled) DisableRender();

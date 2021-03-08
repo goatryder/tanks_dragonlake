@@ -44,10 +44,11 @@ protected:
 
 public:
 
-	virtual void onTick(unsigned int DeltaTime) override;
-	virtual void onRender() override;
-	virtual void onDestroy() override;
+	virtual void onTick(unsigned int DeltaTime) override final;
+	virtual void onRender() override final;
+	virtual void Destroy() override final;
+	virtual void Initialize() override final;
 	
 	static int SpawnerCount;
-	static TankSpawner* CreateBasicTankSpawnerCorners(bool bSetRenderEnable = true);
+	static TankSpawner* CreateBasicTankSpawnerCorners(bool Initialize = false);
 };
