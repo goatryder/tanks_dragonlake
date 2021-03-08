@@ -10,14 +10,18 @@
 
 // #include "../Helpers/DebugPrint.h"
 
-// using in GameObjects spawn position adjusting
+// using in GameObjects spawn position adjusting // @ToDO TOP LEFT BOTTOM RIGHT
 enum class Anchor
 {
 	TOP_LEFT,
 	TOP_RIGHT,
 	BOTTOM_LEFT,
 	BOTTOM_RIGHT,
-	CENTER
+	CENTER,
+	TOP,
+	BOTTOM,
+	LEFT,
+	RIGHT
 };
 
 // simplest collision filter, used in setPosition()

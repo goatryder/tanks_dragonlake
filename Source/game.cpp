@@ -10,6 +10,7 @@
 #include "GameObjects/Tank.h"
 #include "GameObjects/BrickBlock.h"
 #include "GameObjects/TankSpawner.h"
+#include "GameObjects/Phoenix.h"
 
 #include "Helpers/DebugPrint.h"
 
@@ -52,6 +53,9 @@ public:
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 64, GAME_AREA_H1 - 128));
 		BrickBlock::SpawnBrickBlockSolid(VecInt2D(GAME_AREA_W0 + 128, GAME_AREA_H1 - 128));
 		
+		// base
+		Phoenix::SpawnPhoenix(VecInt2D(GAME_AREA_MID_W, GAME_AREA_H1), Anchor::BOTTOM);
+
 		// Enemy tank spawner
 		TankSpawner::CreateBasicTankSpawnerCorners(true);
 

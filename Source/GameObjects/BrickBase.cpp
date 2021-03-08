@@ -50,10 +50,6 @@ void BrickBase::onRender()
 	SpriteObj->onRender();
 }
 
-void BrickBase::onCollide(RenderBase* Other, CollisionFilter Filter)
-{
-}
-
 void BrickBase::onDestroy()
 {
 	if (Owner != nullptr)

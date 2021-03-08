@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Entities/TickInterface.h"
 #include "../Entities/RenderBase.h"
 #include "HealthInterface.h"
 
@@ -27,7 +26,6 @@ public:
 	virtual void onDead() override;
 
 	virtual void onRender() override;
-	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override;
 	virtual void onDestroy() override;
 
 public:

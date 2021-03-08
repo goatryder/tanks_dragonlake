@@ -39,6 +39,8 @@ constexpr auto TANK_EB_LEFT_1 =			"E:\\DragonLake\\tanks_dragonlake\\Content\\ta
 constexpr auto TANK_EB_RIGHT_0 =		"E:\\DragonLake\\tanks_dragonlake\\Content\\tank_enemy_base\\tank_e_b_right_0.png";
 constexpr auto TANK_EB_RIGHT_1 =		"E:\\DragonLake\\tanks_dragonlake\\Content\\tank_enemy_base\\tank_e_b_right_1.png";
 
+// Base
+constexpr auto PHOENIX_PNG =			"E:\\DragonLake\\tanks_dragonlake\\Content\\phoenix.png";
 
 // Game Sizes conts
 
