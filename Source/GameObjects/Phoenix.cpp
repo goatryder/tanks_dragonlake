@@ -2,13 +2,15 @@
 #include "../Helpers/DebugPrint.h"
 #include "../Entities/SpriteEntity.h"
 
+#include "LevelStruct.h"
+
 Phoenix::Phoenix(SpriteEntity* SpriteObj, VecInt2D Position)
 	: SpriteObj(SpriteObj)
 {
 	this->Position = Position;
 	SpriteObj->SetPosition(Position);
 
-	SetHealth(1);
+	SetHealth(1, true);
 	SetName("Phoenix");
 }
 
@@ -18,6 +20,17 @@ Phoenix::~Phoenix()
 
 void Phoenix::onDead()
 {
+	LevelStruct* LevelOwner = GetLevel();
+
+	if (LevelOwner != nullptr)
+	{
+		if (!(LevelOwner->LevelPhoenix == this))
+		{
+			LevelOwner->bBaseIsDestroyed = true;
+			LevelOwner->LevelPhoenix = nullptr;
+		}
+	}
+
 	Destroy();
 }
 
@@ -31,7 +44,7 @@ void Phoenix::Destroy()
 	RenderBase::Destroy();
 
 	PRINTF(PrintColor::Red, "delete %s", GetName());
-	
+
 	delete this;
 }
 

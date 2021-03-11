@@ -1,5 +1,8 @@
 #include "LevelStruct.h"
 
+#include "../Entities/SpriteEntity.h"
+#include "BrickBlock.h"
+
 LevelStruct CreateBasicLevelStruct()
 {
 	VecInt2D ChunkZero(GAME_AREA_OFFSET_W, GAME_AREA_OFFSET_H);
@@ -12,20 +15,24 @@ LevelStruct CreateBasicLevelStruct()
 
 	VecInt2D BasePosition(GAME_AREA_MID_W, GAME_AREA_H1);
 
-	VecInt2D PlayerSpawnPosition = BasePosition - ChunkOffset * 2;
+	TankSpawnPoint PlayerSpawnPoint(BasePosition - ChunkOffset_X * 2, Direction::UP, Anchor::BOTTOM);
 
-	Tank* PlayerTank = Tank::SpawnTankBasic(PlayerSpawnPosition, Direction::UP);
+	Tank* PlayerTank = Tank::SpawnTankBasic(PlayerSpawnPoint);
 
 	Phoenix* PhoenixBase = Phoenix::SpawnPhoenix(BasePosition, Anchor::BOTTOM);
 
-	TankSpawner* TankSpawner = TankSpawner::CreateBasicTankSpawnerCorners();
+	int EnemyTankSpawnNum = TANK_SPAWN_NUM_DEFAULT;
+
+	TankSpawner* TankSpawner = TankSpawner::SpawnBasicTankSpawnerCorners(EnemyTankSpawnNum, TANK_SPAWN_RATE_DEFAULT);
 
 	SpriteEntity* BG = SpriteEntity::SpawnBasicSprite(BG_IMAGE_PATH, VecZero);
 
-	std::vector<RenderBase*> RenderQueue = { 
+	BG->SetName("BackGround");
+
+	std::list<RenderBase*> RenderQueue = {
 		
 		BG,
-		/*
+		
 		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 0 + ChunkOffset_Y * 0),
 		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 0 + ChunkOffset_Y * 1),
 		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 0 + ChunkOffset_Y * 2),
@@ -63,17 +70,55 @@ LevelStruct CreateBasicLevelStruct()
 		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 10 + ChunkOffset_Y * 4),
 
 
-		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 6),
-		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 6 + ChunkOffset_X * 2),
-		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 6 + ChunkOffset_X * 3),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 7),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 7 + ChunkOffset_X * 2),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 7 + ChunkOffset_X * 3),
+		
+		BrickBlock::SpawnBrickBlockSolid(ChunkOffset_Y * 8 + ChunkLastOffset_X),
+		BrickBlock::SpawnBrickBlockSolid(ChunkOffset_Y * 8 - ChunkOffset_X * 2 + ChunkLastOffset_X),
+		BrickBlock::SpawnBrickBlockSolid(ChunkOffset_Y * 8 - ChunkOffset_X * 3 + ChunkLastOffset_X),
 
-		BrickBlock::SpawnBrickBlockSolid(-ChunkZero - ChunkOffset_Y * 6 + ChunkLastOffset_X),
-		BrickBlock::SpawnBrickBlockSolid(-ChunkZero - ChunkOffset_Y * 6 - ChunkOffset_X * 2 + ChunkLastOffset_X),
-		BrickBlock::SpawnBrickBlockSolid(-ChunkZero - ChunkOffset_Y * 6 - ChunkOffset_X * 3 + ChunkLastOffset_X)
-		*/
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 6 + ChunkOffset_X * 5),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 6 + ChunkOffset_X * 7),
+
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 8 + ChunkOffset_X * 5),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 8 + ChunkOffset_X * 7),
+
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 9 + ChunkOffset_X * 5),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 9 + ChunkOffset_X * 7),
+
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 8 + ChunkOffset_X * 6),
+
+		// around base
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 11 + ChunkOffset_X * 7),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 11 + ChunkOffset_X * 6),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 11 + ChunkOffset_X * 5),
+
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 12 + ChunkOffset_X * 7),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset_Y * 12 + ChunkOffset_X * 5),
+		//
+
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 0 + ChunkOffset_Y * 8),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 0 + ChunkOffset_Y * 9),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 0 + ChunkOffset_Y * 10),
+
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 2 + ChunkOffset_Y * 8),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 2 + ChunkOffset_Y * 9),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 2 + ChunkOffset_Y * 10),
+
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 8 + ChunkOffset_Y * 8),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 8 + ChunkOffset_Y * 9),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 8 + ChunkOffset_Y * 10),
+
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 10 + ChunkOffset_Y * 8),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 10 + ChunkOffset_Y * 9),
+		BrickBlock::SpawnBrickBlockSolid(ChunkZero + ChunkOffset + ChunkOffset_X * 10 + ChunkOffset_Y * 10),
 	};
 
-	return LevelStruct(PlayerTank, PhoenixBase, TankSpawner, RenderQueue);
+	return LevelStruct(
+		PlayerSpawnPoint, PLAYER_TANK_RESPAWN_NUM, PlayerTank, 
+		EnemyTankSpawnNum, TankSpawner, 
+		PhoenixBase, RenderQueue);
 }
 
 LevelStruct LevelStruct::BasicLevel = CreateBasicLevelStruct();

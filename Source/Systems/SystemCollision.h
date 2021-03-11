@@ -29,6 +29,12 @@ protected:
 
 public:
 
+	static SystemCollision& Instance()
+	{
+		static SystemCollision* Instance = new SystemCollision();
+		return *Instance;
+	}
+
 	/** add to collision detection set */
 	static void AddRenderObj(RenderBase* RenderObj)
 	{
@@ -48,10 +54,7 @@ public:
 	}
 
 	/** clear collision detection set, can be used on level change */
-	static void ClearCheckCollisionSet()
-	{
-		CollidableSet.clear();
-	}
+	static void ClearCheckCollisionSet(bool bDestroy = false);
 
 	/** calls onCollide() for each unique pair of objects that collides with overlap filter. */
 	static void CheckCollisionsAllBlock();
@@ -59,4 +62,8 @@ public:
 	/** DEPRECATED calls onCollide() for each collided object */
 	static void CheckCollision(RenderBase* Collidable, VecInt2D CollidablePosition, CollisionFilter Filter, 
 		CollisionCheckResult &ResultOut = CollisionCheckResult::DefaultResultOut, bool bCheckNextReleventPos = false);
+
+public:
+	SystemCollision() {}
+	~SystemCollision() {}
 };

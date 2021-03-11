@@ -17,7 +17,6 @@ Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, Direction Dir, int Sp
 	Owner->AddCollidableToIgnore(this);
 
 	this->Position = Position;
-	// SpriteObj->SetPosition(Position);	
 }
 
 Bullet::~Bullet()
@@ -81,9 +80,9 @@ void Bullet::SpriteInit()
 	SetSize(SpriteObj->GetSize());
 
 	VecInt2D SpawnPositionAdjusted = Position - SpriteObj->GetOppositeSidePosition(Dir);
+
 	this->Position = SpawnPositionAdjusted;
 	SpriteObj->SetPosition(SpawnPositionAdjusted);
-
 }
 
 Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direction, bool bInitialize)
@@ -107,8 +106,6 @@ Bullet* Bullet::SpawnBulletSlow(Tank* Owner, VecInt2D Position, Direction Direct
 	}
 
 	SpriteEntity* SpriteObj = new SpriteEntity(ResourcePath);
-	
-	// VecInt2D SpawnLocation = Position - SpriteObj->GetOppositeSidePosition(Direction);
 
 	Bullet* SpawnedBullet = new Bullet(SpriteObj, Position, Direction, BULLET_SPEED_SLOW, BULLET_DAMAGE_LOW, Owner);
 

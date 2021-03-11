@@ -29,6 +29,8 @@ public:
 
 	virtual void onTick(unsigned int DeltaTime) {}
 
+	virtual void Destroy() {}
+
 protected:
 
 	bool bTickEnabled = false;

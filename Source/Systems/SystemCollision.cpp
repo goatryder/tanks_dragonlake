@@ -135,3 +135,16 @@ void SystemCollision::CheckCollision(RenderBase* Collidable, VecInt2D Collidable
 		ResultOut.LastCollided = LastCollided;
 	}
 }
+
+void SystemCollision::ClearCheckCollisionSet(bool bDestroy)
+{
+	if (bDestroy)
+	{
+		for (auto& TickInterfaceInstance : CollidableSet)
+		{
+			TickInterfaceInstance->Destroy();
+		}
+	}
+
+	CollidableSet.clear();
+}

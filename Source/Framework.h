@@ -4,9 +4,11 @@
 
 // Bonus for any found bugs in the framework!
 
-// not bug, just observation: sprite creation can't be done before Init()
+// sprite creation can't be done before Init() but it's ok
 
 // full screen min 640 480
+
+// drawSprite heavy cpu load af (just comment drawSprite in sprite wrapper and core load decreased dramatically)
 
 class Sprite;
 

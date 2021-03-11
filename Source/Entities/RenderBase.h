@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 #include "GlobalConstants.h"
 #include "Structs/VecInt2D.h"
@@ -8,7 +9,9 @@
 #include "../Systems/SystemCollision.h"
 #include "../Systems/SystemRender.h"
 
-// #include "../Helpers/DebugPrint.h"
+#include "../Helpers/DebugPrint.h"
+
+struct LevelStruct;
 
 // using in GameObjects spawn position adjusting // @ToDO TOP LEFT BOTTOM RIGHT
 enum class Anchor
@@ -70,6 +73,7 @@ public:
 			// Handle Position on next collision check
 			NextPosition = NewPosition;
 			bNextPositionRelevent = true;
+			bPrevPositionRelevent = false;
 			return;
 		}
 		
@@ -111,20 +115,24 @@ public:
 		//const char* CollidedName = LastCollisionResult.bCollided ? LastCollisionResult.LastCollided->GetName() : "None";
 		//PRINTF(PrintColor::Red, "HandleSweepPosition old x=%d y=%d new x=%d, y=%d collided %d with %s",
 		//	Position.X, Position.Y, NewPosition.X, NewPosition.Y, CollisionResult.bCollided, CollidedName);
-
+		
 		if (CollisionResult.bCollided)
 		{
+			//PRINTF(PrintColor::White, "Collided");
 			SetPositionBlockClamped(NewPosition, CollisionResult.LastCollided);
 			return;
 		}
 
 		if (!IsPositionInGameBound(NewPosition))
 		{
+			//PRINTF(PrintColor::White, "Wall");
 			SetPositionBoundClamped(NewPosition);
 			onCollide(Wall, CollisionFilter::CF_BLOCK);
 			return;
 		}
-
+		
+		PrevPosition = Position;
+		bPrevPositionRelevent = true;
 		Position = NewPosition;
 	}
 
@@ -233,6 +241,7 @@ public:
 		Name = NewName;
 	}
 
+	// @ToDo: Fix error
 	/** Check if Collidable in CollisionIgnored list */
 	bool IsInCollisionIgnore(RenderBase* Collidable, bool bCheckOtherIgonreList = false)
 	{
@@ -265,10 +274,15 @@ public:
 		}
 	}
 
-	std::vector<RenderBase*> CollisionIgnored;
+	std::vector<RenderBase*> CollisionIgnored = {};
 	CollisionCheckResult LastCollisionResult;
 	VecInt2D NextPosition;
+	VecInt2D PrevPosition;
 	bool bNextPositionRelevent = false;
+	bool bPrevPositionRelevent = false;
+
+	LevelStruct* GetLevel() const { return Level; }
+	void SetLevel(LevelStruct* Level) { this->Level = Level; }
 
 protected:
 
@@ -279,6 +293,8 @@ protected:
 
 	bool bCollisionEnabled = false;
 	bool bRenderEnabled = false;
+
+	LevelStruct* Level = nullptr;
 
 	static RenderBase* Wall;  // hack to check game bound walls collision
 

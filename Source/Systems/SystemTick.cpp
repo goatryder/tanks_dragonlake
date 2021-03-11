@@ -3,7 +3,7 @@
 #include "../Entities/TickInterface.h"
 
 // Initialize TickQueue
-std::vector<TickInterface*> SystemTick::TickQueue = {};
+std::list<TickInterface*> SystemTick::TickQueue = {};
 
 void SystemTick::Tick(unsigned int DeltaTime)
 {
@@ -11,4 +11,18 @@ void SystemTick::Tick(unsigned int DeltaTime)
 	{
 		TickInterfaceInstance->onTick(DeltaTime);
 	}
+}
+
+// check if multiple inheritence call renderBase Destroy
+void SystemTick::ClearTickQueue(bool bDestroy)
+{
+	if (bDestroy)
+	{
+		for (auto& TickInterfaceInstance : TickQueue)
+		{
+			TickInterfaceInstance->Destroy();
+		}
+	}
+
+	TickQueue.clear();
 }

@@ -13,7 +13,7 @@ BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position, int Health)
 	: SpriteObj(SpriteObj)
 {
 	this->Position = Position;
-	SetHealth(Health);
+	SetHealth(Health, true);
 }
 
 BrickBase::~BrickBase()

@@ -13,6 +13,7 @@ public:
 	~SpriteEntity();
 
 	virtual void Initialize() override;
+	virtual void Destroy() override;
 	virtual void onRender() override;
 
 	inline virtual void CreateSprite();

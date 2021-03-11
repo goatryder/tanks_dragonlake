@@ -1,25 +1,36 @@
 #pragma once
 
-#include <vector>
-#include "../Entities/SpriteEntity.h"
-#include "BrickBlock.h"
 #include "Tank.h"
 #include "TankSpawner.h"
 #include "Phoenix.h"
+
+class GameMode;
 
 struct LevelStruct
 {
 public:
 	LevelStruct() {}
-	LevelStruct(Tank* PlayerTank, Phoenix* LevelPhoenix, TankSpawner* LevelTankSpawner, std::vector<RenderBase*> RenderQueue)
-		: PlayerTank(PlayerTank), LevelPhoenix(LevelPhoenix), LevelTankSpawner(LevelTankSpawner), RenderQueue(RenderQueue) {}
-	
+	LevelStruct(TankSpawnPoint PlayerSpawnPoint, int PlayerRespawnNum, Tank* PlayerTank, 
+		int SpawnEnemyTankNum, TankSpawner* LevelEnemyTankSpawner, 
+		Phoenix* LevelPhoenix,  std::list<RenderBase*> RenderQueue)
+		: PlayerSpawnPoint(PlayerSpawnPoint), PlayerRespawnNum(PlayerRespawnNum), PlayerTank(PlayerTank),
+		EnemyTankKillLeft(SpawnEnemyTankNum), LevelEnemyTankSpawner(LevelEnemyTankSpawner), 
+		LevelPhoenix(LevelPhoenix),  RenderQueue(RenderQueue) {}
+
+	GameMode* GameModeOwner = nullptr;
+
+	TankSpawnPoint PlayerSpawnPoint;
+	int PlayerRespawnNum = 1;
 	Tank* PlayerTank = nullptr;
+	
+	bool bBaseIsDestroyed = false;
 	Phoenix* LevelPhoenix = nullptr;
-	TankSpawner* LevelTankSpawner = nullptr;
+
+	int EnemyTankKillLeft = 20;
+	TankSpawner* LevelEnemyTankSpawner = nullptr;
 
 	/** RenderQueue, store RenderBase instanses here, PlayerTank, LevelPhoenix, LevelTanksSpawner should not be there */
-	std::vector<RenderBase*> RenderQueue = {};
+	std::list<RenderBase*> RenderQueue = {};
 
 	/** call Initialize() for all RenderObj in RenderQueue, then for PlayerTank, LevelPhoenix, LeverTankSpawner */
 	void InitializeLevel()
@@ -29,36 +40,50 @@ public:
 			if (RenderBaseInstance != nullptr)
 			{
 				RenderBaseInstance->Initialize();
+				RenderBaseInstance->SetLevel(this);
 			}
 		}
 
-		PlayerTank->Initialize();
-		LevelPhoenix->Initialize();
-		LevelTankSpawner->Initialize();
+		if (PlayerTank != nullptr)
+		{
+			PlayerTank->Initialize();
+			PlayerTank->SetLevel(this);
+		}
+
+		if (LevelPhoenix != nullptr)
+		{
+			LevelPhoenix->Initialize();
+			LevelPhoenix->SetLevel(this);
+		}
+
+		if (LevelEnemyTankSpawner != nullptr)
+		{
+			LevelEnemyTankSpawner->Initialize();
+			LevelEnemyTankSpawner->SetLevel(this);
+		}
 	}
 
-	/** call Destroy() for all RenderObj in RenderQueue, then for PlayerTank, LevelPhoenix, LeverTankSpawner 
-	  * bForce, clear SystemTick, SystemCollision, SystemRender after Destroy();
-	  */
-	void DestroyLevel(bool bForce = false)
+	/** Clear Render Collision Tick Containers */
+	void DestroyLevel(bool bForceDestroy = false)
 	{
-		for (auto& RenderBaseInstance : RenderQueue)
+		for (auto& RenderInstance : RenderQueue)
 		{
-			if (RenderBaseInstance != nullptr)
-			{
-				RenderBaseInstance->Destroy();
-			}
+			RenderInstance->Destroy();
 		}
 
-		PlayerTank->Destroy();
-		LevelPhoenix->Destroy();
-		LevelTankSpawner->Destroy();
+		SystemRender::ClearRenderQueue(bForceDestroy);
+		SystemCollision::ClearCheckCollisionSet(bForceDestroy);
+		SystemTick::ClearTickQueue(bForceDestroy);
+	}
 
-		if (bForce)
+	void RemoveFromLevel(RenderBase* LevelObj)
+	{
+		std::list<RenderBase*>::iterator Iter;
+		Iter = std::find(RenderQueue.begin(), RenderQueue.end(), LevelObj);
+
+		if (Iter != RenderQueue.end())
 		{
-			SystemRender::ClearRenderQueue();
-			SystemCollision::ClearCheckCollisionSet();
-			SystemTick::ClearTickQueue();
+			RenderQueue.erase(Iter);
 		}
 	}
 

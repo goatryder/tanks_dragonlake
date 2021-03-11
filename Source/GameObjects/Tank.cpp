@@ -6,6 +6,12 @@
 
 #include "Bullet.h"
 
+#include "GameMode.h"
+
+TankSpawnPoint TankSpawnPoint::BottomLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_AREA_H1), Direction::UP, Anchor::BOTTOM_LEFT);
+TankSpawnPoint TankSpawnPoint::BottomRightSpawnPoint(VecInt2D(GAME_AREA_W1, GAME_AREA_H1), Direction::UP, Anchor::BOTTOM_RIGHT);
+TankSpawnPoint TankSpawnPoint::TopLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_AREA_H0), Direction::DOWN, Anchor::TOP_LEFT);
+TankSpawnPoint TankSpawnPoint::TopRightSpawnPoint(VecInt2D(GAME_AREA_W1, GAME_AREA_H0), Direction::DOWN, Anchor::TOP_RIGHT);
 
 int Tank::TankCount = 0;
 
@@ -13,10 +19,11 @@ Tank::Tank(SpriteFlipFlop* Left, SpriteFlipFlop* Right, SpriteFlipFlop* Up, Spri
 	VecInt2D Position, Direction Direction, int Health, int Speed, int MoveAnimSpeed)
 	: Left(Left), Right(Right), Up(Up), Down(Down), Speed(Speed), MoveAnimSpeed(MoveAnimSpeed)
 {
-	SetHealth(Health);
+	SetHealth(Health, true);
 	SetPosition(Position);
 
-	ChangeCurrentDirectionSprite(Direction);
+	SetNextDirectionSprite(Direction);
+	ChangeCurrentDirectionSprite();
 
 	Left->SetFlipFlopTime(MoveAnimSpeed);
 	Left->SetAutoFlipFlopEnable(false);
@@ -35,28 +42,33 @@ Tank::~Tank()
 {
 }
 
-void Tank::ChangeCurrentDirectionSprite(Direction DirectionTo)
+void Tank::SetNextDirectionSprite(Direction DirectionTo)
 {
-	if (DirectionTo == CurrentDirection) return;
+	if (DirectionTo == NextDirection) return;
 
-	CurrentDirection = DirectionTo;
+	NextDirection = DirectionTo;
 
-	switch (CurrentDirection)
+	switch (NextDirection)
 	{
 	case Direction::RIGHT:
-		CurrentActiveSprite = Right;
+		NextActiveSprite = Right;
 		break;
 	case Direction::DOWN:
-		CurrentActiveSprite = Down;
+		NextActiveSprite = Down;
 		break;
 	case Direction::LEFT:
-		CurrentActiveSprite = Left;
+		NextActiveSprite = Left;
 		break;
 	default:
-		CurrentActiveSprite = Up;
+		NextActiveSprite = Up;
 		break;
 	}
+}
 
+void Tank::ChangeCurrentDirectionSprite()
+{
+	CurrentDirection = NextDirection;
+	CurrentActiveSprite = NextActiveSprite;
 	CurrentActiveSprite->SetPosition(Position);
 }
 
@@ -72,16 +84,16 @@ void Tank::StopMoveAnim()
 
 void Tank::MoveBegin(Direction DirectionTo)
 {
-	bCanMove = true;
-
-	ChangeCurrentDirectionSprite(DirectionTo);
+	SetNextDirectionSprite(DirectionTo);
 
 	PlayMoveAnim();
+
+	bCanMove = true;
 }
 
 void Tank::MoveEnd(Direction DirectionTo)
 {
-	if (DirectionTo != CurrentDirection)  // do not execute when two key are pressed then one of them is released
+	if (DirectionTo != NextDirection)  // do not execute when two key are pressed then one of them is released
 		return;
 
 	bCanMove = false;
@@ -89,16 +101,23 @@ void Tank::MoveEnd(Direction DirectionTo)
 	StopMoveAnim();
 }
 
-// @ToDo: when chane direction, position offseted a little bit (can be because sweep)
 void Tank::Move(unsigned int DeltaTime)
 {
 	if (!bCanMove)
 		return;
 
-	VecInt2D PositionDelta = DirectionToVec(CurrentDirection) * (((Speed * DeltaTime) >> 10) + 1);
-	
-	SetPosition(Position + PositionDelta, true);
-	CurrentActiveSprite->SetPosition(Position);
+	if (NextDirection != CurrentDirection && bPrevPositionRelevent)
+	{
+		SetPosition(PrevPosition);
+	}
+	else
+	{
+		VecInt2D PositionDelta = DirectionToVec(CurrentDirection) * (((Speed * DeltaTime) >> 10) + 1);
+		VecInt2D NewPosition = GetPosition() + PositionDelta;
+		SetPosition(NewPosition, true);
+	}
+
+	ChangeCurrentDirectionSprite();
 }
 
 void Tank::Fire()
@@ -110,7 +129,9 @@ void Tank::Fire()
 
 	PRINTF(PrintColor::Green, "%s shooted", GetName());
 
-	ActiveBullet = Bullet::SpawnBulletSlow(this, GetSidePosition(CurrentDirection), CurrentDirection);
+	VecInt2D BulletSpawnPosition = GetSidePosition(CurrentDirection);
+
+	ActiveBullet = Bullet::SpawnBulletSlow(this, BulletSpawnPosition, CurrentDirection);
 }
 
 void Tank::onDamage(int Damage, Direction From)
@@ -122,10 +143,49 @@ void Tank::onDamage(int Damage, Direction From)
 
 void Tank::onDead()
 {
-	HealthInterface::onDead();
-
 	PRINTF(PrintColor::Green, "%s died", GetName());
 
+	LevelStruct* LevelOwner = GetLevel();
+	
+	if (LevelOwner != nullptr) 
+	{
+		if (LevelOwner->PlayerTank == this)  // check if player tank
+		{
+			LevelOwner->PlayerRespawnNum--;
+
+			if (LevelOwner->PlayerRespawnNum >= 0)
+			{
+				Respawn(LevelOwner->PlayerSpawnPoint);  // respawn player tank
+
+				PRINTF(PrintColor::Green, "%s respawned", GetName());
+
+				return;
+			}
+			else // remove from level, controller and destroy
+			{
+				LevelOwner->PlayerTank = nullptr;
+				
+				GameMode* LevelGameMode = LevelOwner->GameModeOwner;
+
+				if (LevelGameMode != nullptr)
+				{
+					LevelGameMode->PlayerController.PlayerTank = nullptr;
+				}
+			}
+		}
+		else  // if it's not player tank - it's enemy tank, decrement kill left counter, remove from ai controller
+		{
+			LevelOwner->EnemyTankKillLeft--;
+			
+			GameMode* LevelGameMode = LevelOwner->GameModeOwner;
+			
+			if (LevelGameMode != nullptr)
+			{
+				LevelGameMode->AIControlller.RemoveTank(this);
+			}
+		}
+	}
+	
 	Destroy();
 }
 
@@ -147,7 +207,6 @@ void Tank::onRender()
 void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
 	// PRINTF(PrintColor::Green, "TANK %s Collided With: %s", GetName(), Other->GetName());
-
 }
 
 void Tank::Initialize()
@@ -156,6 +215,21 @@ void Tank::Initialize()
 	EnableCollsion();
 	EnableTick();
 	EnableRender();
+
+	LevelStruct* LevelOwner = GetLevel();
+
+	if (LevelOwner != nullptr)
+	{
+		if (!(LevelOwner->PlayerTank == this)) // if tank not player tank, it's should be enemy tank, add to ai controlller
+		{
+			GameMode* LevelGameMode = LevelOwner->GameModeOwner;
+
+			if (LevelGameMode != nullptr)
+			{
+				LevelGameMode->AIControlller.AddTank(this);
+			}
+		}
+	}
 }
 
 void Tank::Destroy()
@@ -191,7 +265,7 @@ void Tank::InitSprite()
 	SetSize(Left->GetSize());
 }
 
-Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bInitialize)
+Tank* Tank::SpawnTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize)
 {
 	SpriteFlipFlop* Left = new SpriteFlipFlop(TANK_LEFT_0, TANK_LEFT_1);
 	SpriteFlipFlop* Right = new SpriteFlipFlop(TANK_RIGHT_0, TANK_RIGHT_1);
@@ -201,9 +275,9 @@ Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor
 	// hack to get tank to set anchor before Initialization
 	VecInt2D TankSize(TANK_W, TANK_H);
 
-	Position -= GetAnchorOffset(TankSize, Anchor);
+	VecInt2D TankSpawnPosition = SpawnPoint.SpawnPosition - GetAnchorOffset(TankSize, SpawnPoint.SpawnAnchor);
 
-	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction, 
+	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, TankSpawnPosition, SpawnPoint.SpawnDirection,
 		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
 
 	std::string Name = "tank_basic_" + std::to_string(TankCount);
@@ -219,7 +293,7 @@ Tank* Tank::SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor
 	return SpawnedTank;
 }
 
-Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor, bool bInitialize)
+Tank* Tank::SpawnEnemyTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize)
 {
 	SpriteFlipFlop* Left = new SpriteFlipFlop(TANK_EB_LEFT_0, TANK_EB_LEFT_1);
 	SpriteFlipFlop* Right = new SpriteFlipFlop(TANK_EB_RIGHT_0, TANK_EB_RIGHT_1);
@@ -229,9 +303,9 @@ Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor A
 	// hack to get tank to set anchor before Initialization
 	VecInt2D TankSize(TANK_W, TANK_H);
 
-	Position -= GetAnchorOffset(TankSize, Anchor);
+	VecInt2D TankSpawnPosition = SpawnPoint.SpawnPosition - GetAnchorOffset(TankSize, SpawnPoint.SpawnAnchor);
 
-	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, Position, Direction,
+	Tank* SpawnedTank = new Tank(Left, Right, Up, Down, TankSpawnPosition, SpawnPoint.SpawnDirection,
 		TANK_HEALTH_BASIC, TANK_SPEED_SLOW, TANK_SPEED_SLOW_ANIM_TIME);
 	
 	std::string Name = "tank_enemy_basic_" + std::to_string(TankCount);
@@ -244,5 +318,17 @@ Tank* Tank::SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor A
 
 	TankCount++;
 
+	PRINTF(PrintColor::Green, "%s spawned at X=%d Y=%d", SpawnedTank->GetName(), TankSpawnPosition.X, TankSpawnPosition.Y);
+
 	return SpawnedTank;
+}
+
+void Tank::Respawn(TankSpawnPoint RespawnPoint)
+{
+	VecInt2D RespawnPosition = RespawnPoint.SpawnPosition - GetAnchorOffset(Size, RespawnPoint.SpawnAnchor);
+
+	SetPosition(RespawnPosition);
+	SetNextDirectionSprite(RespawnPoint.SpawnDirection);
+	ChangeCurrentDirectionSprite();
+	SetHealth(GetBaseHealth());
 }

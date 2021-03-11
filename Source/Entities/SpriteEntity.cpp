@@ -1,5 +1,6 @@
 #include "SpriteEntity.h"
 
+#include "../GameObjects/LevelStruct.h"
 
 // constructor
 SpriteEntity::SpriteEntity(const char* ResourceImagePath)
@@ -17,6 +18,18 @@ void SpriteEntity::Initialize()
 {
 	CreateSprite();
 	EnableRender();
+}
+
+void SpriteEntity::Destroy()
+{
+	LevelStruct* LevelOwner = GetLevel();
+
+	if (LevelOwner != nullptr)
+	{
+		LevelOwner->RemoveFromLevel(this);
+	}
+	
+	RenderBase::Destroy();
 }
 
 // wrappers

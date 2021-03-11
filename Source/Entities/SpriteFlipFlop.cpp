@@ -10,7 +10,6 @@ SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImagePathFlip, const char* Re
 
 SpriteFlipFlop::~SpriteFlipFlop()
 {
-	DestroySprite();
 }
 
 

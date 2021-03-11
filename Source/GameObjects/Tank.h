@@ -8,6 +8,25 @@ class SpriteFlipFlop;
 
 class Bullet;
 
+struct LevelStruct;
+
+struct TankSpawnPoint
+{
+	VecInt2D SpawnPosition;
+	Direction SpawnDirection = Direction::UP;
+	Anchor SpawnAnchor = Anchor::TOP_LEFT;
+
+	TankSpawnPoint() {}
+
+	TankSpawnPoint(VecInt2D Position, Direction Direction, Anchor Anchor)
+		: SpawnPosition(Position), SpawnDirection(Direction), SpawnAnchor(Anchor) {}
+
+	static TankSpawnPoint TopLeftSpawnPoint;
+	static TankSpawnPoint TopRightSpawnPoint;
+	static TankSpawnPoint BottomLeftSpawnPoint;
+	static TankSpawnPoint BottomRightSpawnPoint;
+};
+
 class Tank : public RenderBase, public TickInterface, public HealthInterface
 {
 public:
@@ -32,7 +51,11 @@ protected:
 	Direction CurrentDirection;
 	SpriteFlipFlop* CurrentActiveSprite;
 
-	void ChangeCurrentDirectionSprite(Direction DirectionTo);
+	Direction NextDirection;
+	SpriteFlipFlop* NextActiveSprite;
+
+	void ChangeCurrentDirectionSprite();
+	void SetNextDirectionSprite(Direction DirectionTo);
 
 	bool bCanMove = false;
 
@@ -69,6 +92,8 @@ public:
 public:
 
 	static int TankCount;
-	static Tank* SpawnTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bInitialize = false);
-	static Tank* SpawnEnemyTankBasic(VecInt2D Position, Direction Direction, Anchor Anchor = Anchor::TOP_LEFT, bool bInitialize = false);
+	static Tank* SpawnTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize = false);
+	static Tank* SpawnEnemyTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize = false);
+
+	void Respawn(TankSpawnPoint RespawnPoint);
 };

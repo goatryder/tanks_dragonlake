@@ -4,6 +4,8 @@
 
 #include "../Helpers/DebugPrint.h"
 
+#include "LevelStruct.h"
+
 int BrickBlock::BlockCount = 0;
 
 
@@ -28,6 +30,7 @@ BrickBlock::BrickBlock(brickArr BrickArr, VecInt2D Position)
 	}
 }
 
+// @ToDo: try to render in baseBlock and see how it hit's perfomance
 void BrickBlock::onRender()
 {
 	for (int i = 0; i < BrickArrSize; i++)
@@ -49,11 +52,6 @@ void BrickBlock::Initialize()
 
 		if (Brick != nullptr)
 		{
-			BricksToDestroyNum++; // if cell not empty, increment Brick number to destroy
-
-			Brick->Owner = this;
-			Brick->OwnerIndex = i;
-
 			Brick->SpriteInit();
 			Brick->EnableCollsion();
 
@@ -72,6 +70,13 @@ void BrickBlock::Destroy()
 {
 	RenderBase::Destroy();
 
+	LevelStruct* LevelOwner = GetLevel();
+	
+	if (LevelOwner != nullptr)
+	{
+		LevelOwner->RemoveFromLevel(this);
+	}
+
 	PRINTF(PrintColor::Green, "[block] delete %s", GetName());
 
 	delete this;
@@ -83,6 +88,8 @@ void BrickBlock::OwnedBrickDestroyed(int Index)
 	Brick = nullptr;
 	
 	BricksToDestroyNum--;
+
+	// PRINTF(PrintColor::Green, "[block] OwnedBrickDestroyed %d", BricksToDestroyNum);
 
 	if (BricksToDestroyNum == 0)  // last brick in array destroyed
 	{

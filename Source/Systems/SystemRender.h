@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <list>
 #include <algorithm>
 
 class RenderBase;
@@ -13,9 +13,15 @@ class SystemRender
 {
 protected:
 
-	static std::vector<RenderBase*> RenderQueue;
+	static std::list<RenderBase*> RenderQueue;
 
 public:
+
+	static SystemRender& Instance()
+	{
+		static SystemRender* Instance = new SystemRender();
+		return *Instance;
+	}
 
 	/** add RenderBase instance to RenderQueue */
 	static void AddRenderObj(RenderBase* RenderObj)
@@ -26,9 +32,9 @@ public:
 	/* remove RenderBase instance from RenderQueue */
 	static void RemoveRenderObj(RenderBase* RenderObj)
 	{
-		std::vector<RenderBase*>::iterator Iter;
+		std::list<RenderBase*>::iterator Iter;
 		Iter = std::find(RenderQueue.begin(), RenderQueue.end(), RenderObj);
-		
+
 		if (Iter != RenderQueue.end())
 		{
 			RenderQueue.erase(Iter);
@@ -36,13 +42,15 @@ public:
 	}
 
 	/** Clear objects from render queue, can be used on level change */
-	static void ClearRenderQueue()
-	{
-		RenderQueue.clear();
-	}
+	static void ClearRenderQueue(bool bDestroy = false);
 
 	/** calls onRender() for each RenderBase in RenderQueue */
 	static void Render();
+
+public:
+
+	SystemRender() {}
+	~SystemRender() {}
 };
 
 

@@ -9,32 +9,46 @@ public:
 	HealthInterface() {}
 	~HealthInterface() {}
 
+	/** Get Current Health */
 	int GetHealth() const 
 	{ 
 		return Health; 
 	}
-	
-	void SetHealth(int NewHealth)
+
+	/** Get Base Full Health */
+	int GetBaseHealth() const
 	{
-		if (NewHealth < 0)
+		return BaseHealth;
+	}
+	
+	/** Set Health, flag bResetBaseHealth allow to reset base full HP */
+	void SetHealth(int NewHealth, bool bResetBaseHealth = false)
+	{
+
+		if (NewHealth <= 0)
 		{
 			Health = 0;
-		}
+			
+			bIsDead = true;
 
-		Health = NewHealth;
-
-		if (Health == 0)
-		{
 			onDead();
+		}
+		else
+		{
+			Health = NewHealth;
+
+			if (bResetBaseHealth)
+			{
+				BaseHealth = NewHealth;
+				
+				bIsDead = false;
+			}
 		}
 	}
 
 	bool IsDead() const { return bIsDead; }
 
-	virtual void onDead()
-	{
-		bIsDead = true;
-	}
+	virtual void onDead() {}
 
 	virtual void onDamage(int Damage, Direction From)
 	{
@@ -42,7 +56,9 @@ public:
 	}
 
 private:
+
 	int Health = 1;
+	int BaseHealth = 1;
 	bool bIsDead = false;
 
 };

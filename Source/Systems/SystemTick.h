@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <list>
 #include <algorithm>
 
 
@@ -11,9 +11,15 @@ class SystemTick
 {
 protected:
 
-	static std::vector<TickInterface*> TickQueue;
+	static std::list<TickInterface*> TickQueue;
 
 public:
+
+	static SystemTick& Instance()
+	{
+		static SystemTick* Instance = new SystemTick();
+		return *Instance;
+	}
 
 	/** add tick object to TickQueue. called from TickInterface instanses on construct*/
 	static void AddTickObj(TickInterface* TickInterfaceInstance)
@@ -24,7 +30,7 @@ public:
 	/* remove tick object from TickQueue, called from TickInterface instanses on destroy */
 	static void RemoveTickObj(TickInterface* TickInterfaceInstance)
 	{
-		std::vector<TickInterface*>::iterator Iter;
+		std::list<TickInterface*>::iterator Iter;
 		Iter = std::find(TickQueue.begin(), TickQueue.end(), TickInterfaceInstance);
 		
 		if (Iter != TickQueue.end())
@@ -33,12 +39,14 @@ public:
 		}
 	}
 
-	/** clear collision detection set, can be used on level change */
-	static void ClearTickQueue()
-	{
-		TickQueue.clear();
-	}
+	/** clear TickQueue, can be used on level change */
+	static void ClearTickQueue(bool bDestroy = false);
 
 	/** calls onTick for each tick object in TickQueue */
 	static void Tick(unsigned int DeltaTime);
+
+public:
+
+	SystemTick() {}
+	~SystemTick() {}
 };

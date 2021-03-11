@@ -3,10 +3,7 @@
 #include "Tank.h"
 #include "GlobalConstants.h"
 
-TankSpawnPoint TankSpawnPoint::BottomLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_AREA_H1), Direction::UP, Anchor::BOTTOM_LEFT);
-TankSpawnPoint TankSpawnPoint::BottomRightSpawnPoint(VecInt2D(GAME_AREA_W1, GAME_AREA_H1), Direction::UP, Anchor::BOTTOM_RIGHT);
-TankSpawnPoint TankSpawnPoint::TopLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_AREA_H0), Direction::DOWN, Anchor::TOP_LEFT);
-TankSpawnPoint TankSpawnPoint::TopRightSpawnPoint(VecInt2D(GAME_AREA_W1, GAME_AREA_H0), Direction::DOWN, Anchor::TOP_RIGHT);
+#include "LevelStruct.h"
 
 int TankSpawner::SpawnerCount = 0;
 
@@ -26,6 +23,11 @@ void TankSpawner::Destroy()
 {
 	DisableTick();
 
+	LevelStruct* LevelOwner = GetLevel();
+	if (LevelOwner != nullptr)
+	{
+		LevelOwner->LevelEnemyTankSpawner = nullptr;
+	}
 	RenderBase::Destroy();
 	 
 	PRINTF(PrintColor::Red, "delete %s", GetName());
@@ -55,6 +57,7 @@ void TankSpawner::Initialize()
 	EnableTick();
 }
 
+// @ToDo: spawn collision handle
 TankSpawnPoint& TankSpawner::ChooseSpawnPoint()
 {
 	int RandomIndex = rand() % SpawnPoints.size();
@@ -64,17 +67,18 @@ TankSpawnPoint& TankSpawner::ChooseSpawnPoint()
 
 void TankSpawner::SpawnTank(TankSpawnPoint& SpawnPoint)
 {
-	Tank::SpawnEnemyTankBasic(SpawnPoint.SpawnPosition, SpawnPoint.SpawnDirection, SpawnPoint.SpawnAnchor, true);
-
-	TankSpawnNum++;
-
-	if (TankSpawnNum >= TankSpawnNumMax)
+	if (TankSpawnerExhausted())
 	{
 		Destroy();
 	}
-}
+	else
+	{
+		Tank* SpawnedTank = Tank::SpawnEnemyTankBasic(SpawnPoint, true);
+		TankSpawnNum++;
+	}
+};
 
-TankSpawner* TankSpawner::CreateBasicTankSpawnerCorners(bool bInitialize)
+TankSpawner* TankSpawner::SpawnBasicTankSpawnerCorners(int SpawnTankNum, int SpawnRate, bool bInitialize)
 {
 	std::vector<TankSpawnPoint> CornerSpawnPoints = {
 		TankSpawnPoint::TopLeftSpawnPoint,
@@ -83,7 +87,7 @@ TankSpawner* TankSpawner::CreateBasicTankSpawnerCorners(bool bInitialize)
 		TankSpawnPoint::BottomRightSpawnPoint
 	};
 
-	TankSpawner* Spawner = new TankSpawner(CornerSpawnPoints, TANK_SPAWN_NUM_DEFAULT, TANK_SPAWN_RATE_DEFAULT);
+	TankSpawner* Spawner = new TankSpawner(CornerSpawnPoints, SpawnTankNum, SpawnRate);
 
 	std::string Name = "tank_spawner_" + std::to_string(SpawnerCount);
 	Spawner->SetName(Name);

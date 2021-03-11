@@ -3,20 +3,11 @@
 #include "../Entities/TickInterface.h"
 #include "../Entities/RenderBase.h"
 
-struct TankSpawnPoint
-{
-	VecInt2D SpawnPosition;
-	Direction SpawnDirection;
-	Anchor SpawnAnchor;
+#include <vector>
 
-	TankSpawnPoint(VecInt2D Position, Direction Direction, Anchor Anchor)
-		:  SpawnPosition(Position), SpawnDirection(Direction), SpawnAnchor(Anchor) {}
+struct LevelStruct;
 
-	static TankSpawnPoint TopLeftSpawnPoint;
-	static TankSpawnPoint TopRightSpawnPoint;
-	static TankSpawnPoint BottomLeftSpawnPoint;
-	static TankSpawnPoint BottomRightSpawnPoint;
-};
+struct TankSpawnPoint;
 
 /**
  * Tank spawner, can have multiple spawn points, and handle them all
@@ -39,6 +30,8 @@ protected:
 	int TankSpawnNumMax;
 	int TankSpawnNum;
 
+	bool TankSpawnerExhausted() { return TankSpawnNum >= TankSpawnNumMax; }
+
 	TankSpawnPoint& ChooseSpawnPoint();
 	void SpawnTank(TankSpawnPoint& SpawnPoint);
 
@@ -48,7 +41,7 @@ public:
 	virtual void onRender() override final;
 	virtual void Destroy() override final;
 	virtual void Initialize() override final;
-	
+
 	static int SpawnerCount;
-	static TankSpawner* CreateBasicTankSpawnerCorners(bool Initialize = false);
+	static TankSpawner* SpawnBasicTankSpawnerCorners(int SpawnTankNum, int SpawnRate, bool Initialize = false);
 };
