@@ -2,6 +2,8 @@
 #include "../Helpers/DebugPrint.h"
 #include "../Entities/SpriteEntity.h"
 
+#include "Boom.h"
+
 #include "LevelStruct.h"
 
 Phoenix::Phoenix(SpriteEntity* SpriteObj, VecInt2D Position)
@@ -20,6 +22,8 @@ Phoenix::~Phoenix()
 
 void Phoenix::onDead()
 {
+	Boom::SpawnBoomBig(Position);
+
 	LevelStruct* LevelOwner = GetLevel();
 
 	if (LevelOwner != nullptr)

@@ -14,6 +14,7 @@ TankSpawnPoint TankSpawnPoint::BottomLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_
 TankSpawnPoint TankSpawnPoint::BottomRightSpawnPoint(VecInt2D(GAME_AREA_W1, GAME_AREA_H1), Direction::UP, Anchor::BOTTOM_RIGHT);
 TankSpawnPoint TankSpawnPoint::TopLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_AREA_H0), Direction::DOWN, Anchor::TOP_LEFT);
 TankSpawnPoint TankSpawnPoint::TopRightSpawnPoint(VecInt2D(GAME_AREA_W1, GAME_AREA_H0), Direction::DOWN, Anchor::TOP_RIGHT);
+TankSpawnPoint TankSpawnPoint::TopCenterSpawnPoint(VecInt2D(GAME_AREA_W1 / 2, GAME_AREA_H0), Direction::DOWN, Anchor::TOP);
 
 int Tank::TankCount = 0;
 
@@ -128,7 +129,7 @@ void Tank::Fire()
 		return;
 	}
 
-	PRINTF(PrintColor::Green, "%s shooted", GetName());
+	// PRINTF(PrintColor::Green, "%s shooted", GetName());
 
 	VecInt2D BulletSpawnPosition = GetSidePosition(CurrentDirection);
 
@@ -138,7 +139,12 @@ void Tank::Fire()
 void Tank::onDamage(int Damage, Direction From)
 {
 	// PRINTF(PrintColor::Green, "%s recieved %d damage", GetName(), Damage);
-
+	
+	if (FlashyEffectTimer > 0)  // spawn kill protection
+	{
+		return;
+	}
+	
 	HealthInterface::onDamage(Damage, From);
 }
 
@@ -183,6 +189,12 @@ void Tank::onDead()
 			if (LevelGameMode != nullptr)
 			{
 				LevelGameMode->AIControlller.RemoveTank(this);
+
+				if (bDropPickableOnDeath)
+				{
+					PRINTF(PrintColor::Green, "TODO: DROP PICKABLE BOOST");
+				}
+
 			}
 		}
 	}
@@ -200,11 +212,28 @@ void Tank::onTick(unsigned int DeltaTime)
 	{
 		Move(DeltaTime);
 	}
+
+	// FlashyEffect
+	if (FlashyEffect != nullptr)
+	{
+		FlashyEffect->SetPosition(Position);
+
+		if (FlashyEffectTimer > 0)
+		{
+			FlashyEffectTimer -= DeltaTime;
+
+			if (FlashyEffectTimer <= 0)
+			{
+				DisableFlashyEffect();
+			}
+		}
+	}
 }
 
 void Tank::onRender()
 {
 	CurrentActiveSprite->onRender();
+	if (FlashyEffect != nullptr) FlashyEffect->onRender();
 }
 
 void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
@@ -242,6 +271,8 @@ void Tank::Initialize()
 
 void Tank::Destroy()
 {
+	DisableFlashyEffect();
+
 	Left->Destroy();
 	Right->Destroy();
 	Up->Destroy();
@@ -339,4 +370,36 @@ void Tank::Respawn(TankSpawnPoint RespawnPoint)
 	SetNextDirectionSprite(RespawnPoint.SpawnDirection);
 	ChangeCurrentDirectionSprite();
 	SetHealth(GetBaseHealth(), true);
+	
+	if (RESPAWN_PROTECTION_TIME > 0)
+	{
+		PRINTF(PrintColor::Blue, "%s respawn protection %d ms", GetName(), RESPAWN_PROTECTION_TIME);
+		EnableFlashyEffect(RESPAWN_PROTECTION_TIME);
+	}
+}
+
+void Tank::EnableFlashyEffect(unsigned int FlashyTime)
+{
+	FlashyEffect = CreateDefaultFlashyEffect(Position);
+	FlashyEffectTimer = FlashyTime;
+}
+
+void Tank::DisableFlashyEffect()
+{
+	if (FlashyEffect != nullptr)
+	{
+		FlashyEffect->Destroy();
+		FlashyEffect = nullptr;
+	}
+}
+
+SpriteFlipFlop* Tank::CreateDefaultFlashyEffect(VecInt2D Position)
+{
+	SpriteFlipFlop* FlashyEffect = new SpriteFlipFlop(FLASHY_0, FLASHY_1, FLASHY_ANIM_TIME);
+	
+	FlashyEffect->SetPosition(Position);
+	FlashyEffect->CreateSprite();
+	FlashyEffect->EnableTick();
+
+	return FlashyEffect;
 }

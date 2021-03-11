@@ -28,6 +28,9 @@
     <Filter Include="Source Files\GameObjects">
       <UniqueIdentifier>{48eee3a2-9b5a-4069-b49a-201bc0b66dab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ObjectsUI">
+      <UniqueIdentifier>{094a96cf-40d7-4276-9cca-a4d892cfb20d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Entities\SpriteEntity.cpp">
@@ -86,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="Source\GameObjects\Boom.cpp">
       <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectsUI\CountNumUI.cpp">
+      <Filter>Source Files\ObjectsUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectsUI\CountSprite.cpp">
+      <Filter>Source Files\ObjectsUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectsUI\PopUpUI.cpp">
+      <Filter>Source Files\ObjectsUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +172,15 @@
     </ClInclude>
     <ClInclude Include="Source\GameObjects\Boom.h">
       <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectsUI\CountNumUI.h">
+      <Filter>Source Files\ObjectsUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectsUI\CountSpriteUI.h">
+      <Filter>Source Files\ObjectsUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectsUI\PopUpUI.h">
+      <Filter>Source Files\ObjectsUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

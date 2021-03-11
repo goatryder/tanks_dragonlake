@@ -24,7 +24,8 @@ LevelStruct CreateBasicLevelStruct()
 
 	int EnemyTankSpawnNum = TANK_SPAWN_NUM_DEFAULT;
 
-	TankSpawner* TankSpawner = TankSpawner::SpawnBasicTankSpawnerCorners(EnemyTankSpawnNum, TANK_SPAWN_RATE_DEFAULT);
+	TankSpawner* TankSpawner = TankSpawner::SpawnBasicTankSpawnerTop(EnemyTankSpawnNum, 
+		TANK_SPAWN_RATE_DEFAULT, FLASHY_ARRAY_DEFAULT, FLASHY_ARRAY_DEFAULT_SIZE);
 
 	SpriteEntity* BG = SpriteEntity::SpawnBasicSprite(BG_IMAGE_PATH, VecZero);
 

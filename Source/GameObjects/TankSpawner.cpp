@@ -8,8 +8,8 @@
 int TankSpawner::SpawnerCount = 0;
 
 
-TankSpawner::TankSpawner(std::vector<TankSpawnPoint> SpawnPoints, int TankSpawnNumMax, unsigned int SpawnRate)
-	: SpawnPoints(SpawnPoints), TankSpawnNumMax(TankSpawnNumMax), SpawnRate(SpawnRate)
+TankSpawner::TankSpawner(std::vector<TankSpawnPoint> SpawnPoints, int TankSpawnNumMax, unsigned int SpawnRate, std::vector<int>FlashyTankNums)
+	: SpawnPoints(SpawnPoints), TankSpawnNumMax(TankSpawnNumMax), SpawnRate(SpawnRate), FlashyTankNums(FlashyTankNums)
 {
 	SpawnRateAccomulated = 0;
 	TankSpawnNum = 0;
@@ -75,13 +75,26 @@ void TankSpawner::SpawnTank(TankSpawnPoint& SpawnPoint)
 	{
 		Tank* SpawnedTank = Tank::SpawnEnemyTankBasic(SpawnPoint, false);
 		SpawnedTank->SetLevel(GetLevel());
+		
+		// check flashy tank
+		for (int& FlashyIndex : FlashyTankNums)
+		{
+			if (TankSpawnNum == FlashyIndex)
+			{
+				SpawnedTank->EnableFlashyEffect(0);
+				SpawnedTank->bDropPickableOnDeath = true;
+				break;
+			}
+		}
+		
 		SpawnedTank->Initialize();
 		
 		TankSpawnNum++;
 	}
 };
 
-TankSpawner* TankSpawner::SpawnBasicTankSpawnerCorners(int SpawnTankNum, int SpawnRate, bool bInitialize)
+TankSpawner* TankSpawner::SpawnBasicTankSpawnerCorners(int SpawnTankNum, int SpawnRate, const int* FlashyIndexesArr,
+	int FlashyIndexesArrSize, bool bInitialize)
 {
 	std::vector<TankSpawnPoint> CornerSpawnPoints = {
 		TankSpawnPoint::TopLeftSpawnPoint,
@@ -90,7 +103,33 @@ TankSpawner* TankSpawner::SpawnBasicTankSpawnerCorners(int SpawnTankNum, int Spa
 		TankSpawnPoint::BottomRightSpawnPoint
 	};
 
-	TankSpawner* Spawner = new TankSpawner(CornerSpawnPoints, SpawnTankNum, SpawnRate);
+	std::vector<int> FlashyIndexesVec(FlashyIndexesArr, FlashyIndexesArr + FlashyIndexesArrSize);
+
+	TankSpawner* Spawner = new TankSpawner(CornerSpawnPoints, SpawnTankNum, SpawnRate, FlashyIndexesVec);
+
+	std::string Name = "tank_spawner_" + std::to_string(SpawnerCount);
+	Spawner->SetName(Name);
+
+	if (bInitialize)
+	{
+		Spawner->Initialize();
+	}
+
+	return Spawner;
+}
+
+TankSpawner* TankSpawner::SpawnBasicTankSpawnerTop(int SpawnTankNum, int SpawnRate, const int* FlashyIndexesArr, 
+	int FlashyIndexesArrSize, bool bInitialize)
+{
+	std::vector<TankSpawnPoint> CornerSpawnPoints = {
+		TankSpawnPoint::TopLeftSpawnPoint,
+		TankSpawnPoint::TopRightSpawnPoint,
+		TankSpawnPoint::TopCenterSpawnPoint
+	};
+
+	std::vector<int> FlashyIndexesVec(FlashyIndexesArr, FlashyIndexesArr + FlashyIndexesArrSize);
+
+	TankSpawner* Spawner = new TankSpawner(CornerSpawnPoints, SpawnTankNum, SpawnRate, FlashyIndexesVec);
 
 	std::string Name = "tank_spawner_" + std::to_string(SpawnerCount);
 	Spawner->SetName(Name);

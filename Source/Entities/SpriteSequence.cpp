@@ -1,7 +1,5 @@
 #include "SpriteSequence.h"
 
-#include "../Helpers/DebugPrint.h"
-
 
 SpriteSequence::SpriteSequence(std::vector<const char*> ResourceImagePathVec, unsigned int AnimTime, bool bDestroyOnFinish)
 	: SpriteEntity(ResourceImagePathVec[0]), ResourceImagePathVec(ResourceImagePathVec), AnimTime(AnimTime), 
@@ -75,7 +73,6 @@ void SpriteSequence::onTick(unsigned int DeltaTime)
 
 		if (NewSpriteIndex + 1 == SpriteObjVecSize)
 		{
-			// PRINTF(PrintColor::White, "%s Loop complete, should be destroyed now", GetName());
 			bFirstLoopFinish = true;
 		}
 

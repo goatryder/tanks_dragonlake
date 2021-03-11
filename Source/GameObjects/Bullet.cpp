@@ -2,7 +2,7 @@
 
 #include "GlobalConstants.h"
 #include "../Entities/SpriteEntity.h"
-#include "../Helpers/DebugPrint.h"
+// #include "../Helpers/DebugPrint.h"
 
 #include "Tank.h"
 #include "HealthInterface.h"
@@ -73,7 +73,7 @@ void Bullet::Destroy()
 	DisableTick();
 	RenderBase::Destroy();
 	
-	PRINTF(PrintColor::Red, "delete %s", GetName());
+	// PRINTF(PrintColor::Red, "delete %s", GetName());
 
 	delete this;
 }

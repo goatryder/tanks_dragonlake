@@ -17,12 +17,13 @@ class TankSpawner : public RenderBase, public TickInterface
 {
 public:
 
-	TankSpawner(std::vector<TankSpawnPoint> SpawnPoints, int TankSpawnNumMax, unsigned int SpawnRate);
+	TankSpawner(std::vector<TankSpawnPoint> SpawnPoints, int TankSpawnNumMax, unsigned int SpawnRate, std::vector<int>FlashyTankNums);
 	~TankSpawner();
 
 protected:
 
 	std::vector<TankSpawnPoint> SpawnPoints;
+	std::vector<int> FlashyTankNums;
 
 	unsigned int SpawnRate;
 	unsigned int SpawnRateAccomulated;
@@ -43,5 +44,6 @@ public:
 	virtual void Initialize() override final;
 
 	static int SpawnerCount;
-	static TankSpawner* SpawnBasicTankSpawnerCorners(int SpawnTankNum, int SpawnRate, bool Initialize = false);
+	static TankSpawner* SpawnBasicTankSpawnerCorners(int SpawnTankNum, int SpawnRate, const int* FlashyIndexesArr, int FlashyIndexesArrSize, bool bInitialize = false);
+	static TankSpawner* SpawnBasicTankSpawnerTop(int SpawnTankNum, int SpawnRate, const int* FlashyIndexesArr, int FlashyIndexesArrSize, bool bInitialize = false);
 };

@@ -25,6 +25,7 @@ struct TankSpawnPoint
 	static TankSpawnPoint TopRightSpawnPoint;
 	static TankSpawnPoint BottomLeftSpawnPoint;
 	static TankSpawnPoint BottomRightSpawnPoint;
+	static TankSpawnPoint TopCenterSpawnPoint;
 };
 
 class Tank : public RenderBase, public TickInterface, public HealthInterface
@@ -98,4 +99,18 @@ public:
 	static Tank* SpawnEnemyTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize = false);
 
 	void Respawn(TankSpawnPoint RespawnPoint);
+
+public:
+	/** if value > 0, can't damage tank */
+	int FlashyEffectTimer = 0;
+
+	SpriteFlipFlop* FlashyEffect;
+
+	/** enable tank flashy effect, if time == 0 -> permanent flashy */
+	void EnableFlashyEffect(unsigned int FlashyTime);
+	void DisableFlashyEffect();
+	
+	static SpriteFlipFlop* CreateDefaultFlashyEffect(VecInt2D Position);
+
+	bool bDropPickableOnDeath = false;
 };

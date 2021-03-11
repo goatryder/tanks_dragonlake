@@ -46,6 +46,24 @@ constexpr auto BOOM_SMALL_2 =			"X:\\DragonLake\\Tanki\\Content\\boom\\boom_smal
 constexpr auto BOOM_BIG_0 =				"X:\\DragonLake\\Tanki\\Content\\boom\\boom_big_0.png";
 constexpr auto BOOM_BIG_1 =				"X:\\DragonLake\\Tanki\\Content\\boom\\boom_big_1.png";
 
+// Flashy
+constexpr auto FLASHY_0 =				"X:\\DragonLake\\Tanki\\Content\\flashy_0.png";
+constexpr auto FLASHY_1 =				"X:\\DragonLake\\Tanki\\Content\\flashy_1.png";
+
+// Boost
+constexpr auto BOOST_HP =				"X:\\DragonLake\\Tanki\\Content\\tank_hp_boost.png";
+
+// UI
+constexpr auto GAME_OVER =				"X:\\DragonLake\\Tanki\\Content\\UI\\GameOver.png";
+constexpr auto WON =					"X:\\DragonLake\\Tanki\\Content\\UI\\Won.png";
+constexpr auto LOOSE =					"X:\\DragonLake\\Tanki\\Content\\UI\\Loose.png";
+constexpr auto UI_NUM_0 =				"X:\\DragonLake\\Tanki\\Content\\Num\\0.png";
+constexpr auto UI_NUM_1 =				"X:\\DragonLake\\Tanki\\Content\\Num\\1.png";
+constexpr auto UI_NUM_2 =				"X:\\DragonLake\\Tanki\\Content\\Num\\2.png";
+constexpr auto UI_NUM_3 =				"X:\\DragonLake\\Tanki\\Content\\Num\\3.png";
+constexpr auto UI_NUM_4 =				"X:\\DragonLake\\Tanki\\Content\\Num\\4.png";
+constexpr auto UI_NUM_5 =				"X:\\DragonLake\\Tanki\\Content\\Num\\5.png";
+
 
 // Game Sizes conts
 
@@ -94,13 +112,20 @@ constexpr auto BOOM_BIG_1 =				"X:\\DragonLake\\Tanki\\Content\\boom\\boom_big_1
 #define BRICK_BASE_HEALTH				1
 
 #define TANK_SPAWN_NUM_DEFAULT			20
-#define TANK_SPAWN_RATE_DEFAULT			2000 // time in ms
+#define TANK_SPAWN_RATE_DEFAULT			3000 // time in ms
 
 #define PLAYER_TANK_RESPAWN_NUM			5
 
-#define ENEMY_TANK_SLOW_FIRE_RATE		600 // in ms
+#define ENEMY_TANK_SLOW_FIRE_RATE		1000 // in ms
 
 #define ENEMY_TANK_CHANGE_DIRECTION_RATE	600 // in ms
 
 #define BOOM_SMALL_ANIM_TIME			50
 #define BOOM_BIG_ANIM_TIME				80
+
+const int FLASHY_ARRAY_DEFAULT[] = { 3, 10, 17 };
+const int FLASHY_ARRAY_DEFAULT_SIZE = sizeof FLASHY_ARRAY_DEFAULT / sizeof *FLASHY_ARRAY_DEFAULT;
+
+#define FLASHY_ANIM_TIME				100
+
+#define RESPAWN_PROTECTION_TIME			1000  // zero val will disable spawn protection effect

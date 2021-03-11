@@ -4,7 +4,7 @@
 
 #include "BrickBlock.h"
 
-#include "../Helpers/DebugPrint.h"
+//#include "../Helpers/DebugPrint.h"
 
 
 int BrickBase::BrickCount = 0;
@@ -31,7 +31,7 @@ void BrickBase::Destroy()
 
 	RenderBase::Destroy();
 
-	PRINTF(PrintColor::Red, "delete %s", GetName());
+	// PRINTF(PrintColor::Red, "delete %s", GetName());
 
 	delete this;
 }
