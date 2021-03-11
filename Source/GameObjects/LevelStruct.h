@@ -46,20 +46,20 @@ public:
 
 		if (PlayerTank != nullptr)
 		{
-			PlayerTank->Initialize();
 			PlayerTank->SetLevel(this);
+			PlayerTank->Initialize();
 		}
 
 		if (LevelPhoenix != nullptr)
 		{
-			LevelPhoenix->Initialize();
 			LevelPhoenix->SetLevel(this);
+			LevelPhoenix->Initialize();
 		}
 
 		if (LevelEnemyTankSpawner != nullptr)
 		{
-			LevelEnemyTankSpawner->Initialize();
 			LevelEnemyTankSpawner->SetLevel(this);
+			LevelEnemyTankSpawner->Initialize();
 		}
 	}
 

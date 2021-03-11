@@ -2,10 +2,8 @@
 #include "Framework.h"
 
 SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImagePathFlip, const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs)
-	: SpriteEntity(ResourceImagePathFlip)
+	: SpriteEntity(ResourceImagePathFlip), ResourceImagePathSibling(ResourceImagePathFlop), FlipFlopTime(FlipFlopTimeMs)
 {
-	ResourceImagePathSibling = ResourceImagePathFlop;
-	FlipFlopTime = FlipFlopTimeMs;
 }
 
 SpriteFlipFlop::~SpriteFlipFlop()
@@ -24,8 +22,6 @@ void SpriteFlipFlop::Destroy()
 {
 	DisableTick();
 	SpriteEntity::Destroy();
-
-	delete this;
 }
 
 inline void SpriteFlipFlop::CreateSprite()

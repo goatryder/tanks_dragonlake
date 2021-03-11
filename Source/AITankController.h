@@ -2,6 +2,8 @@
 
 #include <map>
 
+#include "Structs/VecInt2D.h"
+
 class Tank;
 class Phoenix;
 struct CollisionCheckResult;
@@ -29,15 +31,15 @@ struct TankBrain
 
 	CollisionCheckResult* LastPostiveCollidedResult = nullptr;
 
-	static int FireRateMin;
-	static int FireRateMax;
+	Direction LastDirection = GetRandomDirection();
 
-	static int ChangeDirectionTimeMin;
-	static int ChangeDirectionTimeMax;
+	static int FireRate;
+
+	static int ChangeDirectionTime;
 
 	TankBrain() {}
 	TankBrain(Tank* BrainOwner) : BrainOwner(BrainOwner) {}
-	~TankBrain() { delete LastPostiveCollidedResult; }
+	~TankBrain() { if (LastPostiveCollidedResult != nullptr) delete LastPostiveCollidedResult; }
 
 };
 
@@ -56,12 +58,6 @@ public:
 	std::map<Tank*, TankBrain> AIControlledTankBrains = {};
 
 	GameMode* GameModeOwner = nullptr;
-
-	/** Update Collective Brain*/
-	void RefreshCollectiveBrain();
-	
-	/** Update each unique brain */
-	void RefreshTankBrains(unsigned int DeltaTime);
 
 	/** Calc Move() of Fire() for each Tank in AIControlledTanks vector */
 	void UpdateTanksBehavior(unsigned int DeltaTime);
@@ -86,8 +82,11 @@ public:
 	/** For now it's should be synchronized with game tick */
 	void onTick(unsigned int DeltaTime)
 	{
-		RefreshCollectiveBrain();
-		RefreshTankBrains(DeltaTime);
+		if (GameModeOwner == nullptr)
+		{
+			return;
+		}
+
 		UpdateTanksBehavior(DeltaTime);
 	}
 };

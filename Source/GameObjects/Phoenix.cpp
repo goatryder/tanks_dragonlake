@@ -24,7 +24,7 @@ void Phoenix::onDead()
 
 	if (LevelOwner != nullptr)
 	{
-		if (!(LevelOwner->LevelPhoenix == this))
+		if (LevelOwner->LevelPhoenix == this)
 		{
 			LevelOwner->bBaseIsDestroyed = true;
 			LevelOwner->LevelPhoenix = nullptr;
@@ -41,6 +41,8 @@ void Phoenix::onRender()
 
 void Phoenix::Destroy()
 {
+	SpriteObj->Destroy();
+
 	RenderBase::Destroy();
 
 	PRINTF(PrintColor::Red, "delete %s", GetName());

@@ -73,7 +73,10 @@ void TankSpawner::SpawnTank(TankSpawnPoint& SpawnPoint)
 	}
 	else
 	{
-		Tank* SpawnedTank = Tank::SpawnEnemyTankBasic(SpawnPoint, true);
+		Tank* SpawnedTank = Tank::SpawnEnemyTankBasic(SpawnPoint, false);
+		SpawnedTank->SetLevel(GetLevel());
+		SpawnedTank->Initialize();
+		
 		TankSpawnNum++;
 	}
 };

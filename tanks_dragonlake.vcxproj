@@ -22,6 +22,8 @@
     <ClCompile Include="Source\Entities\RenderBase.cpp" />
     <ClCompile Include="Source\Entities\SpriteEntity.cpp" />
     <ClCompile Include="Source\Entities\SpriteFlipFlop.cpp" />
+    <ClCompile Include="Source\Entities\SpriteSequence.cpp" />
+    <ClCompile Include="Source\GameObjects\Boom.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\GameObjects\BrickBase.cpp" />
     <ClCompile Include="Source\GameObjects\BrickBlock.cpp" />
@@ -41,9 +43,11 @@
     <ClInclude Include="Source\Entities\RenderBase.h" />
     <ClInclude Include="Source\Entities\SpriteEntity.h" />
     <ClInclude Include="Source\Entities\SpriteFlipFlop.h" />
+    <ClInclude Include="Source\Entities\SpriteSequence.h" />
     <ClInclude Include="source\Entities\TickInterface.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\GameMode.h" />
+    <ClInclude Include="Source\GameObjects\Boom.h" />
     <ClInclude Include="Source\GameObjects\BrickBase.h" />
     <ClInclude Include="Source\GameObjects\BrickBlock.h" />
     <ClInclude Include="Source\GameObjects\Bullet.h" />

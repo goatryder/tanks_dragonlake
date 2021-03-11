@@ -66,6 +66,11 @@ static const VecInt2D VecRight(1, 0);
 static const VecInt2D VecUp(0, -1);
 static const VecInt2D VecDown(0, 1);
 
+inline Direction GetRandomDirection()
+{
+	return static_cast<Direction>(std::rand() % 4);
+}
+
 // fix this
 inline Direction GetDirection(VecInt2D DeltaVec)
 {

@@ -30,6 +30,8 @@ void SpriteEntity::Destroy()
 	}
 	
 	RenderBase::Destroy();
+
+	delete this;
 }
 
 // wrappers

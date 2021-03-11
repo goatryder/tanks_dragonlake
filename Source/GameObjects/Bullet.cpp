@@ -6,6 +6,7 @@
 
 #include "Tank.h"
 #include "HealthInterface.h"
+#include "Boom.h"
 
 int Bullet::BulletIndex = 0;
 
@@ -21,7 +22,6 @@ Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, Direction Dir, int Sp
 
 Bullet::~Bullet()
 {
-	delete SpriteObj;
 }
 
 void Bullet::onTick(unsigned int DeltaTime)
@@ -40,6 +40,8 @@ void Bullet::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
 	if (Filter == CollisionFilter::CF_BLOCK)
 	{
+		Boom::SpawnBoomSmall(Position);
+
 		HealthInterface* Damagable = dynamic_cast<HealthInterface*>(Other);
 
 		if (Damagable != nullptr)
@@ -65,6 +67,8 @@ void Bullet::Destroy()
 	{
 		Owner->ActiveBullet = nullptr;
 	}
+
+	SpriteObj->Destroy();
 
 	DisableTick();
 	RenderBase::Destroy();

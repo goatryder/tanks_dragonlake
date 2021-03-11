@@ -2,12 +2,10 @@
 
 #include "GameMode.h"
 
+#include "Helpers/DebugPrint.h"
 
-int TankBrain::FireRateMin = ENEMY_TANK_SLOW_FIRE_RATE_MIN;
-int TankBrain::FireRateMax = ENEMY_TANK_SLOW_FIRE_RATE_MAX;
-
-int TankBrain::ChangeDirectionTimeMin = ENEMY_TANK_CHANGE_DIRECTION_MIN;
-int TankBrain::ChangeDirectionTimeMax = ENEMY_TANK_CHANGE_DIRECTION_MIN;
+int TankBrain::FireRate = ENEMY_TANK_SLOW_FIRE_RATE;
+int TankBrain::ChangeDirectionTime = ENEMY_TANK_CHANGE_DIRECTION_RATE;
 
 AITankController::AITankController(Tank* PlayerTank, Phoenix* PlayerBase, GameMode* GameModeOwner)
 	: GameModeOwner(GameModeOwner)
@@ -15,65 +13,69 @@ AITankController::AITankController(Tank* PlayerTank, Phoenix* PlayerBase, GameMo
 	CollectiveBrain = TankCollectiveBrain(PlayerTank, PlayerBase);
 }
 
-
-void AITankController::RefreshCollectiveBrain()
-{
-	if (GameModeOwner == nullptr)
-	{
-		return;
-	}
-
-	CollectiveBrain.PlayerTank = GameModeOwner->GetPlayerTank();
-	CollectiveBrain.PlayerBase = GameModeOwner->GetPhoenix();
-}
-
-void AITankController::RefreshTankBrains(unsigned int DeltaTime)
-{
-	/*void RefreshBrain(unsigned int DeltaTime, CollisionCheckResult& NewLastPositibeCollidedResult, bool bCollisionUpdate)
-{
-	
-	TimeSinseLastShot += DeltaTime;
-	TimeSinseDirectionChange += DeltaTime;
-
-	if (bCollisionUpdate)
-	{
-		// LastPostiveCollidedResult->~CollisionCheckResult();
-		new (LastPostiveCollidedResult) CollisionCheckResult(NewLastPositibeCollidedResult);
-
-		TimeSinseLastCollide = 0;
-	}
-	else
-	{
-		TimeSinseLastCollide += DeltaTime;
-	}
-
-}*/
-}
-
 void AITankController::UpdateTanksBehavior(unsigned int DeltaTime)
 {
-	if (GameModeOwner == nullptr)
-	{
-		return;
-	}
-
-	Tank* PlayerTank = GameModeOwner->GetPlayerTank();
-
-	/*
-	CollectiveBrain.RefreshBrain(PlayerTank);
-
-	for (auto const& Pair : AIControlledTankBrains)
+	// Refresh Collective Brain
+	CollectiveBrain.PlayerTank = GameModeOwner->GetPlayerTank();
+	CollectiveBrain.PlayerBase = GameModeOwner->GetPhoenix();
+	
+	for (auto& Pair : AIControlledTankBrains)
 	{
 		Tank* Tank = Pair.first;
+		TankBrain& Brain = Pair.second;
 
-		if (Tank == nullptr) continue;
+		// Refresh Tanks Brain
 
-		TankBrain Brain = Pair.second;
+		Brain.TimeSinseLastShot += DeltaTime;
+		Brain.TimeSinseDirectionChange += DeltaTime;
+		Brain.TimeSinseLastCollide += DeltaTime;
 
-		bool bShouldUpdateCollision = Tank->LastCollisionResult.bCollided;
+		//PRINTF(PrintColor::Yellow, "shot time %d, dir time %d, collide time %d", 
+		//	Brain.TimeSinseLastShot, Brain.TimeSinseDirectionChange, Brain.TimeSinseLastCollide);
 
-		Brain.RefreshBrain(DeltaTime, Tank->LastCollisionResult, bShouldUpdateCollision);
-	}*/
+		CollisionCheckResult& LastCollisionResult = Tank->LastCollisionResult;
+		if (LastCollisionResult.bCollided)
+		{
+			//PRINTF(PrintColor::Yellow, "%s collided with %s", Tank->GetName(), LastCollisionResult.LastCollided->GetName());
+
+			if (Brain.LastPostiveCollidedResult == nullptr)
+			{
+				Brain.LastPostiveCollidedResult = new CollisionCheckResult(LastCollisionResult);
+			}
+			else
+			{
+				Brain.LastPostiveCollidedResult->~CollisionCheckResult();
+				new (Brain.LastPostiveCollidedResult) CollisionCheckResult(LastCollisionResult);
+			}
+
+			Brain.TimeSinseLastCollide = 0;
+			Tank->MoveEnd(Tank->GetDirection());
+			
+			Direction NewDirection = GetRandomDirection();
+			
+			while (NewDirection == Brain.LastDirection)
+				NewDirection = GetRandomDirection();
+			
+			Brain.LastDirection = NewDirection;
+
+			Tank->MoveBegin(GetRandomDirection());
+		}
+
+		// Update Action
+		
+		if (Brain.TimeSinseDirectionChange >= Brain.FireRate)
+		{
+			Tank->MoveBegin(GetRandomDirection());
+			Brain.TimeSinseDirectionChange = 0;
+		}
+		
+		if (Brain.TimeSinseLastShot >= Brain.FireRate)
+		{
+			Tank->Fire();
+			Brain.TimeSinseLastShot = 0;
+		}
+
+	}
 }
 
 

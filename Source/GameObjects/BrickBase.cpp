@@ -18,7 +18,6 @@ BrickBase::BrickBase(SpriteEntity* SpriteObj, VecInt2D Position, int Health)
 
 BrickBase::~BrickBase()
 {
-	delete SpriteObj;
 }
 
 void BrickBase::Destroy()
@@ -27,6 +26,8 @@ void BrickBase::Destroy()
 	{
 		Owner->OwnedBrickDestroyed(OwnerIndex);
 	}
+
+	SpriteObj->Destroy();
 
 	RenderBase::Destroy();
 

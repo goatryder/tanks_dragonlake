@@ -6,6 +6,8 @@
 
 #include "Bullet.h"
 
+#include "Boom.h"
+
 #include "GameMode.h"
 
 TankSpawnPoint TankSpawnPoint::BottomLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_AREA_H1), Direction::UP, Anchor::BOTTOM_LEFT);
@@ -103,8 +105,7 @@ void Tank::MoveEnd(Direction DirectionTo)
 
 void Tank::Move(unsigned int DeltaTime)
 {
-	if (!bCanMove)
-		return;
+	if (!bCanMove) return;
 
 	if (NextDirection != CurrentDirection && bPrevPositionRelevent)
 	{
@@ -122,7 +123,7 @@ void Tank::Move(unsigned int DeltaTime)
 
 void Tank::Fire()
 {
-	if (ActiveBullet != nullptr) // only one active bullet allowed for player
+	if (bPossessedByPlayer && ActiveBullet != nullptr) // only one active bullet allowed for player
 	{
 		return;
 	}
@@ -136,9 +137,9 @@ void Tank::Fire()
 
 void Tank::onDamage(int Damage, Direction From)
 {
-	HealthInterface::onDamage(Damage, From);
+	// PRINTF(PrintColor::Green, "%s recieved %d damage", GetName(), Damage);
 
-	PRINTF(PrintColor::Green, "%s recieved %d damage", GetName(), Damage);
+	HealthInterface::onDamage(Damage, From);
 }
 
 void Tank::onDead()
@@ -186,6 +187,8 @@ void Tank::onDead()
 		}
 	}
 	
+	Boom::SpawnBoomBig(Position);
+
 	Destroy();
 }
 
@@ -220,7 +223,11 @@ void Tank::Initialize()
 
 	if (LevelOwner != nullptr)
 	{
-		if (!(LevelOwner->PlayerTank == this)) // if tank not player tank, it's should be enemy tank, add to ai controlller
+		if (LevelOwner->PlayerTank == this) 
+		{
+			bPossessedByPlayer = true;
+		}
+		else  // if tank not player tank, it's should be enemy tank, add to ai controlller
 		{
 			GameMode* LevelGameMode = LevelOwner->GameModeOwner;
 
@@ -230,6 +237,7 @@ void Tank::Initialize()
 			}
 		}
 	}
+
 }
 
 void Tank::Destroy()
@@ -330,5 +338,5 @@ void Tank::Respawn(TankSpawnPoint RespawnPoint)
 	SetPosition(RespawnPosition);
 	SetNextDirectionSprite(RespawnPoint.SpawnDirection);
 	ChangeCurrentDirectionSprite();
-	SetHealth(GetBaseHealth());
+	SetHealth(GetBaseHealth(), true);
 }

@@ -16,6 +16,7 @@ LevelStruct CreateBasicLevelStruct()
 	VecInt2D BasePosition(GAME_AREA_MID_W, GAME_AREA_H1);
 
 	TankSpawnPoint PlayerSpawnPoint(BasePosition - ChunkOffset_X * 2, Direction::UP, Anchor::BOTTOM);
+	//TankSpawnPoint PlayerSpawnPoint(ChunkLastOffset_X + ChunkOffset_Y * 4, Direction::UP, Anchor::TOP_LEFT);
 
 	Tank* PlayerTank = Tank::SpawnTankBasic(PlayerSpawnPoint);
 

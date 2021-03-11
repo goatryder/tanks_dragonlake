@@ -18,9 +18,6 @@ constexpr auto TANK_RIGHT_1 =			"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_ri
 // Brick, full block has 16, four of each side
 constexpr auto BRICK_0 =				"X:\\DragonLake\\Tanki\\Content\\brick\\brick_frag_0.png";
 constexpr auto BRICK_1 =				"X:\\DragonLake\\Tanki\\Content\\brick\\brick_frag_1.png";
-constexpr auto BRICK_0C =				"X:\\DragonLake\\Tanki\\Content\\brick\\brick_frag_0c.png";
-constexpr auto BRICK_1C =				"X:\\DragonLake\\Tanki\\Content\\brick\\brick_frag_1c.png";
-
 constexpr auto BRICK_BASE =				"X:\\DragonLake\\Tanki\\Content\\brick\\brick_base.png";
 
 // Bullet
@@ -41,6 +38,14 @@ constexpr auto TANK_EB_RIGHT_1 =		"X:\\DragonLake\\Tanki\\Content\\tank_enemy_ba
 
 // Base
 constexpr auto PHOENIX_PNG =			"X:\\DragonLake\\Tanki\\Content\\phoenix.png";
+
+// Boom
+constexpr auto BOOM_SMALL_0 =			"X:\\DragonLake\\Tanki\\Content\\boom\\boom_small_0.png";
+constexpr auto BOOM_SMALL_1 =			"X:\\DragonLake\\Tanki\\Content\\boom\\boom_small_1.png";
+constexpr auto BOOM_SMALL_2 =			"X:\\DragonLake\\Tanki\\Content\\boom\\boom_small_2.png";
+constexpr auto BOOM_BIG_0 =				"X:\\DragonLake\\Tanki\\Content\\boom\\boom_big_0.png";
+constexpr auto BOOM_BIG_1 =				"X:\\DragonLake\\Tanki\\Content\\boom\\boom_big_1.png";
+
 
 // Game Sizes conts
 
@@ -71,7 +76,7 @@ constexpr auto PHOENIX_PNG =			"X:\\DragonLake\\Tanki\\Content\\phoenix.png";
 
 // Game Logic consts
 
-#define GAME_LOGIC_TICK					1000 / 25  // in ms, update time 2 ms is minimal, 33 or 16 fit best
+#define GAME_LOGIC_TICK					1000 / 60  // in ms, update time 2 ms is minimal, 33 or 16 fit best
 #define GAME_SPEED_MIN					(1000 / (GAME_LOGIC_TICK))  // one pixel in one game tick
 
 
@@ -79,22 +84,23 @@ constexpr auto PHOENIX_PNG =			"X:\\DragonLake\\Tanki\\Content\\phoenix.png";
 // Note: if GAME_LOGIC_TICK * Speed < 1000 speed will be equal zero, 
 // if GAME_LOGIC_TICK == 33, 31 is min speed value
 
-#define TANK_SPEED_SLOW					GAME_SPEED_MIN * 5 // pixels in one sec
-#define TANK_SPEED_SLOW_ANIM_TIME		160 // Time in ms to SpriteFlipFlop swap sprites
+#define TANK_SPEED_SLOW					GAME_SPEED_MIN * 2 // pixels in one sec
+#define TANK_SPEED_SLOW_ANIM_TIME		100 // Time in ms to SpriteFlipFlop swap sprites
 #define TANK_HEALTH_BASIC				1
 
-#define BULLET_SPEED_SLOW				GAME_SPEED_MIN * 12 // pixels in one sesc
+#define BULLET_SPEED_SLOW				GAME_SPEED_MIN * 7 // pixels in one sesc
 #define BULLET_DAMAGE_LOW				1
 
 #define BRICK_BASE_HEALTH				1
 
-#define TANK_SPAWN_NUM_DEFAULT			3
-#define TANK_SPAWN_RATE_DEFAULT			1000 // time in ms
+#define TANK_SPAWN_NUM_DEFAULT			20
+#define TANK_SPAWN_RATE_DEFAULT			2000 // time in ms
 
 #define PLAYER_TANK_RESPAWN_NUM			5
 
-#define ENEMY_TANK_SLOW_FIRE_RATE_MIN	600 // in ms
-#define ENEMY_TANK_SLOW_FIRE_RATE_MAX	1000 // in ms
+#define ENEMY_TANK_SLOW_FIRE_RATE		600 // in ms
 
-#define ENEMY_TANK_CHANGE_DIRECTION_MIN	600 // in ms
-#define ENEMY_TANK_CHANGE_DIRECTION_MAX	1000 // in ms
+#define ENEMY_TANK_CHANGE_DIRECTION_RATE	600 // in ms
+
+#define BOOM_SMALL_ANIM_TIME			50
+#define BOOM_BIG_ANIM_TIME				80

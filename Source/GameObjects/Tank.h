@@ -68,6 +68,8 @@ protected:
 	void PlayMoveAnim();
 	void StopMoveAnim();
 
+	bool bPossessedByPlayer = false;
+
 public:
 
 	void MoveBegin(Direction DirectionTo);
