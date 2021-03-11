@@ -9,8 +9,6 @@
 #include "../Systems/SystemCollision.h"
 #include "../Systems/SystemRender.h"
 
-#include "../Helpers/DebugPrint.h"
-
 struct LevelStruct;
 
 // using in GameObjects spawn position adjusting // @ToDO TOP LEFT BOTTOM RIGHT
@@ -112,20 +110,14 @@ public:
 
 	void HandleSweepPosition(VecInt2D NewPosition, CollisionCheckResult CollisionResult)
 	{
-		//const char* CollidedName = LastCollisionResult.bCollided ? LastCollisionResult.LastCollided->GetName() : "None";
-		//PRINTF(PrintColor::Red, "HandleSweepPosition old x=%d y=%d new x=%d, y=%d collided %d with %s",
-		//	Position.X, Position.Y, NewPosition.X, NewPosition.Y, CollisionResult.bCollided, CollidedName);
-		
 		if (CollisionResult.bCollided)
 		{
-			//PRINTF(PrintColor::White, "Collided");
 			SetPositionBlockClamped(NewPosition, CollisionResult.LastCollided);
 			return;
 		}
 
 		if (!IsPositionInGameBound(NewPosition))
 		{
-			//PRINTF(PrintColor::White, "Wall");
 			SetPositionBoundClamped(NewPosition);
 			onCollide(Wall, CollisionFilter::CF_BLOCK);
 			return;
@@ -336,9 +328,6 @@ protected:
 		{
 			return;
 		}
-
-		//PRINTF(PrintColor::Red, "SetPositionBlockClamped old x=%d y=%d new x=%d, y=%d",
-		//	Position.X, Position.Y, NewPosition.X, NewPosition.Y);
 
 		// set new position
 		Position = NewPosition;

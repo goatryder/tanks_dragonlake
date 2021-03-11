@@ -38,6 +38,13 @@ public:
 
 	inline int Square() const { return X * Y; }
 
+	inline int Size() const {
+		int X_Square = X * X;
+		int Y_Square = Y * Y;
+		int Sum = X_Square + Y_Square;
+		return sqrt(Sum);
+	}
+
 	/** Creates new vector with biggest X and Y values of two vectors */
 	inline static VecInt2D GetMax(const VecInt2D& Vec1, const VecInt2D& Vec2) {
 		return VecInt2D(Vec1.X > Vec2.X ? Vec1.X : Vec2.X, Vec1.Y > Vec2.Y ? Vec1.Y : Vec2.Y);

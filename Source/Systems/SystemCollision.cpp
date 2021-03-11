@@ -2,15 +2,26 @@
 
 #include "../Entities/RenderBase.h"
 
-// #include "../Helpers/DebugPrint.h"
-
 // Initialize CollidableSet
 std::set<RenderBase*> SystemCollision::CollidableSet = {};
 
 // Initilize Default CollisionCheckResult Out
 CollisionCheckResult CollisionCheckResult::DefaultResultOut;
 
-// has nice perfomance, need fix: CollisionCheckResult: collision last to collision closest;
+void CollisionCheckResult::UpdateResult(RenderBase* Left, RenderBase* Right)
+{
+	this->bCollided = true;
+
+	int CollidableDistance = (Left->GetPosition() - Right->GetPosition()).Size();
+
+	if (LastCollided == nullptr || CollidableDistance <= Distance)
+	{
+		Distance = CollidableDistance;
+		LastCollided = Right;
+	}
+}
+
+// @ToDo: optimize, make one loop if possible
 void SystemCollision::CheckCollisionsAllBlock()
 {
 	std::set<RenderBase*>::iterator Iter;
@@ -25,7 +36,7 @@ void SystemCollision::CheckCollisionsAllBlock()
 		(*Iter)->LastCollisionResult = CollisionCheckResult();
 	}
 
-	// traverse unique pairs loop
+	// traverse unique pairs loop and get result
 	for (Iter = CollidableSet.begin(); std::next(Iter) != CollidableSet.end(); Iter++)
 	{
 		CollidableFirst = *(Iter);
@@ -41,31 +52,29 @@ void SystemCollision::CheckCollisionsAllBlock()
 			{
 				if (CollidableFirst->IsCollidingWith(CollidableFirst->GetPosition(true), CollidableSecond, CollidableSecond->GetPosition(true)))
 				{
-					CollidableFirst->onCollide(CollidableSecond, CollisionFilter::CF_BLOCK);
-					CollidableFirst->LastCollisionResult.bCollided = true;
-					CollidableFirst->LastCollisionResult.LastCollided = CollidableSecond;
-
-					// todo fix exception
-					CollidableSecond->onCollide(CollidableFirst, CollisionFilter::CF_BLOCK);
-					CollidableSecond->LastCollisionResult.bCollided = true;
-					CollidableSecond->LastCollisionResult.LastCollided = CollidableFirst;
+					CollidableFirst->LastCollisionResult.UpdateResult(CollidableFirst, CollidableSecond);
+					CollidableSecond->LastCollisionResult.UpdateResult(CollidableSecond, CollidableFirst);
 				}
 			}
 		}
 	}
 
-	// handle sweep
+	// handle result and sweep
 	for (Iter = CollidableSet.begin(); Iter != CollidableSet.end(); Iter++)
 	{
 		CollidableFirst = *(Iter);
+
+		CollisionCheckResult& Result = CollidableFirst->LastCollisionResult;
+
+		if (Result.bCollided)
+		{
+			CollidableFirst->onCollide(Result.LastCollided, CollisionFilter::CF_BLOCK);
+		}
 
 		if (CollidableFirst->bNextPositionRelevent)
 		{
 			VecInt2D Pos = CollidableFirst->GetPosition();
 			VecInt2D NewPos = CollidableFirst->NextPosition;
-
-			//PRINTF(PrintColor::Blue, "\tSweep: %s last x=%d y=%d new x=%d y=%d", CollidableFirst->GetName(),
-			//	Pos.X, Pos.Y, NewPos.X, NewPos.Y);
 
 			CollidableFirst->HandleSweepPosition(CollidableFirst->NextPosition, 
 				CollidableFirst->LastCollisionResult);
@@ -73,32 +82,6 @@ void SystemCollision::CheckCollisionsAllBlock()
 			CollidableFirst->bNextPositionRelevent = false;
 		}
 	}
-
-	/*
-	// debug print result test failed, somewhere lastcollision result setted to null
-	PRINT(PrintColor::Blue, "result CheckCollisionsAllBlock():");
-
-	for (Iter = CollidableSet.begin(); Iter != CollidableSet.end(); Iter++)
-	{
-		CollidableFirst = *(Iter);
-
-		const char* Name = CollidableFirst->GetName();
-		const char* OtherName;
-		const char* IsCollided;
-
-		if (CollidableFirst->LastCollisionResult.bCollided)
-		{
-			OtherName = CollidableFirst->LastCollisionResult.LastCollided->GetName();
-			IsCollided = "true";
-		}
-		else
-		{
-			OtherName = "NONE";
-			IsCollided = "false";
-		}
-
-		PRINTF(PrintColor::Blue, "\t%s collided: %s last collided: %s", Name, OtherName, IsCollided);
-	}*/
 }
 
 // DEPRECATED, NEED TESTING

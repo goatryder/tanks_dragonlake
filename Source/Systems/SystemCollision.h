@@ -12,8 +12,11 @@ struct CollisionCheckResult
 {
 	bool bCollided = false;
 	RenderBase* LastCollided = nullptr;
-
+	int Distance = 0;
 	static CollisionCheckResult DefaultResultOut;
+
+	/** Updating result, LastCollided will be closest one */
+	void UpdateResult(RenderBase* Left, RenderBase* Right);
 };
 
 /*
