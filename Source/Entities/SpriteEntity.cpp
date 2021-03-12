@@ -56,6 +56,7 @@ void SpriteEntity::DestroySprite()
 	if (SpriteObj != nullptr)
 	{
 		destroySprite(SpriteObj);
+		SpriteObj = nullptr;
 	}
 }
 

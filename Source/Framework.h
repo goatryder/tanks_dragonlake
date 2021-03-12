@@ -5,10 +5,10 @@
 // Bonus for any found bugs in the framework!
 
 // sprite creation can't be done before Init() but it's ok
-
 // full screen min 640 480
 
-// drawSprite heavy cpu load af (just comment drawSprite in sprite wrapper and core load decreased dramatically)
+// drawSprite heavy cpu load af (just commented drawSprite in sprite wrapper and core load decreased dramatically)
+// upd: on my 10th this project work day i realized, that Sprite here can be created once and then draw multiple times on render :/
 
 class Sprite;
 

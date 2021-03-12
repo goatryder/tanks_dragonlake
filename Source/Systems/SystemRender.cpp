@@ -1,7 +1,5 @@
 #include "SystemRender.h"
 
-#include <type_traits>
-
 #include "../Entities/RenderBase.h"
 
 // Initialize RenderQueue list
@@ -18,7 +16,9 @@ void SystemRender::ClearRenderQueue(bool bDestroy)
 	if (bDestroy)
 	{
 		for (auto& RenderInstance : RenderQueue)
+		{
 			RenderInstance->Destroy();
+		}
 	}
 
 	RenderQueue.clear();

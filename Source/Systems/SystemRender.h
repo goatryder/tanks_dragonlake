@@ -11,7 +11,7 @@ class RenderBase;
  */
 class SystemRender
 {
-protected:
+public:
 
 	static std::list<RenderBase*> RenderQueue;
 

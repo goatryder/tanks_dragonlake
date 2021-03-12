@@ -3,7 +3,7 @@
 #include "../Entities/SpriteEntity.h"
 #include "BrickBlock.h"
 
-LevelStruct CreateBasicLevelStruct()
+LevelStruct LevelStruct::CreateBasicLevelStruct()
 {
 	VecInt2D ChunkZero(GAME_AREA_OFFSET_W, GAME_AREA_OFFSET_H);
 	VecInt2D ChunkOffset(GAME_CHUNK_W, GAME_CHUNK_H);
@@ -122,5 +122,3 @@ LevelStruct CreateBasicLevelStruct()
 		EnemyTankSpawnNum, TankSpawner, 
 		PhoenixBase, RenderQueue);
 }
-
-LevelStruct LevelStruct::BasicLevel = CreateBasicLevelStruct();

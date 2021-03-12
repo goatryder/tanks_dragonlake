@@ -26,6 +26,8 @@ public:
 	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override final;
 
 	void SpriteInit();
+
+	static int BoostCount;
 };
 
 

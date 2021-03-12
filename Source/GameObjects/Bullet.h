@@ -22,11 +22,10 @@ protected:
 	VecInt2D DirectionVec;
 	Direction Dir;
 
-	Tank* Owner;
 
 public:
 
-	Tank* GetOwner() const { return Owner; }
+	Tank* Owner;
 
 	virtual void onTick(unsigned int DeltaTime) override final;
 

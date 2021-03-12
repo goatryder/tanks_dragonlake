@@ -68,6 +68,17 @@ void BrickBlock::Initialize()
 
 void BrickBlock::Destroy()
 {
+	for (int i = 0; i < BrickArrSize; i++)
+	{
+		BrickBase* Brick = BrickArray.at(i);
+
+		if (Brick != nullptr)
+		{
+			Brick->Owner = nullptr;
+			Brick->Destroy();
+		}
+	}
+
 	RenderBase::Destroy();
 
 	LevelStruct* LevelOwner = GetLevel();
@@ -77,7 +88,7 @@ void BrickBlock::Destroy()
 		LevelOwner->RemoveFromLevel(this);
 	}
 
-	PRINTF(PrintColor::Green, "[block] delete %s", GetName());
+	PRINTF(PrintColor::Red, "delete %s", GetName());
 
 	delete this;
 }
@@ -179,6 +190,8 @@ BrickBlock* BrickBlock::SpawnBrickBlockSolid(VecInt2D Position, bool bInitialize
 
 	std::string Name = "block_" + std::to_string(BlockCount);
 	SpawnedBlock->SetName(Name);
+
+	BlockCount++;
 
 	if (bInitialize)
 	{

@@ -112,7 +112,6 @@ constexpr auto UI_NUM_5 =				"X:\\DragonLake\\Tanki\\Content\\Num\\5.png";
 #define BRICK_BASE_HEALTH				1
 
 #define TANK_SPAWN_NUM_DEFAULT			20
-//#define TANK_SPAWN_NUM_DEFAULT			3
 #define TANK_SPAWN_RATE_DEFAULT			1000 // time in ms
 
 #define PLAYER_TANK_RESPAWN_NUM			5
@@ -124,8 +123,7 @@ constexpr auto UI_NUM_5 =				"X:\\DragonLake\\Tanki\\Content\\Num\\5.png";
 #define BOOM_SMALL_ANIM_TIME			50
 #define BOOM_BIG_ANIM_TIME				80
 
-//const int FLASHY_ARRAY_DEFAULT[] = { 3, 10, 17 };
-const int FLASHY_ARRAY_DEFAULT[] = { 0, 1, 2 };
+const int FLASHY_ARRAY_DEFAULT[] = { 4, 11, 18 };
 const int FLASHY_ARRAY_DEFAULT_SIZE = sizeof FLASHY_ARRAY_DEFAULT / sizeof *FLASHY_ARRAY_DEFAULT;
 
 #define FLASHY_ANIM_TIME				100
@@ -133,3 +131,5 @@ const int FLASHY_ARRAY_DEFAULT_SIZE = sizeof FLASHY_ARRAY_DEFAULT / sizeof *FLAS
 #define RESPAWN_PROTECTION_TIME			1000  // zero val will disable spawn protection effect
 
 #define HP_BOOSTER_VAL					1
+
+#define RESTART_TIME					3000

@@ -18,7 +18,7 @@ void BoosterHP::Activate(LevelStruct* Level, Tank* BoostedTank)
 		Level->PlayerRespawnNum = NewRespawnNum;
 	}
 	
-	PRINTF(PrintColor::White, "%s Picked Extra Life for Player: %d", BoostedTank->GetName(), Level->PlayerRespawnNum);
+	PRINTF(PrintColor::Blue, "%s Picked Extra Life for Player: %d", BoostedTank->GetName(), Level->PlayerRespawnNum);
 }
 
 BoosterHP* BoosterHP::SpawnPlayerHPBooster(LevelStruct* Level, VecInt2D Position)
@@ -28,6 +28,9 @@ BoosterHP* BoosterHP::SpawnPlayerHPBooster(LevelStruct* Level, VecInt2D Position
 	
 	SpawnedBooster->SetLevel(Level);
 	SpawnedBooster->ExtraLifeVal = HP_BOOSTER_VAL;
+	SpawnedBooster->SetName("HP BOOSTER" + to_string(BoostCount));
+
+	BoostCount++;
 
 	// add player tank to collision white list
 	Tank* PlayerTank = Level->PlayerTank;

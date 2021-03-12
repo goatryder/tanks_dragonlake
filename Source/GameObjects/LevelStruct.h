@@ -73,6 +73,21 @@ public:
 			RenderInstance->Destroy();
 		}
 
+		if (PlayerTank != nullptr)
+		{
+			PlayerTank->Destroy();
+		}
+
+		if (LevelPhoenix != nullptr)
+		{
+			LevelPhoenix->Destroy();
+		}
+
+		if (LevelEnemyTankSpawner != nullptr)
+		{
+			LevelEnemyTankSpawner->Destroy();
+		}
+
 		SystemRender::ClearRenderQueue(bForceDestroy);
 		SystemCollision::ClearCheckCollisionSet(bForceDestroy);
 		SystemTick::ClearTickQueue(bForceDestroy);
@@ -89,5 +104,5 @@ public:
 		}
 	}
 
-	static LevelStruct BasicLevel;
+	static LevelStruct CreateBasicLevelStruct();
 };

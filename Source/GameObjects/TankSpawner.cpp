@@ -110,6 +110,8 @@ TankSpawner* TankSpawner::SpawnBasicTankSpawnerCorners(int SpawnTankNum, int Spa
 	std::string Name = "tank_spawner_" + std::to_string(SpawnerCount);
 	Spawner->SetName(Name);
 
+	SpawnerCount++;
+
 	if (bInitialize)
 	{
 		Spawner->Initialize();
@@ -133,6 +135,8 @@ TankSpawner* TankSpawner::SpawnBasicTankSpawnerTop(int SpawnTankNum, int SpawnRa
 
 	std::string Name = "tank_spawner_" + std::to_string(SpawnerCount);
 	Spawner->SetName(Name);
+
+	SpawnerCount++;
 
 	if (bInitialize)
 	{

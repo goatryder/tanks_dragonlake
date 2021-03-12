@@ -9,7 +9,7 @@ class TickInterface;
 /** This static class will handle onTick for TickInterface instances */
 class SystemTick
 {
-protected:
+public:
 
 	static std::list<TickInterface*> TickQueue;
 

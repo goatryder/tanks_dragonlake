@@ -4,7 +4,6 @@
 #include "AITankController.h"
 #include "PlayerTankController.h"
 
-
 /** Basic game-loop handler */
 class GameMode
 {
@@ -12,15 +11,17 @@ public:
 	
 	GameMode()
 	{
-		Level = LevelStruct::BasicLevel;
+		Level = LevelStruct::CreateBasicLevelStruct();
 		Level.GameModeOwner = this;
 
 		PlayerController = PlayerTankController(Level.PlayerTank, this);
-		AIControlller = AITankController(Level.PlayerTank, Level.LevelPhoenix, this);
+		AIController = AITankController(Level.PlayerTank, Level.LevelPhoenix, this);
 
 		SystemCollisionInstance = SystemCollision::Instance();
 		SystemRenderInstance = SystemRender::Instance();
 		SystemTickInstance = SystemTick::Instance();
+
+		RestartTimer = RESTART_TIME;
 	}
 
 	~GameMode() {}
@@ -33,6 +34,16 @@ public:
 	void Finalize()
 	{
 		Level.DestroyLevel();
+	}
+
+	void Restart()
+	{
+		bGameIsOver = false;
+		Level.DestroyLevel(true);
+		Level = LevelStruct::CreateBasicLevelStruct();
+		Level.GameModeOwner = this;
+		Level.InitializeLevel();
+		PlayerController.PlayerTank = Level.PlayerTank;
 	}
 
 	void HandleWinLooseCondition()
@@ -53,13 +64,20 @@ public:
 	{
 		if (bGameIsOver)  // win loose sprites
 		{
-			return;
+			RestartTimer -= DeltaTime;
+
+			if (RestartTimer <= 0)
+			{
+				RestartTimer = RESTART_TIME;
+
+				Restart();
+			}
 		}
 
 		SystemCollision::CheckCollisionsAllBlock();
 		SystemTick::Tick(DeltaTime);
 
-		AIControlller.onTick(DeltaTime);
+		AIController.onTick(DeltaTime);
 		
 		HandleWinLooseCondition();
 	}
@@ -72,8 +90,10 @@ public:
 	bool bGameIsOver = false;
 	bool bIsGameOverWin = false;
 
+	int RestartTimer;
+
 	LevelStruct Level;
-	AITankController AIControlller;
+	AITankController AIController;
 	PlayerTankController PlayerController;
 
 	SystemCollision SystemCollisionInstance;

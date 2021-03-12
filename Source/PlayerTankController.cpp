@@ -50,5 +50,6 @@ void PlayerTankController::onMouseButtonClick(FRMouseButton Button, bool bIsRele
 	if (Button == FRMouseButton::LEFT && !bIsReleased)
 	{
 		if (PlayerTank != nullptr) PlayerTank->Fire();
+
 	}
 }

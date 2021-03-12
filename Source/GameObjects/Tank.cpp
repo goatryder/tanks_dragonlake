@@ -131,7 +131,7 @@ void Tank::Fire()
 		return;
 	}
 
-	// PRINTF(PrintColor::Green, "%s shooted", GetName());
+	PRINTF(PrintColor::Blue, "%s shooted", GetName());
 
 	VecInt2D BulletSpawnPosition = GetSidePosition(CurrentDirection);
 
@@ -170,36 +170,18 @@ void Tank::onDead()
 
 				return;
 			}
-			else // remove from level, controller and destroy
-			{
-				LevelOwner->PlayerTank = nullptr;
-				
-				GameMode* LevelGameMode = LevelOwner->GameModeOwner;
-
-				if (LevelGameMode != nullptr)
-				{
-					LevelGameMode->PlayerController.PlayerTank = nullptr;
-				}
-			}
+			
 		}
-		else  // if it's not player tank - it's enemy tank, decrement kill left counter, remove from ai controller
+		else // enemy died
 		{
 			LevelOwner->EnemyTankKillLeft--;
-			
-			GameMode* LevelGameMode = LevelOwner->GameModeOwner;
-			
-			if (LevelGameMode != nullptr)
-			{
-				LevelGameMode->AIControlller.RemoveTank(this);
+		}
 
-				if (bDropPickableOnDeath)
-				{
-					// test, @ToDo: remove
-					BoosterHP::SpawnPlayerHPBooster(LevelOwner, Position);
-					PRINTF(PrintColor::Green, "TODO: DROP PICKABLE BOOST");
-				}
-
-			}
+		if (bDropPickableOnDeath)
+		{
+			// test, @ToDo: remove
+			BoosterHP::SpawnPlayerHPBooster(LevelOwner, Position);
+			PRINTF(PrintColor::Green, "TODO: DROP PICKABLE BOOST");
 		}
 	}
 	
@@ -270,7 +252,7 @@ void Tank::Initialize()
 
 			if (LevelGameMode != nullptr)
 			{
-				LevelGameMode->AIControlller.AddTank(this);
+				LevelGameMode->AIController.AddTank(this);
 			}
 		}
 	}
@@ -279,14 +261,37 @@ void Tank::Initialize()
 
 void Tank::Destroy()
 {
+	LevelStruct* LevelOwner = GetLevel();
+	if (LevelOwner != nullptr)
+	{
+		GameMode* LevelGameMode = LevelOwner->GameModeOwner;
+
+		if (LevelGameMode != nullptr)
+		{ 
+			if (LevelOwner->PlayerTank == this)  // remove player tank from controller
+			{
+				LevelGameMode->PlayerController.PlayerTank = nullptr;
+			}
+			else // remove ai tank from controller
+			{
+				LevelGameMode->AIController.RemoveTank(this);
+			}
+		}
+	}
+
+	if (ActiveBullet != nullptr)
+	{
+		ActiveBullet->Owner = nullptr;
+	}
+
 	RenderBase::Destroy();
 
 	DisableFlashyEffect();
 
-	Left->Destroy();
-	Right->Destroy();
-	Up->Destroy();
-	Down->Destroy();
+	if (Left != nullptr) Left->Destroy();
+	if (Right != nullptr) Right->Destroy();
+	if (Up != nullptr) Up->Destroy();
+	if (Down != nullptr) Down->Destroy();
 
 	DisableTick();
 

@@ -27,7 +27,6 @@ public:
 	virtual bool Init() 
 	{
 		ActiveGameMode.Initialize();
-
 		return true;
 	}
 

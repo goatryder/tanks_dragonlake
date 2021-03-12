@@ -9,6 +9,8 @@
 #include "../Systems/SystemCollision.h"
 #include "../Systems/SystemRender.h"
 
+// #include "../Helpers/DebugPrint.h"
+
 struct LevelStruct;
 
 // using in GameObjects spawn position adjusting // @ToDO TOP LEFT BOTTOM RIGHT
@@ -48,8 +50,10 @@ public:
 	virtual void Initialize() {}
 	virtual void Destroy()
 	{
-		if (bCollisionEnabled) DisableCollision();
-		if (bRenderEnabled) DisableRender();
+		DisableCollision();
+		DisableRender();
+
+		// PRINTF(PrintColor::Yellow, "render base destroy %s", GetName());
 	}
 
 	virtual void onRender() = 0;

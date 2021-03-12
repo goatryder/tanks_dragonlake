@@ -26,7 +26,7 @@ struct CollisionCheckResult
  */
 class SystemCollision
 {
-protected:
+public:
 
 	static std::set<RenderBase*> CollidableSet;
 
@@ -67,6 +67,7 @@ public:
 		CollisionCheckResult &ResultOut = CollisionCheckResult::DefaultResultOut, bool bCheckNextReleventPos = false);
 
 public:
+
 	SystemCollision() {}
 	~SystemCollision() {}
 };

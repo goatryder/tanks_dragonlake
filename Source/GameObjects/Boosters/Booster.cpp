@@ -3,6 +3,8 @@
 #include "../../Entities/SpriteEntity.h"
 #include "../LevelStruct.h"
 
+int Booster::BoostCount = 0;
+
 Booster::Booster(SpriteEntity* SpriteObj, VecInt2D Position)
 	: SpriteObj(SpriteObj)
 {
