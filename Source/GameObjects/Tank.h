@@ -104,7 +104,7 @@ public:
 	/** if value > 0, can't damage tank */
 	int FlashyEffectTimer = 0;
 
-	SpriteFlipFlop* FlashyEffect;
+	SpriteFlipFlop* FlashyEffect = nullptr;
 
 	/** enable tank flashy effect, if time == 0 -> permanent flashy */
 	void EnableFlashyEffect(unsigned int FlashyTime);

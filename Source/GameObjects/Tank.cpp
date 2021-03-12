@@ -237,7 +237,11 @@ void Tank::onTick(unsigned int DeltaTime)
 void Tank::onRender()
 {
 	CurrentActiveSprite->onRender();
-	if (FlashyEffect != nullptr) FlashyEffect->onRender();
+	
+	if (FlashyEffect != nullptr)
+	{
+		FlashyEffect->onRender();
+	}
 }
 
 void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
@@ -275,6 +279,8 @@ void Tank::Initialize()
 
 void Tank::Destroy()
 {
+	RenderBase::Destroy();
+
 	DisableFlashyEffect();
 
 	Left->Destroy();
@@ -283,8 +289,6 @@ void Tank::Destroy()
 	Down->Destroy();
 
 	DisableTick();
-
-	RenderBase::Destroy();
 
 	PRINTF(PrintColor::Red, "delete %s", GetName());
 
@@ -393,8 +397,8 @@ void Tank::DisableFlashyEffect()
 	if (FlashyEffect != nullptr)
 	{
 		FlashyEffect->Destroy();
-		FlashyEffect = nullptr;
 	}
+	FlashyEffect = nullptr;
 }
 
 SpriteFlipFlop* Tank::CreateDefaultFlashyEffect(VecInt2D Position)
