@@ -111,9 +111,9 @@ constexpr auto UI_NUM_5 =				"X:\\DragonLake\\Tanki\\Content\\Num\\5.png";
 
 #define BRICK_BASE_HEALTH				1
 
-//#define TANK_SPAWN_NUM_DEFAULT			20
-#define TANK_SPAWN_NUM_DEFAULT			3
-#define TANK_SPAWN_RATE_DEFAULT			3000 // time in ms
+#define TANK_SPAWN_NUM_DEFAULT			20
+//#define TANK_SPAWN_NUM_DEFAULT			3
+#define TANK_SPAWN_RATE_DEFAULT			1000 // time in ms
 
 #define PLAYER_TANK_RESPAWN_NUM			5
 

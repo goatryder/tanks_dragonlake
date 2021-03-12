@@ -2,6 +2,7 @@
 
 #include "Booster.h"
 
+
 class BoosterHP : public Booster
 {
 public:
@@ -15,5 +16,6 @@ public:
 
 public:
 
-	static BoosterHP* SpawnHPBooster(VecInt2D Position);
+	/** Only player on collide can activate this booster */
+	static BoosterHP* SpawnPlayerHPBooster(LevelStruct* Level, VecInt2D Position);
 };

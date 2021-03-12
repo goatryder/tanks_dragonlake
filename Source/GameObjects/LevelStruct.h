@@ -13,13 +13,15 @@ public:
 	LevelStruct(TankSpawnPoint PlayerSpawnPoint, int PlayerRespawnNum, Tank* PlayerTank, 
 		int SpawnEnemyTankNum, TankSpawner* LevelEnemyTankSpawner, 
 		Phoenix* LevelPhoenix,  std::list<RenderBase*> RenderQueue)
-		: PlayerSpawnPoint(PlayerSpawnPoint), PlayerRespawnNum(PlayerRespawnNum), PlayerTank(PlayerTank),
+		: PlayerSpawnPoint(PlayerSpawnPoint), PlayerRespawnNum(PlayerRespawnNum), 
+		PlayerRespawnNumMax(PlayerRespawnNum), PlayerTank(PlayerTank),
 		EnemyTankKillLeft(SpawnEnemyTankNum), LevelEnemyTankSpawner(LevelEnemyTankSpawner), 
 		LevelPhoenix(LevelPhoenix),  RenderQueue(RenderQueue) {}
 
 	GameMode* GameModeOwner = nullptr;
 
 	TankSpawnPoint PlayerSpawnPoint;
+	int PlayerRespawnNumMax = 1;
 	int PlayerRespawnNum = 1;
 	Tank* PlayerTank = nullptr;
 	

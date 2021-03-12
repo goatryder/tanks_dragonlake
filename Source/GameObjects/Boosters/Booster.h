@@ -26,11 +26,6 @@ public:
 	virtual void onCollide(RenderBase* Other, CollisionFilter Filter) override final;
 
 	void SpriteInit();
-
-public:
-
-	template <class T>
-	static T* SpawnBooster(const char* SpriteResourcePath, VecInt2D Position);
 };
 
 

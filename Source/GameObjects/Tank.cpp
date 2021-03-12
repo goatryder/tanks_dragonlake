@@ -195,7 +195,7 @@ void Tank::onDead()
 				if (bDropPickableOnDeath)
 				{
 					// test, @ToDo: remove
-					BoosterHP::SpawnHPBooster(Position);
+					BoosterHP::SpawnPlayerHPBooster(LevelOwner, Position);
 					PRINTF(PrintColor::Green, "TODO: DROP PICKABLE BOOST");
 				}
 

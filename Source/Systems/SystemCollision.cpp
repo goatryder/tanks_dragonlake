@@ -48,7 +48,7 @@ void SystemCollision::CheckCollisionsAllBlock()
 		{
 			CollidableSecond = *(Jiter);
 
-			if (!CollidableFirst->IsInCollisionIgnore(CollidableSecond, true))  // process ignore list filter
+			if (CollidableFirst->CanCollideWith(CollidableSecond, true))  // process black/white list filter
 			{
 				if (CollidableFirst->IsCollidingWith(CollidableFirst->GetPosition(true), CollidableSecond, CollidableSecond->GetPosition(true)))
 				{
@@ -97,7 +97,7 @@ void SystemCollision::CheckCollision(RenderBase* Collidable, VecInt2D Collidable
 	{
 		PossiblyCollided = *(Iter);
 
-		if (PossiblyCollided == Collidable || Collidable->IsInCollisionIgnore(PossiblyCollided))  // process ignore list
+		if (PossiblyCollided == Collidable || !Collidable->CanCollideWith(PossiblyCollided))  // process ignore list
 		{
 			continue;
 		}

@@ -15,7 +15,7 @@ Bullet::Bullet(SpriteEntity* SpriteObj, VecInt2D Position, Direction Dir, int Sp
 {
 	DirectionVec = DirectionToVec(Dir);
 	
-	Owner->AddCollidableToIgnore(this);
+	Owner->AddToCollisionFilter(this);
 
 	this->Position = Position;
 }

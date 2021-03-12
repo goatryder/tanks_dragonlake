@@ -233,43 +233,51 @@ public:
 		Name = NewName;
 	}
 
-	// @ToDo: Fix error
-	/** Check if Collidable in CollisionIgnored list */
-	bool IsInCollisionIgnore(RenderBase* Collidable, bool bCheckOtherIgonreList = false)
+	/** Handle Collidable Black/White list */
+	bool CanCollideWith(RenderBase* Collidable, bool bCheckOtherFilterList = false)
 	{
 		std::vector<RenderBase*>::iterator Iter;
-		Iter = std::find(CollisionIgnored.begin(), CollisionIgnored.end(), Collidable);
+		Iter = std::find(CollisionFilterList.begin(), CollisionFilterList.end(), Collidable);
 		
-		bool bCollidableIgnored = Iter != CollisionIgnored.end();
+		bool bIsInCollidableFilter = Iter != CollisionFilterList.end();
 
-		if (bCheckOtherIgonreList)
+		bool bCanCollide = !(bIsInCollidableFilter ^ bCollisionFilterIsWhiteList);  // XNOR, if 1 and 1 -> 1, elif 0 and 0 -> 1, else 0
+
+		if (bCheckOtherFilterList)
 		{
-			bCollidableIgnored = bCollidableIgnored || Collidable->IsInCollisionIgnore(this, false);
+			bCanCollide = bCanCollide && Collidable->CanCollideWith(this, false);  // if check other, then 1 and 1 -> 1 else 0
 		}
 		
-		return bCollidableIgnored;
+		return bCanCollide;
 	}
 
-	void AddCollidableToIgnore(RenderBase* Collidable)
+	void AddToCollisionFilter(RenderBase* Collidable)
 	{
-		CollisionIgnored.push_back(Collidable);
+		CollisionFilterList.push_back(Collidable);
 	}
 
-	void RemoveCollidableFromIgnore(RenderBase* Collidable)
+	void RemoveFromCollisionFilter(RenderBase* Collidable)
 	{
 		std::vector<RenderBase*>::iterator Iter;
-		Iter = std::find(CollisionIgnored.begin(), CollisionIgnored.end(), Collidable);
+		Iter = std::find(CollisionFilterList.begin(), CollisionFilterList.end(), Collidable);
 
-		if (Iter != CollisionIgnored.end())
+		if (Iter != CollisionFilterList.end())
 		{
-			CollisionIgnored.erase(Iter);
+			CollisionFilterList.erase(Iter);
 		}
 	}
 
-	std::vector<RenderBase*> CollisionIgnored = {};
+	/** control if Collision Ignore Is BlackList or WhiteList */
+	bool bCollisionFilterIsWhiteList = false;
+	
+	/** collision filter list, can work as blacklist or as whitelist */
+	std::vector<RenderBase*> CollisionFilterList = {};
+	
 	CollisionCheckResult LastCollisionResult;
+	
 	VecInt2D NextPosition;
 	VecInt2D PrevPosition;
+	
 	bool bNextPositionRelevent = false;
 	bool bPrevPositionRelevent = false;
 
