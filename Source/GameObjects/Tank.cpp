@@ -10,6 +10,8 @@
 
 #include "GameMode.h"
 
+#include "../GameObjects/Boosters/BoosterHP.h"
+
 TankSpawnPoint TankSpawnPoint::BottomLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_AREA_H1), Direction::UP, Anchor::BOTTOM_LEFT);
 TankSpawnPoint TankSpawnPoint::BottomRightSpawnPoint(VecInt2D(GAME_AREA_W1, GAME_AREA_H1), Direction::UP, Anchor::BOTTOM_RIGHT);
 TankSpawnPoint TankSpawnPoint::TopLeftSpawnPoint(VecInt2D(GAME_AREA_W0, GAME_AREA_H0), Direction::DOWN, Anchor::TOP_LEFT);
@@ -192,6 +194,8 @@ void Tank::onDead()
 
 				if (bDropPickableOnDeath)
 				{
+					// test, @ToDo: remove
+					BoosterHP::SpawnHPBooster(Position);
 					PRINTF(PrintColor::Green, "TODO: DROP PICKABLE BOOST");
 				}
 

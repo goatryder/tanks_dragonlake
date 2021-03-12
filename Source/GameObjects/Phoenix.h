@@ -19,11 +19,11 @@ protected:
 
 public:
 
-	virtual void onDead() override;
+	virtual void onDead() override final;
 
-	virtual void onRender() override;
-	virtual void Destroy() override;
-	virtual void Initialize() override;
+	virtual void onRender() override final;
+	virtual void Destroy() override final;
+	virtual void Initialize() override final;
 
 	void SpriteInit();
 

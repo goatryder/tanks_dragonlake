@@ -31,6 +31,9 @@
     <Filter Include="Source Files\ObjectsUI">
       <UniqueIdentifier>{094a96cf-40d7-4276-9cca-a4d892cfb20d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObjects\Boosters">
+      <UniqueIdentifier>{6f4891b3-2b84-4fca-8056-1ef03333b354}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Entities\SpriteEntity.cpp">
@@ -98,6 +101,15 @@
     </ClCompile>
     <ClCompile Include="Source\ObjectsUI\PopUpUI.cpp">
       <Filter>Source Files\ObjectsUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjects\Boosters\Booster.cpp">
+      <Filter>Source Files\GameObjects\Boosters</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjects\Boosters\BoosterSpawner.cpp">
+      <Filter>Source Files\GameObjects\Boosters</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjects\Boosters\BoosterHP.cpp">
+      <Filter>Source Files\GameObjects\Boosters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +193,15 @@
     </ClInclude>
     <ClInclude Include="Source\ObjectsUI\PopUpUI.h">
       <Filter>Source Files\ObjectsUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjects\Boosters\Booster.h">
+      <Filter>Source Files\GameObjects\Boosters</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjects\Boosters\BoosterSpawner.h">
+      <Filter>Source Files\GameObjects\Boosters</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjects\Boosters\BoosterHP.h">
+      <Filter>Source Files\GameObjects\Boosters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

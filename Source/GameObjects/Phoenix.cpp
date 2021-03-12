@@ -1,5 +1,5 @@
 #include "Phoenix.h"
-#include "../Helpers/DebugPrint.h"
+// #include "../Helpers/DebugPrint.h"
 #include "../Entities/SpriteEntity.h"
 
 #include "Boom.h"
@@ -49,7 +49,7 @@ void Phoenix::Destroy()
 
 	RenderBase::Destroy();
 
-	PRINTF(PrintColor::Red, "delete %s", GetName());
+	// PRINTF(PrintColor::Red, "delete %s", GetName());
 
 	delete this;
 }
