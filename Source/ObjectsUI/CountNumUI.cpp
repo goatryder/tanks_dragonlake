@@ -2,21 +2,38 @@
 
 #include "Entities/SpriteEntity.h"
 
-// @ToDo: handle destruction
-const std::array <SpriteEntity*, 10> CountNumUI::SpriteDigits = {
-	new SpriteEntity(UI_NUM_0),
-	new SpriteEntity(UI_NUM_1),
-	new SpriteEntity(UI_NUM_2),
-	new SpriteEntity(UI_NUM_3),
-	new SpriteEntity(UI_NUM_4),
-	new SpriteEntity(UI_NUM_5),
-	new SpriteEntity(UI_NUM_6),
-	new SpriteEntity(UI_NUM_7),
-	new SpriteEntity(UI_NUM_8),
-	new SpriteEntity(UI_NUM_9)
-};
+//const std::array <SpriteEntity*, 10> CountNumUI::SpriteDigits = {
+//	new SpriteEntity(UI_NUM_0),
+//	new SpriteEntity(UI_NUM_1),
+//	new SpriteEntity(UI_NUM_2),
+//	new SpriteEntity(UI_NUM_3),
+//	new SpriteEntity(UI_NUM_4),
+//	new SpriteEntity(UI_NUM_5),
+//	new SpriteEntity(UI_NUM_6),
+//	new SpriteEntity(UI_NUM_7),
+//	new SpriteEntity(UI_NUM_8),
+//	new SpriteEntity(UI_NUM_9)
+//};
+
+std::vector <SpriteEntity*> CountNumUI::SpriteDigits = {};
 
 bool CountNumUI::bSpriteDigitsInitialized = false;
+
+void CountNumUI::InitializeSpriteDigits()
+{
+	SpriteDigits = {
+		new SpriteEntity(UI_NUM_0),
+		new SpriteEntity(UI_NUM_1),
+		new SpriteEntity(UI_NUM_2),
+		new SpriteEntity(UI_NUM_3),
+		new SpriteEntity(UI_NUM_4),
+		new SpriteEntity(UI_NUM_5),
+		new SpriteEntity(UI_NUM_6),
+		new SpriteEntity(UI_NUM_7),
+		new SpriteEntity(UI_NUM_8),
+		new SpriteEntity(UI_NUM_9)
+	};
+}
 
 void CountNumUI::onRender()
 {
@@ -24,7 +41,7 @@ void CountNumUI::onRender()
 
 	for (auto& DigitPos : DigitRenderInfo)
 	{
-		SpriteDigits[DigitPos.first]->DrawSprite(DigitPos.second);
+		SpriteDigits[DigitPos.first]->DrawAtPosition(DigitPos.second);
 	}
 }
 
@@ -34,6 +51,8 @@ void CountNumUI::Initialize()
 	if (!bSpriteDigitsInitialized)
 	{
 		bSpriteDigitsInitialized = true;
+
+		InitializeSpriteDigits();
 
 		for (auto& SpriteObj : SpriteDigits)
 		{
@@ -92,3 +111,4 @@ void CountNumUI::UpdateDigitRenderInfo()
 		DigitPositionLast -= DrawOffset;
 	}
 }
+

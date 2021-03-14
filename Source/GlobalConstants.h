@@ -64,6 +64,7 @@ constexpr auto BOOST_HP =				"resources\\tank_hp_boost.png";
 constexpr auto WON_UI =					"resources\\UI\\GameOverWon.png";
 constexpr auto LOOSE_UI =				"resources\\UI\\GameOverLoose.png";
 constexpr auto TANK_ICO_UI =			"resources\\UI\\ui_enemy.png";
+
 constexpr auto UI_NUM_0 =				"resources\\Num\\0.png";
 constexpr auto UI_NUM_1 =				"resources\\Num\\1.png";
 constexpr auto UI_NUM_2 =				"resources\\Num\\2.png";
@@ -144,6 +145,7 @@ const int FLASHY_ARRAY_DEFAULT_SIZE = sizeof FLASHY_ARRAY_DEFAULT / sizeof *FLAS
 #define HP_BOOSTER_VAL					1
 
 #define RESTART_TIME					3000
+
 
 // ui elements
 

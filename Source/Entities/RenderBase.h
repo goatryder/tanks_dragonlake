@@ -288,6 +288,28 @@ public:
 	LevelStruct* GetLevel() const { return Level; }
 	void SetLevel(LevelStruct* Level) { this->Level = Level; }
 
+public:
+
+	void DrawSprite(Sprite* SpriteObj, VecInt2D DrawPosition)
+	{
+		if (SpriteObj == nullptr)
+		{
+			return;
+		}
+
+		drawSprite(SpriteObj, DrawPosition.X, DrawPosition.Y);
+	}
+
+	void InitSizeBySprite(Sprite* SpriteObj)
+	{
+		if (SpriteObj == nullptr)
+			return;
+
+		int w, h;
+		getSpriteSize(SpriteObj, w, h);
+		Size = VecInt2D(w, h);
+	}
+
 protected:
 
 	VecInt2D Size;
@@ -301,16 +323,6 @@ protected:
 	LevelStruct* Level = nullptr;
 
 	static RenderBase* Wall;  // hack to check game bound walls collision
-
-	void InitSizeBySprite(Sprite* SpriteObj)
-	{
-		if (SpriteObj == nullptr)
-			return;
-
-		int w, h;
-		getSpriteSize(SpriteObj, w, h);
-		Size = VecInt2D(w, h);
-	}
 
 	void SetPositionBlockClamped(VecInt2D NewPosition, RenderBase* Blocker)
 	{

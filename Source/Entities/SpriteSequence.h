@@ -10,16 +10,34 @@ class SpriteSequence : public SpriteEntity, public TickInterface
 {
 public:
 
-	SpriteSequence(std::vector<const char*> ResourceImageRelPathVec, unsigned int AnimTime, bool bDestroyOnFirstLoopFinish = false);
-	~SpriteSequence();
+	SpriteSequence::SpriteSequence(std::vector<const char*> ResourceImageRelPathVec, unsigned int AnimTime, bool bDestroyOnFinish = false)
+		: SpriteEntity(ResourceImageRelPathVec[0]),
+		ResourceImageRelPathVec(ResourceImageRelPathVec),
+		AnimTime(AnimTime), bDestroyOnFirstLoopFinish(bDestroyOnFinish)
+	{
+		AnimTimeAccomulated = 0;
+		CurrentSpriteObjIndex = 0;
+		SpriteObjVecSize = ResourceImageRelPathVec.size();
+
+		bFirstLoopFinish = false;
+
+		SpriteObjVec = {};
+	}
+
+	~SpriteSequence() {}
+
+	virtual void CreateSprite() override final
+	{
+		for (auto& Path : ResourceImageRelPathVec)
+		{
+			Sprite* SpriteObj = SpritePrototypeManager::GetSpritePrototype(Path);
+			SpriteObjVec.push_back(SpriteObj);
+		}
+	}
 
 	virtual void Initialize() override final;
 	virtual void Destroy() override final;
-	virtual void onRender() override final;
 
-	inline virtual void CreateSprite() override final;
-	inline virtual void DestroySprite() override final;
-	
 	virtual void onTick(unsigned int DeltaTime) override final;
 
 protected:

@@ -131,7 +131,7 @@ void Tank::Fire()
 		return;
 	}
 
-	PRINTF(PrintColor::Blue, "%s shooted", GetName());
+	// PRINTF(PrintColor::Blue, "%s shooted", GetName());
 
 	VecInt2D BulletSpawnPosition = GetSidePosition(CurrentDirection);
 

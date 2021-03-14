@@ -8,7 +8,12 @@ std::list<RenderBase*> SystemRender::RenderQueue = {};
 void SystemRender::Render()
 {
 	for (auto& RenderInstance : RenderQueue)
-		RenderInstance->onRender();
+	{
+		if (RenderInstance != nullptr)
+		{
+			RenderInstance->onRender();
+		}
+	}
 }
 
 void SystemRender::ClearRenderQueue(bool bDestroy)
@@ -17,7 +22,10 @@ void SystemRender::ClearRenderQueue(bool bDestroy)
 	{
 		for (auto& RenderInstance : RenderQueue)
 		{
-			RenderInstance->Destroy();
+			if (RenderInstance != nullptr)
+			{
+				RenderInstance->Destroy();
+			}
 		}
 	}
 

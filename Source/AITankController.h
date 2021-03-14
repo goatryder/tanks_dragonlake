@@ -76,7 +76,9 @@ public:
 		std::map<Tank*, TankBrain>::iterator Iter;
 
 		Iter = AIControlledTankBrains.find(TankToReleaseControl);
-		AIControlledTankBrains.erase(Iter);
+		
+		if (Iter != AIControlledTankBrains.end())
+			AIControlledTankBrains.erase(Iter);
 	}
 
 	/** For now it's should be synchronized with game tick */

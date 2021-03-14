@@ -117,6 +117,9 @@
     <ClCompile Include="Source\GlobalConstants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Systems\SpritePrototypeManager.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Framework.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Source\ObjectsUI\HUD.h">
       <Filter>Source Files\ObjectsUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\SpritePrototypeManager.h">
+      <Filter>Source Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

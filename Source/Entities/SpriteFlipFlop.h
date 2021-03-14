@@ -9,19 +9,28 @@ class SpriteFlipFlop : public SpriteEntity, public TickInterface
 {
 public:
 
-	SpriteFlipFlop(const char* ResourceImageRelPathFlip, const char* ResourceImageRelPathFlop, unsigned int FlipFlopTimeMs=0);
-	~SpriteFlipFlop();
+	SpriteFlipFlop(const char* ResourceImageRelPathFlip, const char* ResourceImageRelPathFlop, unsigned int FlipFlopTimeMs = 0)
+		: SpriteEntity(ResourceImageRelPathFlip),
+		ResourceImagePathSibling(ResourceImageRelPathFlop), FlipFlopTime(FlipFlopTimeMs)
+	{
+	}
+
+	~SpriteFlipFlop() {}
 
 	virtual void onRender() override final;
 	virtual void Initialize() override final;
 	virtual void Destroy() override final;
 
-	inline virtual void CreateSprite() override final;
-	inline virtual void DestroySprite() override final;
+	virtual void CreateSprite() override final
+	{
+		SpriteEntity::CreateSprite();
+
+		SpriteObjSibling = SpritePrototypeManager::GetSpritePrototype(ResourceImagePathSibling);
+	}
 
 protected:
 
-	std::string ResourceImagePathSibling = (char*)0;
+	const char* ResourceImagePathSibling = (char*)0;
 	Sprite* SpriteObjSibling = nullptr;
 
 	/** if True DrawSprite will draw Inherited SpriteObj else SpriteObjSibling */

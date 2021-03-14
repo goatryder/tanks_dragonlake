@@ -2,7 +2,6 @@
 
 #include "BasicUIElement.h"
 
-#include <array>
 #include <vector>
 #include <utility>
 
@@ -12,6 +11,7 @@ typedef std::vector<DigitPosition> DigitPosVector;
 
 class CountNumUI : public BasicUIElement
 {
+
 public:
 
 	CountNumUI(int InitValue, int MinSize, int MaxSize, VecInt2D DrawFirstPosition, VecInt2D DrawOffset)
@@ -41,7 +41,6 @@ public:
 	virtual void onRender() override final;
 	virtual void Initialize() override final;
 
-
 protected:
 
 	int Value;
@@ -53,7 +52,8 @@ protected:
 	DigitPosVector DigitRenderInfo;
 
 	static bool bSpriteDigitsInitialized;
-	static const std::array<SpriteEntity*, 10> SpriteDigits;
+	static std::vector<SpriteEntity*> SpriteDigits;
+	static void InitializeSpriteDigits();
 
 public:
 

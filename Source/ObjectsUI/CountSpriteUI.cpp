@@ -14,7 +14,7 @@ void CountSpriteUI::onRender()
 		DrawPosition.X += (i % MaxHorizontalNum) * DrawOffset.X;
 		DrawPosition.Y += (i / MaxHorizontalNum) * DrawOffset.Y;
 
-		SpriteObj->DrawSprite(DrawPosition);
+		SpriteObj->DrawAtPosition(DrawPosition);
 	}
 }
 
