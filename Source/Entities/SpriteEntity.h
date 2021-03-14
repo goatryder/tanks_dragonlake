@@ -9,7 +9,7 @@ class SpriteEntity : public RenderBase
 {
 public:
 
-	SpriteEntity(const char* ResourceImagePath);
+	SpriteEntity(const char* RelativeResourcePath);
 	~SpriteEntity();
 
 	virtual void Initialize() override;
@@ -23,7 +23,7 @@ public:
 
 protected:
 
-	const char* ResourceImagePath;
+	std::string ResourceImagePath;
 	Sprite* SpriteObj = nullptr;
 
 public:

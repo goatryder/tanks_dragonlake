@@ -3,10 +3,9 @@
 #ifndef DEBUG_PRINT_H
 #define DEBUG_PRINT_H
 
+#include <windows.h>
 #include <iostream>
 #include <stdio.h>
-#include <windows.h>
-#include <typeinfo>
 
 #include "../Framework.h"
 
@@ -75,19 +74,19 @@ inline OSteamChangeColorSig ChangeOutStreamColor(PrintColor Color)
 }
 
 // @Todo: fix warning C4172: returning address of local variable or temporary: buffer
-inline const char* GetTickTimestamp()
+inline std::string GetTickTimestamp()
 {
     char buffer[24];
     unsigned int Time = getTickCount();
     sprintf(buffer, "[%d] ", Time);
-    return buffer;
+    return std::string(buffer);
 }
 
 // print macro
 
 #define PRINT(PRINT_COLOR, STR) \
  ( \
-  (cout << ChangeOutStreamColor(PRINT_COLOR) << GetTickTimestamp() << (STR) << endl << white), \
+  (cout << ChangeOutStreamColor(PRINT_COLOR) << GetTickTimestamp().c_str() << (STR) << endl << white), \
   (void)0 \
  )
 
@@ -95,7 +94,7 @@ inline const char* GetTickTimestamp()
 
 #define PRINTF(PRINT_COLOR, STR, ...) \
  ( \
-  (cout << ChangeOutStreamColor(PRINT_COLOR) << GetTickTimestamp()), \
+  (cout << ChangeOutStreamColor(PRINT_COLOR) << GetTickTimestamp().c_str()), \
   (printf (STR, __VA_ARGS__)), \
   (cout << endl << white), \
   (void)0 \

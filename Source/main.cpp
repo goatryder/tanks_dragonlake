@@ -1,7 +1,5 @@
 #include "Framework.h"
 
-#include "GlobalConstants.h"
-
 #include "GameMode.h"
 
 class MyFramework : public Framework {

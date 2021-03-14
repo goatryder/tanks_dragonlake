@@ -1,8 +1,9 @@
 #include "SpriteFlipFlop.h"
 #include "Framework.h"
 
-SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImagePathFlip, const char* ResourceImagePathFlop, unsigned int FlipFlopTimeMs)
-	: SpriteEntity(ResourceImagePathFlip), ResourceImagePathSibling(ResourceImagePathFlop), FlipFlopTime(FlipFlopTimeMs)
+SpriteFlipFlop::SpriteFlipFlop(const char* ResourceImageRelPathFlip, const char* ResourceImageRelPathFlop, unsigned int FlipFlopTimeMs)
+	: SpriteEntity(ResourceImageRelPathFlip),
+	ResourceImagePathSibling(GetResourcePath(ResourceImageRelPathFlop)), FlipFlopTime(FlipFlopTimeMs)
 {
 }
 
@@ -28,7 +29,7 @@ inline void SpriteFlipFlop::CreateSprite()
 {
 	SpriteEntity::CreateSprite();
 
-	SpriteObjSibling = createSprite(ResourceImagePathSibling);
+	SpriteObjSibling = createSprite(ResourceImagePathSibling.c_str());
 }
 
 inline void SpriteFlipFlop::DestroySprite()

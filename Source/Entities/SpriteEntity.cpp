@@ -2,8 +2,9 @@
 
 #include "../GameObjects/LevelStruct.h"
 
-SpriteEntity::SpriteEntity(const char* ResourceImagePath)
-	: ResourceImagePath(ResourceImagePath)
+
+SpriteEntity::SpriteEntity(const char* RelativeResourcePath)
+	: ResourceImagePath(GetResourcePath(RelativeResourcePath))
 {
 }
 
@@ -45,7 +46,7 @@ void SpriteEntity::onRender()
 
 inline void SpriteEntity::CreateSprite()
 {
-	SpriteObj = createSprite(ResourceImagePath);
+	SpriteObj = createSprite(ResourceImagePath.c_str());
 	InitSizeBySprite(SpriteObj);
 }
 

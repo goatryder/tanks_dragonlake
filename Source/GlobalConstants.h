@@ -1,72 +1,79 @@
 #pragma once
 
+#include <string>
+
+std::string GetResourcePath(const char* RelativePath);
+
+constexpr auto EXE_NAME = "tanks_dragonlake.exe";  // used in hack to get root path
+
+
 // Resource Location consts
 
 // BG
-constexpr auto BG_IMAGE_PATH =			"X:\\DragonLake\\Tanki\\Content\\BG.png";
+constexpr auto BG_IMAGE_PATH =			"resources\\BG.png";
 
 // Tank yellow
-constexpr auto TANK_DOWN_0 =			"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_down_0.png";
-constexpr auto TANK_DOWN_1 =			"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_down_1.png";
-constexpr auto TANK_UP_0 =				"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_up_0.png";
-constexpr auto TANK_UP_1 =				"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_up_1.png";
-constexpr auto TANK_LEFT_0 =			"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_left_0.png";
-constexpr auto TANK_LEFT_1 =			"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_left_1.png";
-constexpr auto TANK_RIGHT_0 =			"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_right_0.png";
-constexpr auto TANK_RIGHT_1 =			"X:\\DragonLake\\Tanki\\Content\\tank0\\tank0_right_1.png";
+constexpr auto TANK_DOWN_0 =			"resources\\tank0\\tank0_down_0.png";
+constexpr auto TANK_DOWN_1 =			"resources\\tank0\\tank0_down_1.png";
+constexpr auto TANK_UP_0 =				"resources\\tank0\\tank0_up_0.png";
+constexpr auto TANK_UP_1 =				"resources\\tank0\\tank0_up_1.png";
+constexpr auto TANK_LEFT_0 =			"resources\\tank0\\tank0_left_0.png";
+constexpr auto TANK_LEFT_1 =			"resources\\tank0\\tank0_left_1.png";
+constexpr auto TANK_RIGHT_0 =			"resources\\tank0\\tank0_right_0.png";
+constexpr auto TANK_RIGHT_1 =			"resources\\tank0\\tank0_right_1.png";
 
 // Brick, full block has 16, four of each side
-constexpr auto BRICK_0 =				"X:\\DragonLake\\Tanki\\Content\\brick\\brick_frag_0.png";
-constexpr auto BRICK_1 =				"X:\\DragonLake\\Tanki\\Content\\brick\\brick_frag_1.png";
-constexpr auto BRICK_BASE =				"X:\\DragonLake\\Tanki\\Content\\brick\\brick_base.png";
+constexpr auto BRICK_0 =				"resources\\brick\\brick_frag_0.png";
+constexpr auto BRICK_1 =				"resources\\brick\\brick_frag_1.png";
+constexpr auto BRICK_BASE =				"resources\\brick\\brick_base.png";
 
 // Bullet
-constexpr auto BULLET_UP =				"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_u.png";
-constexpr auto BULLET_DOWN =			"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_d.png";
-constexpr auto BULLET_RIGHT =			"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_r.png";
-constexpr auto BULLET_LEFT =			"X:\\DragonLake\\Tanki\\Content\\bullet\\bullet_l.png";
+constexpr auto BULLET_UP =				"resources\\bullet\\bullet_u.png";
+constexpr auto BULLET_DOWN =			"resources\\bullet\\bullet_d.png";
+constexpr auto BULLET_RIGHT =			"resources\\bullet\\bullet_r.png";
+constexpr auto BULLET_LEFT =			"resources\\bullet\\bullet_l.png";
 
 // Tank Base Enemy
-constexpr auto TANK_EB_DOWN_0 =			"X:\\DragonLake\\Tanki\\Content\\tank_enemy_base\\tank_e_b_down_0.png";
-constexpr auto TANK_EB_DOWN_1 =			"X:\\DragonLake\\Tanki\\Content\\tank_enemy_base\\tank_e_b_down_1.png";
-constexpr auto TANK_EB_UP_0 =			"X:\\DragonLake\\Tanki\\Content\\tank_enemy_base\\tank_e_b_up_0.png";
-constexpr auto TANK_EB_UP_1 =			"X:\\DragonLake\\Tanki\\Content\\tank_enemy_base\\tank_e_b_up_1.png";
-constexpr auto TANK_EB_LEFT_0 =			"X:\\DragonLake\\Tanki\\Content\\tank_enemy_base\\tank_e_b_left_0.png";
-constexpr auto TANK_EB_LEFT_1 =			"X:\\DragonLake\\Tanki\\Content\\tank_enemy_base\\tank_e_b_left_1.png";
-constexpr auto TANK_EB_RIGHT_0 =		"X:\\DragonLake\\Tanki\\Content\\tank_enemy_base\\tank_e_b_right_0.png";
-constexpr auto TANK_EB_RIGHT_1 =		"X:\\DragonLake\\Tanki\\Content\\tank_enemy_base\\tank_e_b_right_1.png";
+constexpr auto TANK_EB_DOWN_0 =			"resources\\tank_enemy_base\\tank_e_b_down_0.png";
+constexpr auto TANK_EB_DOWN_1 =			"resources\\tank_enemy_base\\tank_e_b_down_1.png";
+constexpr auto TANK_EB_UP_0 =			"resources\\tank_enemy_base\\tank_e_b_up_0.png";
+constexpr auto TANK_EB_UP_1 =			"resources\\tank_enemy_base\\tank_e_b_up_1.png";
+constexpr auto TANK_EB_LEFT_0 =			"resources\\tank_enemy_base\\tank_e_b_left_0.png";
+constexpr auto TANK_EB_LEFT_1 =			"resources\\tank_enemy_base\\tank_e_b_left_1.png";
+constexpr auto TANK_EB_RIGHT_0 =		"resources\\tank_enemy_base\\tank_e_b_right_0.png";
+constexpr auto TANK_EB_RIGHT_1 =		"resources\\tank_enemy_base\\tank_e_b_right_1.png";
 
 // Base
-constexpr auto PHOENIX_PNG =			"X:\\DragonLake\\Tanki\\Content\\phoenix.png";
+constexpr auto PHOENIX_PNG =			"resources\\phoenix.png";
 
 // Boom
-constexpr auto BOOM_SMALL_0 =			"X:\\DragonLake\\Tanki\\Content\\boom\\boom_small_0.png";
-constexpr auto BOOM_SMALL_1 =			"X:\\DragonLake\\Tanki\\Content\\boom\\boom_small_1.png";
-constexpr auto BOOM_SMALL_2 =			"X:\\DragonLake\\Tanki\\Content\\boom\\boom_small_2.png";
-constexpr auto BOOM_BIG_0 =				"X:\\DragonLake\\Tanki\\Content\\boom\\boom_big_0.png";
-constexpr auto BOOM_BIG_1 =				"X:\\DragonLake\\Tanki\\Content\\boom\\boom_big_1.png";
+constexpr auto BOOM_SMALL_0 =			"resources\\boom\\boom_small_0.png";
+constexpr auto BOOM_SMALL_1 =			"resources\\boom\\boom_small_1.png";
+constexpr auto BOOM_SMALL_2 =			"resources\\boom\\boom_small_2.png";
+constexpr auto BOOM_BIG_0 =				"resources\\boom\\boom_big_0.png";
+constexpr auto BOOM_BIG_1 =				"resources\\boom\\boom_big_1.png";
 
 // Flashy
-constexpr auto FLASHY_0 =				"X:\\DragonLake\\Tanki\\Content\\flashy_0.png";
-constexpr auto FLASHY_1 =				"X:\\DragonLake\\Tanki\\Content\\flashy_1.png";
+constexpr auto FLASHY_0 =				"resources\\flashy_0.png";
+constexpr auto FLASHY_1 =				"resources\\flashy_1.png";
 
 // Boost
-constexpr auto BOOST_HP =				"X:\\DragonLake\\Tanki\\Content\\tank_hp_boost.png";
+constexpr auto BOOST_HP =				"resources\\tank_hp_boost.png";
 
 // UI
-constexpr auto WON_UI =					"X:\\DragonLake\\Tanki\\Content\\UI\\GameOverWon.png";
-constexpr auto LOOSE_UI =				"X:\\DragonLake\\Tanki\\Content\\UI\\GameOverLoose.png";
-constexpr auto TANK_ICO_UI =			"X:\\DragonLake\\Tanki\\Content\\UI\\ui_enemy.png";
-constexpr auto UI_NUM_0 =				"X:\\DragonLake\\Tanki\\Content\\Num\\0.png";
-constexpr auto UI_NUM_1 =				"X:\\DragonLake\\Tanki\\Content\\Num\\1.png";
-constexpr auto UI_NUM_2 =				"X:\\DragonLake\\Tanki\\Content\\Num\\2.png";
-constexpr auto UI_NUM_3 =				"X:\\DragonLake\\Tanki\\Content\\Num\\3.png";
-constexpr auto UI_NUM_4 =				"X:\\DragonLake\\Tanki\\Content\\Num\\4.png";
-constexpr auto UI_NUM_5 =				"X:\\DragonLake\\Tanki\\Content\\Num\\5.png";
-constexpr auto UI_NUM_6 =				"X:\\DragonLake\\Tanki\\Content\\Num\\6.png";
-constexpr auto UI_NUM_7 =				"X:\\DragonLake\\Tanki\\Content\\Num\\7.png";
-constexpr auto UI_NUM_8 =				"X:\\DragonLake\\Tanki\\Content\\Num\\8.png";
-constexpr auto UI_NUM_9 =				"X:\\DragonLake\\Tanki\\Content\\Num\\9.png";
+constexpr auto WON_UI =					"resources\\UI\\GameOverWon.png";
+constexpr auto LOOSE_UI =				"resources\\UI\\GameOverLoose.png";
+constexpr auto TANK_ICO_UI =			"resources\\UI\\ui_enemy.png";
+constexpr auto UI_NUM_0 =				"resources\\Num\\0.png";
+constexpr auto UI_NUM_1 =				"resources\\Num\\1.png";
+constexpr auto UI_NUM_2 =				"resources\\Num\\2.png";
+constexpr auto UI_NUM_3 =				"resources\\Num\\3.png";
+constexpr auto UI_NUM_4 =				"resources\\Num\\4.png";
+constexpr auto UI_NUM_5 =				"resources\\Num\\5.png";
+constexpr auto UI_NUM_6 =				"resources\\Num\\6.png";
+constexpr auto UI_NUM_7 =				"resources\\Num\\7.png";
+constexpr auto UI_NUM_8 =				"resources\\Num\\8.png";
+constexpr auto UI_NUM_9 =				"resources\\Num\\9.png";
 
 
 // Game Sizes conts
@@ -153,3 +160,5 @@ const int FLASHY_ARRAY_DEFAULT_SIZE = sizeof FLASHY_ARRAY_DEFAULT / sizeof *FLAS
 #define PLAYER_RESPAWN_NUM_W			514
 #define PLAYER_RESPAWN_NUM_H			274
 #define UI_NUM_DIGIT_OFFSET				16
+
+

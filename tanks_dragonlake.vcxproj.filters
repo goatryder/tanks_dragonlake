@@ -114,6 +114,9 @@
     <ClCompile Include="Source\ObjectsUI\CountSpriteUI.cpp">
       <Filter>Source Files\ObjectsUI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GlobalConstants.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Framework.h">

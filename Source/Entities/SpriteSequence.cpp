@@ -1,13 +1,14 @@
 #include "SpriteSequence.h"
 
 
-SpriteSequence::SpriteSequence(std::vector<const char*> ResourceImagePathVec, unsigned int AnimTime, bool bDestroyOnFinish)
-	: SpriteEntity(ResourceImagePathVec[0]), ResourceImagePathVec(ResourceImagePathVec), AnimTime(AnimTime), 
-	bDestroyOnFirstLoopFinish(bDestroyOnFinish)
+SpriteSequence::SpriteSequence(std::vector<const char*> ResourceImageRelPathVec, unsigned int AnimTime, bool bDestroyOnFinish)
+	: SpriteEntity(ResourceImageRelPathVec[0]), 
+	ResourceImageRelPathVec(ResourceImageRelPathVec), 
+	AnimTime(AnimTime), bDestroyOnFirstLoopFinish(bDestroyOnFinish)
 {
 	AnimTimeAccomulated = 0;
 	CurrentSpriteObjIndex = 0;
-	SpriteObjVecSize = ResourceImagePathVec.size();
+	SpriteObjVecSize = ResourceImageRelPathVec.size();
 	
 	bFirstLoopFinish = false;
 
@@ -37,9 +38,9 @@ void SpriteSequence::onRender()
 
 inline void SpriteSequence::CreateSprite()
 {
-	for (auto& Path : ResourceImagePathVec)
+	for (auto& Path : ResourceImageRelPathVec)
 	{
-		Sprite* SpriteObj = createSprite(Path);
+		Sprite* SpriteObj = createSprite(GetResourcePath(Path).c_str());
 		SpriteObjVec.push_back(SpriteObj);
 	}
 
@@ -82,9 +83,9 @@ void SpriteSequence::onTick(unsigned int DeltaTime)
 	}
 }
 
-SpriteSequence* SpriteSequence::SpawnSpriteSequence(std::vector<const char*> ResourceImagePathVec, VecInt2D Position, unsigned int AnimTime, bool bInitialize)
+SpriteSequence* SpriteSequence::SpawnSpriteSequence(std::vector<const char*> ResourceImageRelPathVec, VecInt2D Position, unsigned int AnimTime, bool bInitialize)
 {
-	SpriteSequence* SpawnedSprite = new SpriteSequence(ResourceImagePathVec, AnimTime);
+	SpriteSequence* SpawnedSprite = new SpriteSequence(ResourceImageRelPathVec, AnimTime);
 	SpawnedSprite->SetPosition(Position);
 
 	if (bInitialize)
