@@ -96,12 +96,6 @@
     <ClCompile Include="Source\ObjectsUI\CountNumUI.cpp">
       <Filter>Source Files\ObjectsUI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ObjectsUI\CountSprite.cpp">
-      <Filter>Source Files\ObjectsUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ObjectsUI\PopUpUI.cpp">
-      <Filter>Source Files\ObjectsUI</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameObjects\Boosters\Booster.cpp">
       <Filter>Source Files\GameObjects\Boosters</Filter>
     </ClCompile>
@@ -110,6 +104,15 @@
     </ClCompile>
     <ClCompile Include="Source\GameObjects\Boosters\BoosterHP.cpp">
       <Filter>Source Files\GameObjects\Boosters</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectsUI\BasicUIElement.cpp">
+      <Filter>Source Files\ObjectsUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectsUI\HUD.cpp">
+      <Filter>Source Files\ObjectsUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectsUI\CountSpriteUI.cpp">
+      <Filter>Source Files\ObjectsUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +194,6 @@
     <ClInclude Include="Source\ObjectsUI\CountSpriteUI.h">
       <Filter>Source Files\ObjectsUI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ObjectsUI\PopUpUI.h">
-      <Filter>Source Files\ObjectsUI</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameObjects\Boosters\Booster.h">
       <Filter>Source Files\GameObjects\Boosters</Filter>
     </ClInclude>
@@ -202,6 +202,12 @@
     </ClInclude>
     <ClInclude Include="Source\GameObjects\Boosters\BoosterHP.h">
       <Filter>Source Files\GameObjects\Boosters</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectsUI\BasicUIElement.h">
+      <Filter>Source Files\ObjectsUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectsUI\HUD.h">
+      <Filter>Source Files\ObjectsUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

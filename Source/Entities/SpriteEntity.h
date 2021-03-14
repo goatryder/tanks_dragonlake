@@ -18,6 +18,8 @@ public:
 
 	inline virtual void CreateSprite();
 	inline virtual void DestroySprite();
+	
+	inline virtual void DrawSprite(VecInt2D Position);
 
 protected:
 

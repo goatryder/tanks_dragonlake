@@ -2,17 +2,17 @@
 
 #include "../GameObjects/LevelStruct.h"
 
-// constructor
 SpriteEntity::SpriteEntity(const char* ResourceImagePath)
 	: ResourceImagePath(ResourceImagePath)
 {
 }
 
-// destructor
 SpriteEntity::~SpriteEntity()
 {
 	DestroySprite();
 }
+
+// RenderBase
 
 void SpriteEntity::Initialize()
 {
@@ -34,24 +34,22 @@ void SpriteEntity::Destroy()
 	delete this;
 }
 
-// wrappers
 void SpriteEntity::onRender()
 {
-	if (SpriteObj == nullptr)
-	{
-		return;
-	}
-
-	drawSprite(SpriteObj, Position.X, Position.Y);
+	DrawSprite(Position);
 }
 
-void SpriteEntity::CreateSprite()
+//
+
+// wrappers
+
+inline void SpriteEntity::CreateSprite()
 {
 	SpriteObj = createSprite(ResourceImagePath);
 	InitSizeBySprite(SpriteObj);
 }
 
-void SpriteEntity::DestroySprite()
+inline void SpriteEntity::DestroySprite()
 {
 	if (SpriteObj != nullptr)
 	{
@@ -59,6 +57,18 @@ void SpriteEntity::DestroySprite()
 		SpriteObj = nullptr;
 	}
 }
+
+inline void SpriteEntity::DrawSprite(VecInt2D DrawPosition)
+{
+	if (SpriteObj == nullptr)
+	{
+		return;
+	}
+
+	drawSprite(SpriteObj, DrawPosition.X, DrawPosition.Y);
+}
+
+//
 
 SpriteEntity* SpriteEntity::SpawnBasicSprite(const char* ResourceImagePath, VecInt2D Position, bool bInitialize)
 {

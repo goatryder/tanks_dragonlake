@@ -4,6 +4,12 @@
 #include "AITankController.h"
 #include "PlayerTankController.h"
 
+#include "ObjectsUI/HUD.h"
+
+#include "ObjectsUI/BasicUIElement.h"
+#include "ObjectsUI/CountNumUI.h"
+#include "ObjectsUI/CountSpriteUI.h"
+
 /** Basic game-loop handler */
 class GameMode
 {
@@ -22,31 +28,38 @@ public:
 		SystemTickInstance = SystemTick::Instance();
 
 		RestartTimer = RESTART_TIME;
+
+		HUD = DefaultHUD::CreateDefaultHUD();
+		HUD->GameModeOwner = this;
 	}
 
 	~GameMode() {}
 
 	void Initialize()
 	{
+		HUD->InitializeHUD();
 		Level.InitializeLevel();
 	}
 
 	void Finalize()
 	{
+		HUD->DestroyHUD();
 		Level.DestroyLevel();
 	}
 
 	void Restart()
 	{
 		bGameIsOver = false;
+
 		Level.DestroyLevel(true);
 		Level = LevelStruct::CreateBasicLevelStruct();
 		Level.GameModeOwner = this;
 		Level.InitializeLevel();
+		
 		PlayerController.PlayerTank = Level.PlayerTank;
 	}
 
-	void HandleWinLooseCondition()
+	void HandleWinLooseCondition(unsigned int DeltaTime)
 	{
 		if (Level.bBaseIsDestroyed || Level.PlayerRespawnNum <= -1)
 		{
@@ -58,33 +71,40 @@ public:
 			bGameIsOver = true;
 			bIsGameOverWin = true;
 		}
+		else
+		{
+			return;
+		}
+
+		// restart
+
+		RestartTimer -= DeltaTime;
+
+		if (RestartTimer <= 0)
+		{
+			RestartTimer = RESTART_TIME;
+
+			Restart();
+		}
 	}
 
 	void Tick(unsigned int DeltaTime)
 	{
-		if (bGameIsOver)  // win loose sprites
-		{
-			RestartTimer -= DeltaTime;
-
-			if (RestartTimer <= 0)
-			{
-				RestartTimer = RESTART_TIME;
-
-				Restart();
-			}
-		}
-
 		SystemCollision::CheckCollisionsAllBlock();
+
 		SystemTick::Tick(DeltaTime);
 
 		AIController.onTick(DeltaTime);
-		
-		HandleWinLooseCondition();
+
+		HUD->TickHUD(DeltaTime);
+
+		HandleWinLooseCondition(DeltaTime);
 	}
 
 	void Render()
 	{
 		SystemRender::Render();
+		HUD->RenderHUD();
 	}
 
 	bool bGameIsOver = false;
@@ -103,4 +123,7 @@ public:
 	Tank* GetPlayerTank() { return Level.PlayerTank; }
 	TankSpawner* GetTankSpawner() { return Level.LevelEnemyTankSpawner; }
 	Phoenix* GetPhoenix() { return Level.LevelPhoenix; }
+
+	// ui
+	DefaultHUD* HUD = nullptr;
 };

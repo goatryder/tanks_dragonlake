@@ -54,15 +54,19 @@ constexpr auto FLASHY_1 =				"X:\\DragonLake\\Tanki\\Content\\flashy_1.png";
 constexpr auto BOOST_HP =				"X:\\DragonLake\\Tanki\\Content\\tank_hp_boost.png";
 
 // UI
-constexpr auto GAME_OVER =				"X:\\DragonLake\\Tanki\\Content\\UI\\GameOver.png";
-constexpr auto WON =					"X:\\DragonLake\\Tanki\\Content\\UI\\Won.png";
-constexpr auto LOOSE =					"X:\\DragonLake\\Tanki\\Content\\UI\\Loose.png";
+constexpr auto WON_UI =					"X:\\DragonLake\\Tanki\\Content\\UI\\GameOverWon.png";
+constexpr auto LOOSE_UI =				"X:\\DragonLake\\Tanki\\Content\\UI\\GameOverLoose.png";
+constexpr auto TANK_ICO_UI =			"X:\\DragonLake\\Tanki\\Content\\UI\\ui_enemy.png";
 constexpr auto UI_NUM_0 =				"X:\\DragonLake\\Tanki\\Content\\Num\\0.png";
 constexpr auto UI_NUM_1 =				"X:\\DragonLake\\Tanki\\Content\\Num\\1.png";
 constexpr auto UI_NUM_2 =				"X:\\DragonLake\\Tanki\\Content\\Num\\2.png";
 constexpr auto UI_NUM_3 =				"X:\\DragonLake\\Tanki\\Content\\Num\\3.png";
 constexpr auto UI_NUM_4 =				"X:\\DragonLake\\Tanki\\Content\\Num\\4.png";
 constexpr auto UI_NUM_5 =				"X:\\DragonLake\\Tanki\\Content\\Num\\5.png";
+constexpr auto UI_NUM_6 =				"X:\\DragonLake\\Tanki\\Content\\Num\\6.png";
+constexpr auto UI_NUM_7 =				"X:\\DragonLake\\Tanki\\Content\\Num\\7.png";
+constexpr auto UI_NUM_8 =				"X:\\DragonLake\\Tanki\\Content\\Num\\8.png";
+constexpr auto UI_NUM_9 =				"X:\\DragonLake\\Tanki\\Content\\Num\\9.png";
 
 
 // Game Sizes conts
@@ -112,13 +116,13 @@ constexpr auto UI_NUM_5 =				"X:\\DragonLake\\Tanki\\Content\\Num\\5.png";
 #define BRICK_BASE_HEALTH				1
 
 #define TANK_SPAWN_NUM_DEFAULT			20
-#define TANK_SPAWN_RATE_DEFAULT			1000 // time in ms
+#define TANK_SPAWN_RATE_DEFAULT			1200 // time in ms
 
 #define PLAYER_TANK_RESPAWN_NUM			5
 
-#define ENEMY_TANK_SLOW_FIRE_RATE		1000 // in ms
+#define ENEMY_TANK_SLOW_FIRE_RATE		600 // in ms
 
-#define ENEMY_TANK_CHANGE_DIRECTION_RATE	600 // in ms
+#define ENEMY_TANK_CHANGE_DIRECTION_RATE	800 // in ms
 
 #define BOOM_SMALL_ANIM_TIME			50
 #define BOOM_BIG_ANIM_TIME				80
@@ -133,3 +137,19 @@ const int FLASHY_ARRAY_DEFAULT_SIZE = sizeof FLASHY_ARRAY_DEFAULT / sizeof *FLAS
 #define HP_BOOSTER_VAL					1
 
 #define RESTART_TIME					3000
+
+// ui elements
+
+#define GAME_OVER_PLATE_W				200	
+#define GAME_OVER_PLATE_H				225
+
+#define TANK_UI_FIRST_W					496
+#define TANK_UI_FIRST_H					60
+#define TANK_UI_OFFSET_W				16
+#define TANK_UI_OFFSET_H				16
+#define TANK_UI_MAX						20
+#define TANK_UI_HORIZONTAL_MAX			2
+
+#define PLAYER_RESPAWN_NUM_W			514
+#define PLAYER_RESPAWN_NUM_H			274
+#define UI_NUM_DIGIT_OFFSET				16

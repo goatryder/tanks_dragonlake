@@ -36,8 +36,9 @@
     <ClCompile Include="Source\GameObjects\Tank.cpp" />
     <ClCompile Include="Source\GameObjects\TankSpawner.cpp" />
     <ClCompile Include="Source\ObjectsUI\CountNumUI.cpp" />
-    <ClCompile Include="Source\ObjectsUI\CountSprite.cpp" />
-    <ClCompile Include="Source\ObjectsUI\PopUpUI.cpp" />
+    <ClCompile Include="Source\ObjectsUI\CountSpriteUI.cpp" />
+    <ClCompile Include="Source\ObjectsUI\BasicUIElement.cpp" />
+    <ClCompile Include="Source\ObjectsUI\HUD.cpp" />
     <ClCompile Include="Source\PlayerTankController.cpp" />
     <ClCompile Include="Source\Structs\VecInt2D.cpp" />
     <ClCompile Include="Source\Systems\SystemCollision.cpp" />
@@ -69,7 +70,8 @@
     <ClInclude Include="Source\Helpers\DebugPrint.h" />
     <ClInclude Include="Source\ObjectsUI\CountNumUI.h" />
     <ClInclude Include="Source\ObjectsUI\CountSpriteUI.h" />
-    <ClInclude Include="Source\ObjectsUI\PopUpUI.h" />
+    <ClInclude Include="Source\ObjectsUI\BasicUIElement.h" />
+    <ClInclude Include="Source\ObjectsUI\HUD.h" />
     <ClInclude Include="Source\PlayerTankController.h" />
     <ClInclude Include="Source\Systems\SystemCollision.h" />
     <ClInclude Include="Source\Systems\SystemRender.h" />

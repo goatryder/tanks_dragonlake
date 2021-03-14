@@ -284,9 +284,9 @@ void Tank::Destroy()
 		ActiveBullet->Owner = nullptr;
 	}
 
-	RenderBase::Destroy();
-
 	DisableFlashyEffect();
+
+	RenderBase::Destroy();
 
 	if (Left != nullptr) Left->Destroy();
 	if (Right != nullptr) Right->Destroy();

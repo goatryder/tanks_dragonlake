@@ -38,6 +38,8 @@ protected:
 
 public:
 
+	int GetSpawnTankNum() const { return TankSpawnNum; }
+
 	virtual void onTick(unsigned int DeltaTime) override final;
 	virtual void onRender() override final;
 	virtual void Destroy() override final;

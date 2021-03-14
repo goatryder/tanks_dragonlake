@@ -38,6 +38,8 @@ void Bullet::onRender()
 
 void Bullet::onCollide(RenderBase* Other, CollisionFilter Filter)
 {
+	// PRINTF(PrintColor::Yellow, "Bullet %s collided with %s", GetName(), Other->GetName());
+
 	if (Filter == CollisionFilter::CF_BLOCK)
 	{
 		Boom::SpawnBoomSmall(Position);
