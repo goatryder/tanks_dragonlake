@@ -2,10 +2,12 @@
 
 #include "GameMode.h"
 
-#include "Helpers/DebugPrint.h"
+// #include "Helpers/DebugPrint.h"
 
 int TankBrain::FireRate = ENEMY_TANK_SLOW_FIRE_RATE;
 int TankBrain::ChangeDirectionTime = ENEMY_TANK_CHANGE_DIRECTION_RATE;
+
+// @ToDo improve AI
 
 AITankController::AITankController(Tank* PlayerTank, Phoenix* PlayerBase, GameMode* GameModeOwner)
 	: GameModeOwner(GameModeOwner)

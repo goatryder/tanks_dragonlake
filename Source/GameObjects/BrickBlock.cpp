@@ -30,7 +30,6 @@ BrickBlock::BrickBlock(brickArr BrickArr, VecInt2D Position)
 	}
 }
 
-// @ToDo: try to render in baseBlock and see how it hit's perfomance
 void BrickBlock::onRender()
 {
 	for (int i = 0; i < BrickArrSize; i++)
@@ -146,6 +145,7 @@ void BrickBlock::OwnedBrickDamaged(int Index, int Damage, Direction Side)
 	}
 }
 
+// @ToDo: make custom block, 4x4 matrix with 0 and 1 to mark where block cell is empty or not
 BrickBlock* BrickBlock::SpawnBrickBlockSolid(VecInt2D Position, bool bInitialize)
 {
 	std::array<BrickBase*, BrickArrSize>Bricks;
@@ -161,7 +161,7 @@ BrickBlock* BrickBlock::SpawnBrickBlockSolid(VecInt2D Position, bool bInitialize
 	BrickBase* SpawnedBrick;
 	VecInt2D BrickPosition = Position;
 	
-	// BrickBase array initialize // todo: handle correct sprites
+	// BrickBase array initialize
 	for (int i = 0; i < BrickArrRowSize; i++)
 	{
 		BrickPosition.X = Position.X;

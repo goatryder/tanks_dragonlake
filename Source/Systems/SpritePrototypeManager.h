@@ -15,12 +15,6 @@ public:
 
 public:
 
-	static SpritePrototypeManager& Instance()
-	{
-		static SpritePrototypeManager* Instance = new SpritePrototypeManager();
-		return *Instance;
-	}
-
 	static void CreateSpritePrototype(const char* RelResourcePath, bool Initialize = false);
 	static void DestroySpritePrototype(const char* RelResourcePath);
 

@@ -6,6 +6,8 @@
 
 class GameMode;
 
+// @ToDo: change to class
+
 struct LevelStruct
 {
 public:

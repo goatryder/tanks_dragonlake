@@ -92,17 +92,15 @@ public:
 
 	void InitSprite();
 
-public:
-
-	static int TankCount;
-	static Tank* SpawnTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize = false);
-	static Tank* SpawnEnemyTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize = false);
-
 	void Respawn(TankSpawnPoint RespawnPoint);
 
 public:
+
 	/** if value > 0, can't damage tank */
 	int FlashyEffectTimer = 0;
+
+	bool bFlashyEffectCreated = false;
+	bool bFlashyEffectEnabled = false;
 
 	SpriteFlipFlop* FlashyEffect = nullptr;
 
@@ -113,4 +111,11 @@ public:
 	static SpriteFlipFlop* CreateDefaultFlashyEffect(VecInt2D Position);
 
 	bool bDropPickableOnDeath = false;
+
+public:
+
+	static int TankCount;
+	static Tank* SpawnTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize = false);
+	static Tank* SpawnEnemyTankBasic(TankSpawnPoint SpawnPoint, bool bInitialize = false);
+
 };

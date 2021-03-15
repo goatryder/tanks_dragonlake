@@ -24,6 +24,10 @@ struct CollisionCheckResult
  * in main method CheckCollisionsAllOverlap() there loop which check if unique pair of Objects Collides and call onCollide() for each;
  * Can check collision for separate instances in CheckCollision(Filter);
  */
+
+ // @ToDo linetrace?
+
+
 class SystemCollision
 {
 public:
@@ -31,12 +35,6 @@ public:
 	static std::set<RenderBase*> CollidableSet;
 
 public:
-
-	static SystemCollision& Instance()
-	{
-		static SystemCollision* Instance = new SystemCollision();
-		return *Instance;
-	}
 
 	/** add to collision detection set */
 	static void AddRenderObj(RenderBase* RenderObj)

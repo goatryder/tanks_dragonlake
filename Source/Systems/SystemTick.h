@@ -15,12 +15,6 @@ public:
 
 public:
 
-	static SystemTick& Instance()
-	{
-		static SystemTick* Instance = new SystemTick();
-		return *Instance;
-	}
-
 	/** add tick object to TickQueue. called from TickInterface instanses on construct*/
 	static void AddTickObj(TickInterface* TickInterfaceInstance)
 	{

@@ -17,12 +17,6 @@ public:
 
 public:
 
-	static SystemRender& Instance()
-	{
-		static SystemRender* Instance = new SystemRender();
-		return *Instance;
-	}
-
 	/** add RenderBase instance to RenderQueue */
 	static void AddRenderObj(RenderBase* RenderObj)
 	{

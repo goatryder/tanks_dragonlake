@@ -115,7 +115,7 @@ constexpr auto UI_NUM_9 =				"resources\\Num\\9.png";
 // if GAME_LOGIC_TICK == 33, 31 is min speed value
 
 #define TANK_SPEED_SLOW					GAME_SPEED_MIN * 2 // pixels in one sec
-#define TANK_SPEED_SLOW_ANIM_TIME		100 // Time in ms to SpriteFlipFlop swap sprites
+#define TANK_SPEED_SLOW_ANIM_TIME		70 // Time in ms to SpriteFlipFlop swap sprites
 #define TANK_HEALTH_BASIC				1
 
 #define BULLET_SPEED_SLOW				GAME_SPEED_MIN * 7 // pixels in one sesc
@@ -124,13 +124,13 @@ constexpr auto UI_NUM_9 =				"resources\\Num\\9.png";
 #define BRICK_BASE_HEALTH				1
 
 #define TANK_SPAWN_NUM_DEFAULT			20
-#define TANK_SPAWN_RATE_DEFAULT			1200 // time in ms
+#define TANK_SPAWN_RATE_DEFAULT			2000 // time in ms
 
 #define PLAYER_TANK_RESPAWN_NUM			5
 
-#define ENEMY_TANK_SLOW_FIRE_RATE		600 // in ms
+#define ENEMY_TANK_SLOW_FIRE_RATE		1000 // in ms
 
-#define ENEMY_TANK_CHANGE_DIRECTION_RATE	800 // in ms
+#define ENEMY_TANK_CHANGE_DIRECTION_RATE	600 // in ms
 
 #define BOOM_SMALL_ANIM_TIME			50
 #define BOOM_BIG_ANIM_TIME				80

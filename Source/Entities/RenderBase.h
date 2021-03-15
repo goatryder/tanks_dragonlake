@@ -13,7 +13,7 @@
 
 struct LevelStruct;
 
-// using in GameObjects spawn position adjusting // @ToDO TOP LEFT BOTTOM RIGHT
+// using in GameObjects spawn position adjusting
 enum class Anchor
 {
 	TOP_LEFT,

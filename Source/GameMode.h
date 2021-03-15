@@ -10,6 +10,8 @@
 #include "ObjectsUI/CountNumUI.h"
 #include "ObjectsUI/CountSpriteUI.h"
 
+// @ToDo: change level, controllers to refs
+
 /** Basic game-loop handler */
 class GameMode
 {
@@ -22,10 +24,6 @@ public:
 
 		PlayerController = PlayerTankController(Level.PlayerTank, this);
 		AIController = AITankController(Level.PlayerTank, Level.LevelPhoenix, this);
-
-		SystemCollisionInstance = SystemCollision::Instance();
-		SystemRenderInstance = SystemRender::Instance();
-		SystemTickInstance = SystemTick::Instance();
 
 		RestartTimer = RESTART_TIME;
 
@@ -115,10 +113,6 @@ public:
 	LevelStruct Level;
 	AITankController AIController;
 	PlayerTankController PlayerController;
-
-	SystemCollision SystemCollisionInstance;
-	SystemRender SystemRenderInstance;
-	SystemTick SystemTickInstance;
 
 	Tank* GetPlayerTank() { return Level.PlayerTank; }
 	TankSpawner* GetTankSpawner() { return Level.LevelEnemyTankSpawner; }

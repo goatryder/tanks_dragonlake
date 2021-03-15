@@ -81,7 +81,6 @@ void TankSpawner::SpawnTank(TankSpawnPoint& SpawnPoint)
 		{
 			if (TankSpawnNum == FlashyIndex)
 			{
-				SpawnedTank->EnableFlashyEffect(0);
 				SpawnedTank->bDropPickableOnDeath = true;
 				break;
 			}

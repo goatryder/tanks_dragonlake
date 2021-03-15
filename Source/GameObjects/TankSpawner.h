@@ -11,7 +11,6 @@ struct TankSpawnPoint;
 
 /**
  * Tank spawner, can have multiple spawn points, and handle them all
- * @ToDo: SpawnPoint as class, need to check if other tank or player tank not on spawn point
  */
 class TankSpawner : public RenderBase, public TickInterface
 {

@@ -7,13 +7,25 @@ std::list<RenderBase*> SystemRender::RenderQueue = {};
 
 void SystemRender::Render()
 {
-	for (auto& RenderInstance : RenderQueue)
+	std::list<RenderBase*>::iterator Iter;
+
+	for (Iter = RenderQueue.begin(); Iter != RenderQueue.end(); Iter++)
 	{
+		RenderBase* RenderInstance = (*Iter);
+
 		if (RenderInstance != nullptr)
 		{
 			RenderInstance->onRender();
 		}
 	}
+
+	/*for (auto& RenderInstance : RenderQueue)
+	{
+		if (RenderInstance != nullptr)
+		{
+			RenderInstance->onRender();
+		}
+	}*/
 }
 
 void SystemRender::ClearRenderQueue(bool bDestroy)

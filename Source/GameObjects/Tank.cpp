@@ -179,9 +179,9 @@ void Tank::onDead()
 
 		if (bDropPickableOnDeath)
 		{
-			// test, @ToDo: remove
+			// @ToDo: random boost spawner
 			BoosterHP::SpawnPlayerHPBooster(LevelOwner, Position);
-			PRINTF(PrintColor::Green, "TODO: DROP PICKABLE BOOST");
+			PRINTF(PrintColor::Yellow, "%s dropped boost", GetName());
 		}
 	}
 	
@@ -200,7 +200,7 @@ void Tank::onTick(unsigned int DeltaTime)
 	}
 
 	// FlashyEffect
-	if (FlashyEffect != nullptr)
+	if (bFlashyEffectEnabled && FlashyEffect != nullptr)
 	{
 		FlashyEffect->SetPosition(Position);
 
@@ -220,6 +220,9 @@ void Tank::onRender()
 {
 	CurrentActiveSprite->onRender();
 	
+	if (!bFlashyEffectEnabled)
+		return;
+
 	if (FlashyEffect != nullptr)
 	{
 		FlashyEffect->onRender();
@@ -234,9 +237,6 @@ void Tank::onCollide(RenderBase* Other, CollisionFilter Filter)
 void Tank::Initialize()
 {
 	InitSprite();
-	EnableCollsion();
-	EnableTick();
-	EnableRender();
 
 	LevelStruct* LevelOwner = GetLevel();
 
@@ -257,10 +257,20 @@ void Tank::Initialize()
 		}
 	}
 
+	if (bDropPickableOnDeath)
+	{
+		EnableFlashyEffect(0); // enable permanent flashy effect
+	}
+
+	EnableCollsion();
+	EnableTick();
+	EnableRender();
 }
 
 void Tank::Destroy()
 {
+	RenderBase::Destroy();
+
 	LevelStruct* LevelOwner = GetLevel();
 	if (LevelOwner != nullptr)
 	{
@@ -284,9 +294,10 @@ void Tank::Destroy()
 		ActiveBullet->Owner = nullptr;
 	}
 
-	DisableFlashyEffect();
-
-	RenderBase::Destroy();
+	if (FlashyEffect != nullptr)
+	{
+		FlashyEffect->Destroy();
+	}
 
 	if (Left != nullptr) Left->Destroy();
 	if (Right != nullptr) Right->Destroy();
@@ -393,17 +404,18 @@ void Tank::Respawn(TankSpawnPoint RespawnPoint)
 
 void Tank::EnableFlashyEffect(unsigned int FlashyTime)
 {
-	FlashyEffect = CreateDefaultFlashyEffect(Position);
+	if (!bFlashyEffectCreated)
+	{
+		FlashyEffect = CreateDefaultFlashyEffect(Position);
+		bFlashyEffectCreated = true;
+	}
+	bFlashyEffectEnabled = true;
 	FlashyEffectTimer = FlashyTime;
 }
 
 void Tank::DisableFlashyEffect()
 {
-	if (FlashyEffect != nullptr)
-	{
-		FlashyEffect->Destroy();
-	}
-	FlashyEffect = nullptr;
+	bFlashyEffectEnabled = false;
 }
 
 SpriteFlipFlop* Tank::CreateDefaultFlashyEffect(VecInt2D Position)
